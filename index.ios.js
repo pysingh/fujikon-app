@@ -5,6 +5,7 @@
 'use strict';
 
 var React = require('react-native');
+var DrawGraphs = require('./js/DrawGraph');
 
 var {
   AppRegistry,
@@ -34,6 +35,7 @@ var Healthmonitor = React.createClass({
           Press Cmd+R to reload,{'\n'}
           Cmd+D or shake for dev menu
         </Text>
+        <DrawGraphs />
       </View>
     );
   }
