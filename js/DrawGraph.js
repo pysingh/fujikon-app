@@ -15,7 +15,10 @@ var styles = StyleSheet.create({
     }
 });
 
-var chartData = [
+
+//var xLabels = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16'];
+
+//var chartData = [
     // {
     //     name:'BarChart',
     //     type:'bar',
@@ -24,29 +27,26 @@ var chartData = [
     //         30, 1, 1, 2, 3, 5, 21, 13, 21, 34, 55, 30, 23, 54, 76, 21, 32
     //     ]
     // },
-    {
-        name:'LineChart',
-        lineWidth:2,
-        showDataPoint:false,
-        data:[
-            10, 12, 14, 25, 31, 52, 41, 31, 52, 66, 22, 11, 0, 4, 7, 8, 43
-        ]
-    }
-];
-
-var xLabels = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16'];
-
+    
+//];
 class SimpleChart extends Component {
     render() {
+
         return (
             <View style={styles.container}>
                 <RNChart style={styles.chart}
-                    chartData={chartData}
+                    chartData={[{
+        name:'LineChart',
+        lineWidth:2,
+        showDataPoint:false,
+        //data: [30, 1, 1, 2, 3, 5, 21, 13, 21, 34, 55, 30, 23, 54, 76, 21, 32]
+        data : this.props.yData
+    }]}
                     // verticalGridStep="3"
-                    xAxisTitle={'x-axis'}
-                    yAxisTitle={'y-axis'}
+                    xAxisTitle={this.props.xAxisName}
+                    yAxisTitle={this.props.yAxisName}
                     labelFontSize={20}
-                    xLabels={xLabels}>
+                    xLabels={this.props.xData}>
                 </RNChart>
             </View>
         );
