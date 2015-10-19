@@ -6,6 +6,8 @@
 
 var React = require('react-native');
 var DrawGraphs = require('./js/DrawGraph');
+var Geolocation1 = require('./js/Geolocation');
+var MapView = require('./js/Mapview');
 
 var {
   AppRegistry,
@@ -36,6 +38,7 @@ var Healthmonitor = React.createClass({
           Cmd+D or shake for dev menu
         </Text>
         <DrawGraphs />
+        <Geolocation1 />
       </View>
     );
   }
