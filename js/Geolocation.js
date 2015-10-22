@@ -3,10 +3,13 @@
 
 var React = require('react-native');
 var {
+  AsyncStorage,
   StyleSheet,
   Text,
   View,
 } = React;
+
+var STORAGE_KEY = '@AsyncStorageExample:key';
 
 exports.framework = 'React';
 exports.title = 'Geolocation';
@@ -24,10 +27,12 @@ exports.examples = [
 var GeolocationExample = React.createClass({
   watchID: (null: ?number),
 
+
   getInitialState: function() {
     return {
       initialPosition: 'unknown',
       lastPosition: 'unknown',
+      initialSpeed : 'unknown',
     };
   },
 
@@ -40,12 +45,38 @@ var GeolocationExample = React.createClass({
     this.watchID = navigator.geolocation.watchPosition((lastPosition) => {
       this.setState({lastPosition});
     });
+    AsyncStorage.setItem('coordinates', JSON.stringify(this.state.lastPosition,['latitude']));
+    
   },
 
   componentWillUnmount: function() {
     navigator.geolocation.clearWatch(this.watchID);
   },
+  
+  replacer: function(coordinates) {
 
+        var latitude;
+        
+        var obj = AsyncStorage.getItem('coordinates');
+        return obj;
+        return latitude;
+        //coordinates.setItem(latitude);
+        //return latitude.getItem('latitude');
+        //latitude = eval( '  +latitude +'}');
+        //var t = JSON.parse(latitude);
+        var l = JSON.parse('{"latitude" : 123.3211}');
+        return l['latitude'];//=>this._latitude;
+        //Object.keys(latitude);
+
+        //return latitude;
+    
+    //return undefined;
+  },
+
+  replace: function(){
+    return this.state.lastPosition.coords;
+  },
+  //var item = this.state.lastPosition.coords;
   render: function() {
     return (
       <View>
@@ -55,7 +86,8 @@ var GeolocationExample = React.createClass({
         </Text>
         <Text>
           <Text style={styles.title}>Current position: </Text>
-          {JSON.stringify(this.state.lastPosition.coords)}
+          {this.replacer(this.state.initialPosition.coords)}
+          
         </Text>
       </View>
     );
