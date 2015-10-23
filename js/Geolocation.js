@@ -45,7 +45,7 @@ var GeolocationExample = React.createClass({
     this.watchID = navigator.geolocation.watchPosition((lastPosition) => {
       this.setState({lastPosition});
     });
-    AsyncStorage.setItem('coordinates', JSON.stringify(this.state.lastPosition,['latitude']));
+    //AsyncStorage.setItem('coordinates', JSON.stringify(this.state.lastPosition,['latitude']));
     
   },
 
@@ -55,17 +55,24 @@ var GeolocationExample = React.createClass({
   
   replacer: function(coordinates) {
 
-        var latitude;
+        var coords_latitude = JSON.stringify(coordinates,['latitude']);
+        coords_latitude = String(coords_latitude);
+        AsyncStorage.removeItem('coordinates');
+        //localStorage.removeItem("coordinates");
+        coords_latitude = JSON.parse(coords_latitude);
+        return coords_latitude;
+
         
         var obj = AsyncStorage.getItem('coordinates');
-        return obj;
-        return latitude;
+        return coordinates.latitude;
+        //return obj;
+        //return latitude;
         //coordinates.setItem(latitude);
         //return latitude.getItem('latitude');
         //latitude = eval( '  +latitude +'}');
-        //var t = JSON.parse(latitude);
+        //var t = JSON.parse(JSON.stringigy(coordinates);
         var l = JSON.parse('{"latitude" : 123.3211}');
-        return l['latitude'];//=>this._latitude;
+        return t;//=>this._latitude;
         //Object.keys(latitude);
 
         //return latitude;
@@ -86,7 +93,7 @@ var GeolocationExample = React.createClass({
         </Text>
         <Text>
           <Text style={styles.title}>Current position: </Text>
-          {this.replacer(this.state.initialPosition.coords)}
+          {this.replacer(this.state.lastPosition.coords)}
           
         </Text>
       </View>
