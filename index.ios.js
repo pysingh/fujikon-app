@@ -6,8 +6,11 @@
 
 var React = require('react-native');
 var DrawGraphs = require('./js/DrawGraph');
+var Geolocation1 = require('./js/Geolocation');
+var MapView = require('./js/Mapview');
+var UserStats = require('./js/UserStats');
 
-var {
+var {  
   AppRegistry,
   StyleSheet,
   Text,
@@ -36,7 +39,11 @@ var Healthmonitor = React.createClass({
           Press Cmd+R to reload,{'\n'}
           Cmd+D or shake for dev menu
         </Text>
+<<<<<<< HEAD
         <DrawGraphs {...this.props} xAxisName="distance" yAxisName="time" xData={xData} yData={yData}/>
+=======
+        <UserStats />
+>>>>>>> 5e7faa053ca898ddd1425b2c22de93ff6b6fff50
       </View>
     );
   }
