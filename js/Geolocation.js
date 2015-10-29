@@ -71,18 +71,28 @@ var GeolocationExample = React.createClass({
         var latitude = JSON.stringify(coordinates,['latitude']);
         var timeValue = count * 10;
         count = count +1;
-        timeData.push(timeValue);
+        if(count<10)
+          timeData.push(timeValue);
 
         latitude = (latitude +'');
         latitude = latitude.split(":"); 
         if(latitude)
         {
+          console.log("Checking this value "+latitude);
           var latitudeInFloat = parseFloat(latitude[1]).toFixed(2);
-          speedData.push(if(isNan(latitudeInFloat.toString()) ? 0 : latitudeInFloat.toString());
+          if(count<10)
+              if(latitudeInFloat.toString() != 'NaN')
+                speedData.push(latitudeInFloat.toString());
           return latitudeInFloat  ;
+          return 0.000;
+          
         }
         else
-          return 0.000;
+        {
+          console.log("Checking this value not not *******&&&&&&&&&"+latitude);
+           
+        }
+          
         //var answer =   eval('(' + latitude + ')');
         //answer = (answer+" answer");
         
@@ -137,6 +147,7 @@ var GeolocationExample = React.createClass({
     //setInterval(this.replacer(this.state.lastPosition), 1000);
     console.log("=>=>=>=>=>=>");
     console.log("SpeedData->"+speedData+" TimeData"+timeData+" Count"+count);
+    //console.log("SpeedData->"+yData+" TimeData"+xData+" Count"+count);
         return (
       <View>
       <DrawGraphs {...this.props} xAxisName="distance" yAxisName="time" xData={xData} yData={yData}/>
