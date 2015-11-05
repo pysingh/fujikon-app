@@ -12,22 +12,24 @@ var {
 
 var speedData = [];
 var timeData = [];
+var elevationData = [];
 var count = 0;
 var STORAGE_KEY = '@AsyncStorageExample:key';
-var xData = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16'];
-var yData = ['30', '1', '1', '2', '3', '5', '21', '13', '21', '34', '55', '30', '23', '54', '76', '21', '32'];
+var flagValue = 0;
+//var xData = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16'];
+//var yData = ['30', '1', '1', '2', '3', '5', '21', '13', '21', '34', '55', '30', '23', '54', '76', '21', '32'];
 
 exports.framework = 'React';
 exports.title = 'Geolocation';
-exports.description = 'Examples of using the Geolocation API.';
+exports.description = 'Using the Geolocation API.';
 
 exports.examples = [
-  {
-    title: 'navigator.geolocation',
-    render: function(): ReactElement {
-      return <GeolocationExample />;
-    },
-  }
+{
+  title: 'navigator.geolocation',
+  render: function(): ReactElement {
+    return <GeolocationExample />;
+  },
+}
 ];
 
 var GeolocationExample = React.createClass({
@@ -47,13 +49,13 @@ var GeolocationExample = React.createClass({
       (initialPosition) => this.setState({initialPosition}),
       (error) => alert(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
+      );
     this.watchID = navigator.geolocation.watchPosition((lastPosition) => {
       this.setState({lastPosition});
     });
     AsyncStorage.getItem("coords").then((value) => {
-            this.setState({"coords": value});
-        }).done();
+      this.setState({"coords": value});
+    }).done();
 
   },
 
@@ -63,109 +65,94 @@ var GeolocationExample = React.createClass({
   },
   
 
-  replacer: function(coordinates) {
-        //coordinates = (coordinates + " ");
-        //return coordinates;
-        //if(count===10)
-        //  return;
-        var latitude = JSON.stringify(coordinates,['latitude']);
+  getLocationData: function(coordinates) {
+        var speed = JSON.stringify(coordinates,['latitude']);
         var timeValue = count * 10;
         count = count +1;
-        if(count<10)
-          timeData.push(timeValue);
-
-        latitude = (latitude +'');
-        latitude = latitude.split(":"); 
-        if(latitude)
+        speed = (speed +'');
+        speed = speed.split(":"); 
+        if(speed)
         {
-          console.log("Checking this value "+latitude);
-          var latitudeInFloat = parseFloat(latitude[1]).toFixed(2);
-          if(count<10)
-              if(latitudeInFloat.toString() != 'NaN')
-                speedData.push(latitudeInFloat.toString());
-          return latitudeInFloat  ;
-          return 0.000;
-          
+          var speedInFloat = parseFloat(speed[1]).toFixed(2);
+          if(speedInFloat.toString() != 'NaN')
+          {
+            speedData.push(speedInFloat.toString());
+            timeData.push(timeValue.toString());
+          }
+          return speedInFloat; 
         }
         else
-        {
-          console.log("Checking this value not not *******&&&&&&&&&"+latitude);
-           
-        }
-          
-        //var answer =   eval('(' + latitude + ')');
-        //answer = (answer+" answer");
-        
-        //return answer[2];
-        //var answer = JSON.parse(latitude);
-        //return latitude;
-        //return latitude;//=>latitude[latitude];
-        //console.log("///////////////////////");
-        //var name = JSON.parse('{"nam" : 123.216}');
-        // var l = JSON.parse('{"latitude" : 123.3211}');
-        // return l[latitude];
-        // console.log(latitude);
-        // return latitude;
-        // var location =  AsyncStorage.getItem("coords");
-        // return location;
-        // var coords_latitude = JSON.stringify(coordinates,['latitude']);
-        // coords_latitude = String(coords_latitude);
-        // AsyncStorage.removeItem('coordinates');
-        // //localStorage.removeItem("coordinates");
-        // coords_latitude = JSON.parse(coords_latitude);
-        // return coords_latitude;
-
-        
-        // var obj = AsyncStorage.getItem('coordinates');
-        // return coordinates.latitude;
-        // //return obj;
-        // //return latitude;
-        // //coordinates.setItem(latitude);
-        // //return latitude.getItem('latitude');
-        // //latitude = eval( '  +latitude +'}');
-        // //var t = JSON.parse(JSON.stringigy(coordinates);
-        // var l = JSON.parse('{"latitude" : 123.3211}');
-        // return t;//=>this._latitude;
-        //Object.keys(latitude);
-
-        //return latitude;
-    
-    //return undefined;
+          return 0.000;
   },
 
-  // replace: function(){
-  //   return this.state.lastPosition.coords;
-  // },
+  toggleView: function(){
+    if(flagValue==0)
+      flagValue = 1;
+    else
+    {  
+      speedData = [];
+      timeData = [];
+      count = 0;
+      flagValue = 0;
+    }
+    this.setState({'flagValue':1})
+  },
+
 
   //  saveData: function(key,value) {
   //       AsyncStorage.setItem(key, value);
   //       this.setState({key : value});
   //   },
 
-  //var item = this.state.lastPosition.coords;
+
   render: function() {
-    //setInterval(this.replacer(this.state.lastPosition), 1000);
-    console.log("=>=>=>=>=>=>");
     console.log("SpeedData->"+speedData+" TimeData"+timeData+" Count"+count);
-    //console.log("SpeedData->"+yData+" TimeData"+xData+" Count"+count);
-        return (
+    if(flagValue == 0)
+    return (
       <View>
-      <DrawGraphs {...this.props} xAxisName="distance" yAxisName="time" xData={xData} yData={yData}/>
-        
-        <Text>
-          <Text style={styles.title}>Current position: </Text>
-          {this.replacer(this.state.lastPosition.coords)}
-          
-        </Text>
-         
+        <Text>Taking location information....</Text>
+      <View style={styles.container}>
+      <Text style={styles.title}>Current position: {this.getLocationData(this.state.lastPosition.coords)}</Text>
+         <View style={styles.changeButton}>
+          <Text onPress={this.toggleView}>
+            {'Plot the graph'}
+          </Text>
+      </View>
+      </View>
       </View>
     );
+    else
+    return(
+      <View>
+      <View style={styles.container}>
+        <DrawGraphs {...this.props} xAxisName="time" yAxisName="speed" xData={timeData} yData={speedData}/>
+      </View>
+      <View style={styles.changeButton}>
+          <Text onPress={this.toggleView}>
+            {'Restart'}
+          </Text>
+      </View>
+      </View>
+      );
   }
 });
 
 var styles = StyleSheet.create({
   title: {
     fontWeight: '500',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  changeButton: {
+    alignSelf: 'center',
+    marginTop: 5,
+    padding: 3,
+    borderWidth: 0.5,
+    borderColor: '#777777',
   },
 });
 
