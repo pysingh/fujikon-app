@@ -11,6 +11,7 @@
  var UserStats = require('./js/UserStats');
  var Login = require('./js/LoginView');
  var list = require('./js/ListView');
+ var Try = require('./js/trying');
 //var Navigat = require('./js/navigator');
 
 var {  
@@ -28,8 +29,8 @@ var Healthmonitor = React.createClass({
       <NavigatorIOS
       style={styles.navigationContainer}
       initialRoute={{
-        title: "Your Profile",
-        component: UserStats,
+        title: "Fujikon",
+        component: list,
       }} />
       );
   }
@@ -38,8 +39,8 @@ var Healthmonitor = React.createClass({
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
     backgroundColor: '#F5FCFF',
   },
   welcome: {
