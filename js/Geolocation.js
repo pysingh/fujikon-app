@@ -8,6 +8,7 @@ var {
   StyleSheet,
   Text,
   View,
+  TouchableHighlight,
 } = React;
 
 var speedData = [];
@@ -61,21 +62,23 @@ var GeolocationExample = React.createClass({
 
   componentWillUnmount: function() {
     navigator.geolocation.clearWatch(this.watchID);
-    this.saveData("coords",(this.state.lastPosition.timestamp));
+    //this.saveData("coords",(this.state.lastPosition.timestamp));
   },
   
 
   getLocationData: function(coordinates) {
-        var speed = JSON.stringify(coordinates,['latitude']);
-        var timeValue = count * 10;
-        count = count +1;
-        speed = (speed +'');
-        speed = speed.split(":"); 
-        if(speed)
-        {
-          var speedInFloat = parseFloat(speed[1]).toFixed(2);
-          if(speedInFloat.toString() != 'NaN')
-          {
+    var speed = JSON.stringify(coordinates,['altitude']);
+    var timeValue ;
+    count = count +1;
+    speed = (speed +'');
+    speed = speed.split(":"); 
+    if(speed)
+    {
+      var speedInFloat = parseFloat(speed[1]).toFixed(2);
+      if(speedInFloat.toString() != 'NaN')
+      {
+        timeValue = count;
+            speedInFloat = parseFloat(speedInFloat*3.28).toFixed(2); //Converting meters to feet.
             speedData.push(speedInFloat.toString());
             timeData.push(timeValue.toString());
           }
@@ -83,20 +86,20 @@ var GeolocationExample = React.createClass({
         }
         else
           return 0.000;
-  },
+      },
 
-  toggleView: function(){
-    if(flagValue==0)
-      flagValue = 1;
-    else
-    {  
-      speedData = [];
-      timeData = [];
-      count = 0;
-      flagValue = 0;
-    }
-    this.setState({'flagValue':1})
-  },
+      toggleView: function(){
+        if(flagValue==0)
+          flagValue = 1;
+        else
+        {  
+          speedData = [];
+          timeData = [];
+          count = 0;
+          flagValue = 0;
+        }
+        this.setState({'flagValue':1})
+      },
 
 
   //  saveData: function(key,value) {
@@ -108,32 +111,33 @@ var GeolocationExample = React.createClass({
   render: function() {
     console.log("SpeedData->"+speedData+" TimeData"+timeData+" Count"+count);
     if(flagValue == 0)
-    return (
-      <View>
+      return (
+        <View style={styles.container}>
         <Text>Taking location information....</Text>
-      <View style={styles.container}>
-      <Text style={styles.title}>Current position: {this.getLocationData(this.state.lastPosition.coords)}</Text>
-         <View style={styles.changeButton}>
-          <Text onPress={this.toggleView}>
-            {'Plot the graph'}
-          </Text>
-      </View>
-      </View>
-      </View>
-    );
+        <View >
+        <Text style={styles.title}>Current position: </Text>
+        {JSON.stringify(this.state.lastPostion)}
+        <Text>{this.getLocationData(this.state.lastPosition.coords)}</Text>
+        
+        
+        <TouchableHighlight onPress={(this.toggleView)} style={styles.button}>
+        <Text style={styles.buttonText}>Plot the graph</Text>
+        </TouchableHighlight>
+
+        </View>
+        </View>
+        );
     else
-    return(
-      <View>
-      <View style={styles.container}>
-        <DrawGraphs {...this.props} xAxisName="time" yAxisName="speed" xData={timeData} yData={speedData}/>
-      </View>
-      <View style={styles.changeButton}>
-          <Text onPress={this.toggleView}>
-            {'Restart'}
-          </Text>
-      </View>
-      </View>
-      );
+      return(
+        <View style={styles.container}>
+        <View>
+        <DrawGraphs {...this.props} xAxisName="time" yAxisName="elevation" xData={timeData} yData={speedData}/>
+        <TouchableHighlight onPress={(this.toggleView)} style={styles.button}>
+        <Text style={styles.buttonText}>Restart</Text>
+        </TouchableHighlight>
+        </View>
+        </View>
+        );
   }
 });
 
@@ -142,7 +146,7 @@ var styles = StyleSheet.create({
     fontWeight: '500',
   },
   container: {
-    flex: 1,
+    flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
@@ -153,6 +157,21 @@ var styles = StyleSheet.create({
     padding: 3,
     borderWidth: 0.5,
     borderColor: '#777777',
+  },
+  button: {
+    height: 36,
+    flex: 1,
+    backgroundColor: "#555555",
+    borderColor: "#555555",
+    borderWidth: 1,
+    borderRadius: 8,
+    marginTop: 10,
+    justifyContent: "center"
+  },
+  buttonText: {
+    fontSize: 18,
+    color: "#ffffff",
+    alignSelf: "center"
   },
 });
 

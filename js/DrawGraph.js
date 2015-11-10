@@ -11,7 +11,7 @@ var styles = StyleSheet.create({
     },
     chart: {
         // position: 'absolute', top: 100, left: 16, bottom: 100,right: 100
-        position: 'absolute', top: 50, width: 325, height: 200, left: -150
+        position: 'absolute', top: 100, width: 320, height: 200, left: -150
     }
 });
 
@@ -34,22 +34,22 @@ class SimpleChart extends Component {
 
         return (
             <View style={styles.container}>
-                <RNChart style={styles.chart}
-                    chartData={[{
-        name:'LineChart',
-        lineWidth:2,
-        showDataPoint:false,
-        //data: [30, 1, 1, 2, 3, 5, 21, 13, 21, 34, 55, 30, 23, 54, 76, 21, 32]
-        data : this.props.yData
-    }]}
-                    // verticalGridStep="3"
-                    xAxisTitle={this.props.xAxisName}
-                    yAxisTitle={this.props.yAxisName}
-                    labelFontSize={20}
-                    xLabels={this.props.xData}>
-                </RNChart>
+            <RNChart style={styles.chart}
+            chartData={[{
+                name:'LineChart',
+                lineWidth:2,
+                showDataPoint:false,
+                //data: [30, 1, 1, 2, 3, 5, 21, 13, 21, 34, 55, 30, 23, 54, 76, 21, 32]
+                data : this.props.yData
+            }]}
+            // verticalGridStep="3"
+            xAxisTitle={this.props.xAxisName}
+            yAxisTitle={this.props.yAxisName}
+            labelFontSize={20}
+            xLabels={this.props.xData}>
+            </RNChart>
             </View>
-        );
+            );
     }
 }
 
