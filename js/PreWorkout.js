@@ -1,6 +1,9 @@
 'use strict';
 
 var React = require('react-native');
+//var ActivityOptions = require('./RunningOptionListView');
+var Geo = require('./Geolocation');
+
 var count = 0;
 var activityCount = 0;
 var {
@@ -51,12 +54,12 @@ onSubmitPressed: function(){
 
 onTabPressed: function(){
     console.log("Tab pressed....");
-    return (
-        <ListView
-        dataSource={this.state.dataSource}
-        renderRow={this.getActivityOptions}//{(rowData) => <Text>{rowData}</Text>}
-        style = {styles.listView}/> 
-    );
+    this.props.navigator.replace({
+            component: Geo,
+            componentConfig : {
+              title : "My New Title"
+            },
+          });  
 },
 
 getActivityOptions: function(){
@@ -142,7 +145,7 @@ var styles = StyleSheet.create({
   },
   separator: {
     height: 1,
-    backgroundColor: '#CCCCCC',
+    backgroundColor: '#dddddd',
   },
 });
 module.exports = ListViewSimpleExample;

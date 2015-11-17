@@ -2,18 +2,33 @@
 
 var React = require('react-native');
 var Geolocation = require('./Geolocation');
+
+exports.framework = 'React';
+exports.title = 'Geolocation';
+
 var {  
   StyleSheet,
   Text,
   TextInput,
   View,
   AsyncStorage,
-  TouchableHighlight
+  TouchableHighlight,
+  AlertIOS,
 } = React;
 
+var buttonDisabled = 0;
 var UserStats = React.createClass({
 
-	componentDidMount: function() {
+  
+  componentDidMount: function() {
+    console.log(navigator.geolocation+"Ateoiat");
+    navigator.geolocation.getCurrentPosition(
+      (success)=>{this.buttonDisabled=0;this.setState({buttonDisabled:'0'}); console.log("Geo Success")},
+      (error)=>{this.buttonDisabled=0;this.setState({buttonDisabled:'1'}); console.log("Geo Fail"+this.buttonDisabled)},
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000});
+
+    
+
     AsyncStorage.getItem("name").then((value) => {
       this.setState({"name": value});
     }).done();
@@ -32,6 +47,8 @@ var UserStats = React.createClass({
     AsyncStorage.getItem("age").then((value) => {
       this.setState({"age": value});
     }).done();
+
+    
   },
 
   getInitialState: function() {
@@ -49,14 +66,23 @@ var UserStats = React.createClass({
   },
 
   onSubmitPressed: function(){
-    this.props.navigator.replace({
-            //title : 'Gathering data...',
+    if(this.buttonDisabled === 0)
+    {
+      this.props.navigator.replace({
             component: Geolocation,
             componentConfig : {
               title : "My New Title"
             },
-            //passProps: {username: this.state.username, password: this.state.password},
-          });
+          });  
+    }
+    else
+    {
+      AlertIOS.alert(
+            "Enable your location services",
+            "The app needs location services to proceed.",
+          );
+    }
+    
   },
 
   render: function() {
@@ -66,18 +92,15 @@ var UserStats = React.createClass({
       <TextInput
       placeholder="Gender"
       onChange={(event) => this.setState({gender: event.nativeEvent.text})}
-      style={styles.formInput}
-      value={this.state.username} />
+      style={styles.formInput}/>
       <TextInput
       placeholder="Height"
       onChange={(event) => this.setState({height: event.nativeEvent.text})}
-      style={styles.formInput}
-      value={this.state.password} />
+      style={styles.formInput}/>
       <TextInput
       placeholder="Weight"
       onChange={(event) => this.setState({weight: event.nativeEvent.text})}
-      style={styles.formInput}
-      value={this.state.password} />
+      style={styles.formInput}/>
       <TextInput
       placeholder="Age"
       onChange={(event) => this.setState({age: event.nativeEvent.text})}
@@ -86,6 +109,7 @@ var UserStats = React.createClass({
       <TouchableHighlight onPress={(this.onSubmitPressed)} style={styles.button}>
       <Text style={styles.buttonText}>Submit</Text>
       </TouchableHighlight>
+      <Text>Please enable location services in-order to use the app.</Text>
       </View>
       </View>
       );

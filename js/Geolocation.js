@@ -1,7 +1,11 @@
 'use strict';
 
 var DrawGraphs = require('./DrawGraph');
+//var UserStats = require('./UserStats');
+var list = require('./ListView');
 var React = require('react-native');
+//var alert = require('react-native-alert');
+
 
 var {
   AsyncStorage,
@@ -9,6 +13,7 @@ var {
   Text,
   View,
   TouchableHighlight,
+  AlertIOS,
 } = React;
 
 var speedData = [];
@@ -48,7 +53,18 @@ var GeolocationExample = React.createClass({
   componentDidMount: function() {
     navigator.geolocation.getCurrentPosition(
       (initialPosition) => this.setState({initialPosition}),
-      (error) => alert(error.message),
+      //error,
+      (error) => { 
+        alert(error.message)},
+        //AlertIOS.alert(
+          //  error.message,
+           // null,
+           // [
+           //   {text: 'Ok', onPress: () => this.props.navigator.replace({component: list,
+           // })},
+           // ]
+          //)},
+        //alert('123', ['button', {text: 'alertButton', onPress: () => alert('ok')}])},
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
       );
     this.watchID = navigator.geolocation.watchPosition((lastPosition) => {
@@ -67,7 +83,7 @@ var GeolocationExample = React.createClass({
   
 
   getLocationData: function(coordinates) {
-    var speed = JSON.stringify(coordinates,['altitude']);
+    var speed = JSON.stringify(coordinates,['latitude']);
     var timeValue ;
     count = count +1;
     speed = (speed +'');
@@ -131,7 +147,7 @@ var GeolocationExample = React.createClass({
       return(
         <View style={styles.container}>
         <View>
-        <DrawGraphs {...this.props} xAxisName="time" yAxisName="elevation" xData={timeData} yData={speedData}/>
+        <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="elevation(in feet)" xData={timeData} yData={speedData}/>
         <TouchableHighlight onPress={(this.toggleView)} style={styles.button}>
         <Text style={styles.buttonText}>Restart</Text>
         </TouchableHighlight>
