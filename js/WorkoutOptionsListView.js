@@ -22,27 +22,43 @@ getInitialState: function() {
   };
 },
 
+saveData: function(key,value) {
+    AsyncStorage.setItem(key, value);
+    this.setState({key : value});
+},
+
+onTabPressed: function(rowID){
+    console.log("Tab pressed..");
+    this.props.navigator.pop();
+
+},
+
 getOptions: function(){
     var workoutOptions = ['Just Track Me','Set Target','Target Pace'];
     console.log("Options rendering....");    
     return (
-      <TouchableHighlight>
+      <TouchableHighlight onPress={(this.onTabPressed.bind(this,workoutCount))}>
       <View style={styles.container}>
       
       <View style={styles.rightContainer}>
-      <Text style={styles.title}>{workoutOptions[workoutCount++]}</Text>
       <View style={styles.separator} />
-      </View>
+      <Text style={styles.title}>{workoutOptions[workoutCount++]}</Text>
+      
       </View>
       
+      </View>
       </TouchableHighlight>
       );
     
 },
 
 render: function() {
+    console.log("Workout Options:");
+    if(workoutCount!=0)
+      workoutCount=0;
     return (
         <ListView
+        //automaticallyAdjustContentInsets={false}
         dataSource={this.state.dataSource}
         renderRow={this.getOptions}//{(rowData) => <Text>{rowData}</Text>}
         style = {styles.listView}/>             
@@ -63,7 +79,7 @@ var styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         backgroundColor: '#F5FCFF',
         height: 50,
     },
@@ -75,7 +91,7 @@ var styles = StyleSheet.create({
     bottomContainer:{
         flex:1,
         justifyContent: 'flex-end',
-        marginBottom:100,
+        marginBottom:200,
     },
     title: {
         fontSize: 20,
@@ -86,14 +102,14 @@ var styles = StyleSheet.create({
         textAlign: 'center',
     },
     button: {
-    height: 40,
-    flex: 1,
-    backgroundColor: "#555555",
-    borderColor: "#555555",
-    borderWidth: 1,
-    borderRadius: 8,
-    marginTop: 10,
-    justifyContent: "center"
+        height: 40,
+        flex: 1,
+        backgroundColor: "#555555",
+        borderColor: "#555555",
+        borderWidth: 1,
+        borderRadius: 8,
+        marginTop: 10,
+        justifyContent: "center"
   },
   buttonText: {
     fontSize: 18,
@@ -103,6 +119,7 @@ var styles = StyleSheet.create({
   separator: {
     height: 1,
     backgroundColor: '#dddddd',
+    alignSelf: 'flex-end'
   },
 
 });

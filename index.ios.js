@@ -9,10 +9,10 @@
  var Geolocation = require('./js/Geolocation');
  var MapView = require('./js/Mapview');
  var UserStats = require('./js/UserStats');
- var Login = require('./js/LoginView');
  var PreWorkout = require('./js/PreWorkout');
- var Try = require('./js/trying');
-//var Navigat = require('./js/navigator');
+ var WorkoutOptions = require('./js/WorkoutOptionsListView');
+ var ActivityOptions = require('./js/ActivityOptionListView');
+
 
 var {  
   AppRegistry,
@@ -31,7 +31,7 @@ var Healthmonitor = React.createClass({
       style={styles.navigationContainer}
       initialRoute={{
         title: "Fujikon",
-        component: List,
+        component: PreWorkout,
       }} />
       );
   }

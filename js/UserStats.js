@@ -2,6 +2,7 @@
 
 var React = require('react-native');
 var Geolocation = require('./Geolocation');
+var PreWorkout = require('./PreWorkout');
 
 exports.framework = 'React';
 exports.title = 'Geolocation';
@@ -68,8 +69,8 @@ var UserStats = React.createClass({
   onSubmitPressed: function(){
     if(this.buttonDisabled === 0)
     {
-      this.props.navigator.replace({
-            component: Geolocation,
+      this.props.navigator.push({
+            component: PreWorkout,
             componentConfig : {
               title : "My New Title"
             },

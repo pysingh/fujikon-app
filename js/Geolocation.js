@@ -2,7 +2,6 @@
 
 var DrawGraphs = require('./DrawGraph');
 //var UserStats = require('./UserStats');
-var list = require('./ListView');
 var React = require('react-native');
 //var alert = require('react-native-alert');
 
@@ -83,7 +82,7 @@ var GeolocationExample = React.createClass({
   
 
   getLocationData: function(coordinates) {
-    var speed = JSON.stringify(coordinates,['latitude']);
+    var speed = JSON.stringify(coordinates,['altitude']);
     var timeValue ;
     count = count +1;
     speed = (speed +'');
