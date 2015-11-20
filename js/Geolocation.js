@@ -13,6 +13,7 @@ var {
   View,
   TouchableHighlight,
   AlertIOS,
+  ScrollView,
 } = React;
 
 var speedData = [];
@@ -141,9 +142,11 @@ var GeolocationExample = React.createClass({
 
         </View>
         </View>
+        
         );
     else
       return(
+      
         <View style={styles.container}>
         <View>
         <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="elevation(in feet)" xData={timeData} yData={speedData}/>
@@ -160,11 +163,18 @@ var styles = StyleSheet.create({
   title: {
     fontWeight: '500',
   },
+  scrollView: {
+    //backgroundColor: '#6A85B1',
+    //height: 300,
+    //alignItems:'center'
+
+  },
   container: {
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+
   },
   changeButton: {
     alignSelf: 'center',

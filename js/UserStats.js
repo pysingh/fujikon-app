@@ -16,6 +16,7 @@ var {
   TouchableHighlight,
   AlertIOS,
   PickerIOS,
+  ScrollView
 } = React;
 
 var buttonDisabled = 0;
@@ -86,6 +87,11 @@ var UserStats = React.createClass({
 
   render: function() {
     return (
+      <ScrollView
+        automaticallyAdjustContentInsets={false}
+        onScroll={() => { console.log('onScroll!'); }}
+        scrollEventThrottle={200}
+        style={styles.scrollView}>
       <View>
       <View style={styles.container}>
       <TextInput
@@ -111,6 +117,7 @@ var UserStats = React.createClass({
       <Text>Please enable location services in-order to use the app.</Text>
       </View>
       </View>
+      </ScrollView>
       );
   },
 });
@@ -121,19 +128,24 @@ var styles = StyleSheet.create({
     marginTop: 65,
     alignItems: "stretch"
   },
+  scrollView: {
+    //backgroundColor: '#6A85B1',
+    height: 300,
+
+  },
   title: {
     fontSize: 18,
     marginBottom: 10
   },
   formInput: {
-    height: 36,
+    height: 40,
     padding: 10,
     marginRight: 5,
     marginBottom: 5,
     marginTop: 5,
     flex: 1,
-    fontSize: 18,
-    borderWidth: 1,
+    fontSize: 18
+,    borderWidth: 1,
     borderColor: "#555555",
     borderRadius: 8,
     color: "#555555"
