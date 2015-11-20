@@ -31,7 +31,7 @@ var Healthmonitor = React.createClass({
       style={styles.navigationContainer}
       initialRoute={{
         title: "Fujikon",
-        component: PreWorkout,
+        component: UserStats,
       }} />
       );
   }

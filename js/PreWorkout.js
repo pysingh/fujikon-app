@@ -108,8 +108,8 @@ getActivityOptions: function(){
     console.log("Options rendering....");    
     return (
       <TouchableHighlight onPress={this.props.onTabPressed}>
-      <View style={styles.container}>
-      <View style={styles.rightContainer}>
+      <View>
+      <View>
       <Text style={styles.title}>{activityOptions[activityCount++]}</Text>
       </View>
       <View style={styles.separator} />
@@ -125,11 +125,11 @@ render: function() {
     if(count!=0)
       count=0;
     return (
-        <View>
+        <View style ={styles.screenContainer}>
         <View style = {styles.container}>
         <ListView
-        contentInset={{top:49}}
-        automaticallyAdjustContentInsets={false}
+        //contentInset={{top:49}}
+        //automaticallyAdjustContentInsets={false}
         dataSource={this.state.dataSource}
         renderRow={this.getOptions}//{(rowData) => <Text>{rowData}</Text>}
         style = {styles.listView}/>             
@@ -150,7 +150,10 @@ var styles = StyleSheet.create({
     listView: {
         paddingTop: 20,
         backgroundColor: '#F5FCFF',
-        height:200,
+        height:150,
+    },
+    screenContainer:{
+        paddingTop:50,
     },
     container: {
         flex: 1,

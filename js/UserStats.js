@@ -15,6 +15,7 @@ var {
   AsyncStorage,
   TouchableHighlight,
   AlertIOS,
+  PickerIOS,
 } = React;
 
 var buttonDisabled = 0;
@@ -69,11 +70,8 @@ var UserStats = React.createClass({
   onSubmitPressed: function(){
     if(this.buttonDisabled === 0)
     {
-      this.props.navigator.push({
+      this.props.navigator.replace({
             component: PreWorkout,
-            componentConfig : {
-              title : "My New Title"
-            },
           });  
     }
     else
