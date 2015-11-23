@@ -4,10 +4,14 @@ var React = require('react-native');
 var ActivityOptions = require('./ActivityOptionListView');
 var WorkoutOptions = require('./WorkoutOptionsListView');
 var Geo = require('./Geolocation');
+var Workout = require('./Workout');
 
 var count = 0;
 var listOptions = ['Activity','Workout'];
 var activityName = "Running";
+var workoutName = "Just Track Me";
+var subTitle=[activityName,workoutName];
+
 
 var {
   Image,
@@ -43,11 +47,16 @@ componentDidMount: function(){
 },
 
 componentWillMount:function(){
-  console.log("Mounting...");
+  console.log("Mounting..."+subTitle);
   AsyncStorage.getItem("selectedActivity").then((value) => {
       console.log("Async value "+value);
       activityName = value;
       this.setState({"selectedActivity": value});
+    }).done();
+  AsyncStorage.getItem("selectedWorkout").then((value) => {
+      console.log("Async value "+value);
+      workoutName=value;
+      this.setState({"selectedWorkout": value});
     }).done();
   //activityName = this.state.selectedActivity;
 },
@@ -60,8 +69,8 @@ getOptions: function(){
       <TouchableHighlight onPress={(this.onTabPressed.bind(this,count))}>
       <View style={styles.container}>
       <View style={styles.rightContainer}>
-      <Text style={styles.title}>{listOptions[count++]}</Text>
-      <Text style={styles.year}>{activityName}</Text>
+      <Text style={styles.title}>{listOptions[count]}</Text>
+      <Text style={styles.year}>{subTitle[count++]}</Text>
       </View>
       <View style={styles.separator} />
       </View>
@@ -71,7 +80,7 @@ getOptions: function(){
 },
 onStartPressed: function(){
     console.log("Start pressed....");
-    this.props.navigator.replace({
+    this.props.navigator.push({
             component: Geo,
             componentConfig : {
               title : "My New Title"
@@ -101,22 +110,6 @@ onTabPressed: function(rowID){
     }
 
       
-},
-
-getActivityOptions: function(){
-    var activityOptions = ['Running','Walking','Cycling','Treadmil'];
-    console.log("Options rendering....");    
-    return (
-      <TouchableHighlight onPress={this.props.onTabPressed}>
-      <View>
-      <View>
-      <Text style={styles.title}>{activityOptions[activityCount++]}</Text>
-      </View>
-      <View style={styles.separator} />
-      </View>
-      </TouchableHighlight>
-      );
-    
 },
 
 render: function() {

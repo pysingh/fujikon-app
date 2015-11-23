@@ -1,16 +1,18 @@
 'use strict';
 
 var React = require('react-native');
+var TargetOptions = require('./TargetOptions');
 var {
   ListView,
   TouchableHighlight,
   StyleSheet,
   Text,
+  AsyncStorage,
   View,
 } = React;
 
 var workoutCount = 0;
-
+var workoutOptions = ['Just Track Me','Set Target','Target Pace'];
 var WorkoutOptionsListView = React.createClass({
 
 getInitialState: function() {
@@ -21,6 +23,12 @@ getInitialState: function() {
 
   };
 },
+componentDidMount: function() {
+    AsyncStorage.getItem("selectedWorkout").then((value) => {
+      console.log("Async value "+value);
+      this.setState({"selectedWorkout": value});
+    }).done();
+},
 
 saveData: function(key,value) {
     AsyncStorage.setItem(key, value);
@@ -29,12 +37,17 @@ saveData: function(key,value) {
 
 onTabPressed: function(rowID){
     console.log("Tab pressed..");
+    this.saveData("selectedWorkout",workoutOptions[rowID]);
+    if(rowID==1)
+      this.props.navigator.push({
+        component : TargetOptions,
+        });
     this.props.navigator.pop();
 
 },
 
 getOptions: function(){
-    var workoutOptions = ['Just Track Me','Set Target','Target Pace'];
+    
     console.log("Options rendering....");    
     return (
       <TouchableHighlight onPress={(this.onTabPressed.bind(this,workoutCount))}>

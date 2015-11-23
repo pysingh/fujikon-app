@@ -15,7 +15,6 @@ var {
   AsyncStorage,
   TouchableHighlight,
   AlertIOS,
-  PickerIOS,
 } = React;
 
 var buttonDisabled = 0;
@@ -23,7 +22,6 @@ var UserStats = React.createClass({
 
   
   componentDidMount: function() {
-    console.log(navigator.geolocation+"Ateoiat");
     navigator.geolocation.getCurrentPosition(
       (success)=>{this.buttonDisabled=0;this.setState({buttonDisabled:'0'}); console.log("Geo Success")},
       (error)=>{this.buttonDisabled=0;this.setState({buttonDisabled:'1'}); console.log("Geo Fail"+this.buttonDisabled)},
@@ -59,6 +57,9 @@ var UserStats = React.createClass({
       height :'',
       weight :'',
       age :'',
+      genderOptions :[{id:0,value:'Male'},{id:1,value:'Female'}],
+      currentGender : 0,
+
     };
   },
 
@@ -121,10 +122,6 @@ var styles = StyleSheet.create({
     marginTop: 65,
     alignItems: "stretch"
   },
-  title: {
-    fontSize: 18,
-    marginBottom: 10
-  },
   formInput: {
     height: 36,
     padding: 10,
@@ -153,6 +150,14 @@ var styles = StyleSheet.create({
     color: "#ffffff",
     alignSelf: "center"
   },
+  item:{
+    flex : 1,
+    height: 180,
+  },
+  picker:{
+    flex:1,
+    height : 36,
+  }
 });
 
 module.exports = UserStats;

@@ -11,7 +11,16 @@ var styles = StyleSheet.create({
     },
     chart: {
         // position: 'absolute', top: 100, left: 16, bottom: 100,right: 100
-        position: 'absolute', top: 100, width: 320, height: 200, left: -150
+        position: 'absolute', 
+        //top: 80, 
+        //width: 300, 
+        height: 200, 
+        left: -150,
+        right: -150,
+        marginRight: 30,
+        marginBottom: 20,
+        marginTop: 10,
+        marginLeft: 5,
     }
 });
 
@@ -45,7 +54,7 @@ class SimpleChart extends Component {
             // verticalGridStep="3"
             xAxisTitle={this.props.xAxisName}
             yAxisTitle={this.props.yAxisName}
-            labelFontSize={20}
+            labelFontSize={15}
             xLabels={this.props.xData}>
             </RNChart>
             </View>
