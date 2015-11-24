@@ -14,6 +14,7 @@ var {
   View,
   TouchableHighlight,
   AlertIOS,
+  ScrollView,
 } = React;
 
 var speedData = [];
@@ -141,6 +142,7 @@ var GeolocationExample = React.createClass({
           </TouchableHighlight>
           <Text style={styles.labelText}>The location data is being taken. {'\n'}Altitude Value :{this.getLocationData(this.state.lastPosition.coords)}</Text>
         </View>
+        
         );
     else
       return(
@@ -149,17 +151,11 @@ var GeolocationExample = React.createClass({
           <Text style={styles.bigTitle}>Summary</Text>
           <Text style={styles.title}>Activity : {activity}</Text>
           <Text style={styles.title}>Workout : {workout}</Text>
-          
           <TouchableHighlight onPress={(this.toggleView)} style={styles.button}>
           <Text style={styles.buttonText}>Workout Again</Text>
           </TouchableHighlight>
           <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="elevation(in feet)" xData={timeData} yData={speedData}/>
-          
           </View>
-          
-          
-          
-          
         </View>
         );
   }
@@ -176,6 +172,12 @@ var styles = StyleSheet.create({
   },
   wholeScreen:{
     backgroundColor: '#F5FCFF',
+  },
+  scrollView: {
+    //backgroundColor: '#6A85B1',
+    //height: 300,
+    //alignItems:'center'
+
   },
   container: {
     flex: 2,

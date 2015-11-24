@@ -114,7 +114,9 @@ var Workout = React.createClass({
  		this.saveData("timeData",timeData);
  		this.saveData("pointCounts",pointCounts);
  		this.props.navigator.replace({
-            component: Summary,
+            component: Summary,marginRight: 5,
+    marginBottom: 5,
+    marginTop: 5,
             componentConfig : {
               title : "My New Title"
             },
@@ -131,7 +133,6 @@ var Workout = React.createClass({
 				<View style={styles.container}>
 				<Text>Time:</Text>
 				<Text>------------------------------</Text>
-				
 				<Text>Target : {target}</Text>
    				</View>
    				<TouchableHighlight onPress={(this.onStopPressed)} style={styles.button}>
@@ -150,6 +151,7 @@ var Workout = React.createClass({
 var styles = StyleSheet.create({
    wholeScreen:{
    		alignItems:'center',
+   		
 
    },
      container: {
