@@ -131,29 +131,32 @@ var GeolocationExample = React.createClass({
     console.log("SpeedData->"+speedData+" TimeData"+timeData+" Count"+count);
     if(flagValue == 0)
       return (
-        <View>
+        <View style={styles.wholeScreen}>
           <View style={styles.container}>
           <Text style={styles.title}>Time: </Text>
           <Text>------------------------------</Text>
           <Text style={styles.title}>Target : {target}</Text>
+          
           </View>
-          <TouchableHighlight onPress={(this.toggleView)} style={styles.button}>
+          <TouchableHighlight onPress={(this.toggleView)} underlayColor="#EEEEEE" style={styles.button}>
           <Text style={styles.buttonText}>Plot the graph</Text>
           </TouchableHighlight>
-          <Text style={styles.labelText}>The location data is being taken. {'\n'}Altitude Value :{this.getLocationData(this.state.lastPosition.coords)}</Text>
+          <Text style={styles.instructionFont}>The location data is being taken. {'\n'}Altitude Value :{this.getLocationData(this.state.lastPosition.coords)}</Text>
         </View>
         
         );
     else
       return(
-        <View style={styles.wholeScreen}>
+        <View>
           <View style={styles.graphContainer}>
           <Text style={styles.bigTitle}>Summary</Text>
           <Text style={styles.title}>Activity : {activity}</Text>
           <Text style={styles.title}>Workout : {workout}</Text>
+          <View style={styles.buttonContainer}>
           <TouchableHighlight onPress={(this.toggleView)} style={styles.button}>
           <Text style={styles.buttonText}>Workout Again</Text>
           </TouchableHighlight>
+          </View>
           <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="elevation(in feet)" xData={timeData} yData={speedData}/>
           </View>
         </View>
@@ -167,11 +170,17 @@ var styles = StyleSheet.create({
     fontSize: 30,
   },
   title: {
-    fontWeight: '100',
+    fontWeight: '500',
     fontSize : 18,
   },
   wholeScreen:{
-    backgroundColor: '#F5FCFF',
+    //backgroundColor: '#F5FCFF',
+    flex :1,
+    alignItems:'stretch',
+    justifyContent:'center',
+    marginTop: 70,
+    marginBottom:20,
+    //flexDirection: 'row',
   },
   scrollView: {
     //backgroundColor: '#6A85B1',
@@ -179,19 +188,28 @@ var styles = StyleSheet.create({
     //alignItems:'center'
 
   },
+  buttonContainer:{
+    alignItems:'stretch',
+    flex:1,
+    //justifyContent:'center',
+    marginTop:10,
+  },
   container: {
-    flex: 2,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    marginTop: 70,
-    height : 250,
+
+    //backgroundColor: '#F5FCFF',
+    
+    //height : 300,
+    //marginTop:10,
+    //marginBottom:10,
   },
   graphContainer:{
-    flex: 2,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    //backgroundColor: '#F5FCFF',
     marginTop:70,
   },
   changeButton: {
@@ -202,25 +220,28 @@ var styles = StyleSheet.create({
     borderColor: '#777777',
   },
   button: {
-        height: 40,
-        flex: 1,
-        backgroundColor: "#555555",
-        borderColor: "#555555",
-        borderWidth: 1,
-        borderRadius: 8,
-        marginTop: 10,
-        justifyContent: "center"
-   },
+    height: 40,
+    //flex: 1,
+    backgroundColor: "#FCB130",
+    borderColor: "#555555",
+    //borderWidth: 1,
+    borderRadius: 8,
+    //marginTop: 10,
+    marginRight: 15,
+    marginLeft: 15,
+    justifyContent: "center",
+  },
    buttonText: {
     fontSize: 18,
     color: "#ffffff",
-    alignSelf: "center"
+    alignSelf: "center",
+
    },
-   labelText: {
-    fontSize: 18,
-    //color: "#ffffff",
-    alignSelf: "center"
-   },
+   instructionFont:{
+    color: "#7C7C7C",
+    fontSize:18,
+    alignSelf:"center",
+  },
 });
 
 module.exports = GeolocationExample;

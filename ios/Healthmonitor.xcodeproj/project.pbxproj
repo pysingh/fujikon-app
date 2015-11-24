@@ -603,7 +603,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3f0adb9e-b1cd-4ec1-be5b-95934a8c5f06";
+				PROVISIONING_PROFILE = "2fa518cd-b8bb-478a-8a59-305eab0a6dc4";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Healthmonitor.app/Healthmonitor";
 			};
 			name = Debug;
@@ -621,7 +621,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3f0adb9e-b1cd-4ec1-be5b-95934a8c5f06";
+				PROVISIONING_PROFILE = "2fa518cd-b8bb-478a-8a59-305eab0a6dc4";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Healthmonitor.app/Healthmonitor";
 			};
 			name = Release;
@@ -642,7 +642,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Healthmonitor;
-				PROVISIONING_PROFILE = "3f0adb9e-b1cd-4ec1-be5b-95934a8c5f06";
+				PROVISIONING_PROFILE = "2fa518cd-b8bb-478a-8a59-305eab0a6dc4";
 			};
 			name = Debug;
 		};
@@ -661,7 +661,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Healthmonitor;
-				PROVISIONING_PROFILE = "3f0adb9e-b1cd-4ec1-be5b-95934a8c5f06";
+				PROVISIONING_PROFILE = "2fa518cd-b8bb-478a-8a59-305eab0a6dc4";
 			};
 			name = Release;
 		};
@@ -708,7 +708,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "3f0adb9e-b1cd-4ec1-be5b-95934a8c5f06";
+				PROVISIONING_PROFILE = "2fa518cd-b8bb-478a-8a59-305eab0a6dc4";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -749,7 +749,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "3f0adb9e-b1cd-4ec1-be5b-95934a8c5f06";
+				PROVISIONING_PROFILE = "2fa518cd-b8bb-478a-8a59-305eab0a6dc4";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

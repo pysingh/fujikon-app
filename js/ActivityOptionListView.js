@@ -37,12 +37,10 @@ getOptions: function(){
     //console.log("Activity Options Rendering..");
      
     return (
-      <TouchableHighlight onPress={(this.onTabPressed.bind(this,activityCount))}>
-      <View style={styles.container}>
+      <TouchableHighlight onPress={(this.onTabPressed.bind(this,activityCount))} underlayColor="#EEEEEE">
       <View style={styles.rightContainer}>
-      <View style={styles.separator} />
       <Text style={styles.title}>{activityOptions[activityCount++]}</Text>
-      </View>
+      <View style={styles.separator} />
       </View>
       </TouchableHighlight>
       );
@@ -81,8 +79,8 @@ render: function() {
 
 var styles = StyleSheet.create({
   listView: {
-        paddingTop: 15,
-        backgroundColor: '#F5FCFF',
+        paddingTop: 30,
+        //backgroundColor: '#F5FCFF',
         height:100,
     },
     
@@ -96,7 +94,11 @@ var styles = StyleSheet.create({
     },
     rightContainer: {
         flex: 1,
+        flexDirection: 'row',
         justifyContent: 'center',
+        alignItems: 'center',
+        height:60,
+        //backgroundColor: '#F5FCFF',
         //textAlign: 'center',
     },
     bottomContainer:{
@@ -106,31 +108,12 @@ var styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        marginBottom: 8,
         textAlign: 'center',
     },
-    year: {
-        textAlign: 'center',
-    },
-    button: {
-        height: 40,
-        flex: 1,
-        backgroundColor: "#555555",
-        borderColor: "#555555",
-        borderWidth: 1,
-        borderRadius: 8,
-        marginTop: 10,
-        justifyContent: "center"
-  },
-  buttonText: {
-    fontSize: 18,
-    color: "#ffffff",
-    alignSelf: "center"
-  },
-  separator: {
-    height: 1,
-    backgroundColor: '#dddddd',
-    alignSelf: 'flex-end'
+    separator: {
+        height: 1,
+        backgroundColor: '#dddddd',
+        alignSelf: 'flex-end'
   },
 
 });

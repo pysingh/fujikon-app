@@ -113,10 +113,10 @@ var UserStats = React.createClass({
       onChange={(event) => this.setState({age: event.nativeEvent.text})}
       style={styles.formInput}
       value={this.state.password} />
-      <TouchableHighlight onPress={(this.onSubmitPressed)} style={styles.button}>
+      <TouchableHighlight onPress={(this.onSubmitPressed)} underlayColor="#EEEEEE" style={styles.button}>
       <Text style={styles.buttonText}>Submit</Text>
       </TouchableHighlight>
-      <Text>Please enable location services in-order to use the app.</Text>
+      <Text style={styles.instructionFont}>Please enable location services in-order to use the app.</Text>
       </View>
       </View>
       </ScrollView>
@@ -146,8 +146,8 @@ var styles = StyleSheet.create({
     marginBottom: 5,
     marginTop: 5,
     flex: 1,
-    fontSize: 18
-,    borderWidth: 1,
+    fontSize: 18,
+    borderWidth: 1,
     borderColor: "#555555",
     borderRadius: 8,
     color: "#555555"
@@ -155,17 +155,21 @@ var styles = StyleSheet.create({
   button: {
     height: 36,
     flex: 1,
-    backgroundColor: "#555555",
+    backgroundColor: "#FCB130",
     borderColor: "#555555",
-    borderWidth: 1,
+    //borderWidth: 1,
     borderRadius: 8,
     marginTop: 10,
     justifyContent: "center"
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 20,
+    fontWeight:"500",
     color: "#ffffff",
     alignSelf: "center"
+  },
+  instructionFont:{
+    color: "#7C7C7C",
   },
   item:{
     flex : 1,

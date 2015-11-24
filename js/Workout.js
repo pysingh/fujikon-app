@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react-native');
-var TimerMixin = require('react-timer-mixin');
+//var TimerMixin = require('react-timer-mixin');
 var Summary = require('./Summary');
 
 var {  
@@ -24,7 +24,7 @@ var pointCounts = 0;
 
 var Workout = React.createClass({
 
-	mixins: [TimerMixin],
+	//mixins: [TimerMixin],
 	watchID: (null: ?number),
 
 	getInitialState: function() {

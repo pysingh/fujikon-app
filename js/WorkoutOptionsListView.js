@@ -50,14 +50,14 @@ getOptions: function(){
     
     console.log("Options rendering....");    
     return (
-      <TouchableHighlight onPress={(this.onTabPressed.bind(this,workoutCount))}>
-      <View style={styles.container}>
+      <TouchableHighlight onPress={(this.onTabPressed.bind(this,workoutCount))} underlayColor="#EEEEEE">
+      
       
       <View style={styles.rightContainer}>
       <View style={styles.separator} />
       <Text style={styles.title}>{workoutOptions[workoutCount++]}</Text>
       
-      </View>
+      
       
       </View>
       </TouchableHighlight>
@@ -83,8 +83,8 @@ render: function() {
 
 var styles = StyleSheet.create({
 	listView: {
-        paddingTop: 15,
-        backgroundColor: '#F5FCFF',
+        paddingTop: 30,
+        //backgroundColor: '#F5FCFF',
         height:100,
     },
     
@@ -99,6 +99,7 @@ var styles = StyleSheet.create({
     rightContainer: {
         flex: 1,
         justifyContent: 'center',
+        height: 60,
         //textAlign: 'center',
     },
     bottomContainer:{
@@ -108,7 +109,7 @@ var styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        marginBottom: 8,
+        //marginBottom: 8,
         textAlign: 'center',
     },
     year: {

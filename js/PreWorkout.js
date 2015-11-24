@@ -66,15 +66,18 @@ getOptions: function(){
     //activityName = this.state.selectedActivity;
     console.log("Get Options called.."+activityName);
     return (
-      <TouchableHighlight onPress={(this.onTabPressed.bind(this,count))}>
+      
+      <TouchableHighlight onPress={(this.onTabPressed.bind(this,count))} underlayColor="#EEEEEE">
       <View style={styles.container}>
       <View style={styles.rightContainer}>
       <Text style={styles.title}>{listOptions[count]}</Text>
       <Text style={styles.year}>{subTitle[count++]}</Text>
-      </View>
       <View style={styles.separator} />
       </View>
+      </View>
+      
       </TouchableHighlight>
+
       );
     count++;
 },
@@ -128,7 +131,7 @@ render: function() {
         style = {styles.listView}/>             
         </View>
         <View style={styles.bottomContainer}>
-            <TouchableHighlight onPress={(this.onStartPressed)} style={styles.button}>
+            <TouchableHighlight onPress={(this.onStartPressed)} underlayColor="#EEEEEE" style={styles.button}>
             <Text style={styles.buttonText}>Start</Text>
             </TouchableHighlight>
         </View>
@@ -141,9 +144,9 @@ render: function() {
 
 var styles = StyleSheet.create({
     listView: {
-        paddingTop: 20,
-        backgroundColor: '#F5FCFF',
-        height:150,
+        paddingTop: 30,
+        //backgroundColor: '#F5FCFF',
+        height:200,
     },
     screenContainer:{
         paddingTop:50,
@@ -153,10 +156,13 @@ var styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        backgroundColor: '#F5FCFF',
+        //backgroundColor: '#F5FCFF',
     },
     rightContainer: {
         flex: 1,
+        height: 70,
+        alignItems : 'center',
+        justifyContent: 'center',
     },
     bottomContainer:{
         flex:1,
@@ -165,21 +171,23 @@ var styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
-        marginBottom: 8,
+        marginBottom: 6,
         textAlign: 'center',
     },
     year: {
         textAlign: 'center',
     },
     button: {
-    height: 40,
-    flex: 1,
-    backgroundColor: "#555555",
-    borderColor: "#555555",
-    borderWidth: 1,
+        height: 40,
+        flex: 1,
+        backgroundColor: "#FCB130",
+        borderColor: "#555555",
+    //borderWidth: 1,
     borderRadius: 8,
     marginTop: 10,
-    justifyContent: "center"
+    marginRight: 15,
+    marginLeft: 15,
+    justifyContent: "center",
   },
   buttonText: {
     fontSize: 18,
@@ -188,7 +196,7 @@ var styles = StyleSheet.create({
   },
   separator: {
     height: 1,
-    backgroundColor: '#dddddd',
+    backgroundColor: '#555555',
   },
 });
 module.exports = ListViewSimpleExample;
