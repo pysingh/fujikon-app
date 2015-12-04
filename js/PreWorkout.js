@@ -1,6 +1,8 @@
 'use strict';
 
 var React = require('react-native');
+var { SMBLEManager } = require('NativeModules');
+
 var ActivityOptions = require('./ActivityOptionListView');
 var WorkoutOptions = require('./WorkoutOptionsListView');
 var Geo = require('./Geolocation');
@@ -21,6 +23,7 @@ var {
   AsyncStorage,
   Text,
   View,
+  NativeAppEventEmitter,
 } = React;
 
 var ListViewSimpleExample = React.createClass({
@@ -82,7 +85,11 @@ getOptions: function(){
     count++;
 },
 onStartPressed: function(){
-    console.log("Start pressed....");
+    SMBLEManager.initParameters("180D","2A37");
+    
+    
+
+
     this.props.navigator.push({
             component: Geo,
             componentConfig : {

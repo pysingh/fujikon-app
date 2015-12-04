@@ -15,6 +15,7 @@ var {
   TouchableHighlight,
   AlertIOS,
   ScrollView,
+  NativeAppEventEmitter
 } = React;
 
 var speedData = [];
@@ -50,10 +51,17 @@ var GeolocationExample = React.createClass({
       initialPosition: 'unknown',
       lastPosition: 'unknown',
       initialSpeed : 'unknown',
+      BLEData : 0,
     };
   },
 
   componentDidMount: function() {
+    NativeAppEventEmitter.addListener("receivedBLEData", (data) => { 
+        
+        console.log("app event emitter: receivedBLEData:", data.value)
+        this.setState({BLEData : data.value});
+        });
+
     navigator.geolocation.getCurrentPosition(
       (initialPosition) => this.setState({initialPosition}),
       (error) => { 
@@ -80,6 +88,8 @@ var GeolocationExample = React.createClass({
       workout=value;
       this.setState({"selectedWorkout": value});
     }).done();
+
+
 
   },
 
@@ -136,6 +146,9 @@ var GeolocationExample = React.createClass({
           <Text style={styles.title}>Time: </Text>
           <Text>------------------------------</Text>
           <Text style={styles.title}>Target : {target}</Text>
+          <Text>------------------------------</Text>
+          <Text style={styles.title}>HeartBeat : {this.state.BLEData}</Text>
+
           
           </View>
           <TouchableHighlight onPress={(this.toggleView)} underlayColor="#EEEEEE" style={styles.button}>
