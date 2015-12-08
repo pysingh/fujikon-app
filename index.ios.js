@@ -2,18 +2,11 @@
  * Sample React Native App
  * https://github.com/facebook/react-native
  */
- 'use strict';
+'use strict';
 
- var React = require('react-native');
- var DrawGraphs = require('./js/DrawGraph');
- var Geolocation = require('./js/Geolocation');
- var MapView = require('./js/Mapview');
- var UserStats = require('./js/UserStats');
- var PreWorkout = require('./js/PreWorkout');
- var WorkoutOptions = require('./js/WorkoutOptionsListView');
- var ActivityOptions = require('./js/ActivityOptionListView');
-
-
+var React = require('react-native');
+var UserStats = require('./js/UserStats');
+ 
 var {  
   AppRegistry,
   StyleSheet,

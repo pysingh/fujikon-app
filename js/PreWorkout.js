@@ -6,7 +6,7 @@ var { SMBLEManager } = require('NativeModules');
 var ActivityOptions = require('./ActivityOptionListView');
 var WorkoutOptions = require('./WorkoutOptionsListView');
 var Geo = require('./Geolocation');
-var Workout = require('./Workout');
+
 
 var count = 0;
 var listOptions = ['Activity','Workout'];
@@ -89,13 +89,15 @@ onStartPressed: function(){
     
     
 
+    var Workout = require('./Workout');
 
-    this.props.navigator.push({
-            component: Geo,
+    this.props.navigator.replace({
+            component: Workout,
             componentConfig : {
               title : "My New Title"
             },
-          });
+          });  
+  
 },
 
 onTabPressed: function(rowID){

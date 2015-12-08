@@ -3,6 +3,8 @@
 var React = require('react-native');
 //var TimerMixin = require('react-timer-mixin');
 var Summary = require('./Summary');
+var PreWorkout = require('./PreWorkout');
+
 
 var {  
   StyleSheet,
@@ -14,6 +16,7 @@ var {
   PickerIOS,
   AsyncStorage,
   AlertIOS,
+  NativeAppEventEmitter,
 } = React;
 
 var target = "Running";
@@ -32,26 +35,26 @@ var Workout = React.createClass({
       initialPosition: 'unknown',
       lastPosition: 'unknown',
       initialSpeed : 'unknown',
+      hour:0,
+      min : 0,
+      sec : 0,
+      speedData :[],
+      timeData:[],
     };
   	},
 
 	componentDidMount: function() {
+    NativeAppEventEmitter.addListener("receivedBLEData", (data) => { 
+        
+        console.log("app event emitter: receivedBLEData:", data.value)
+        this.setState({BLEData : data.value});
+        });
+
+
 		AsyncStorage.getItem("targetWorkoutOption").then((value) => {
       	console.log("Target value.."+value);
       	target = value;
       	this.setState({"targetWorkoutOption": value});
-    	}).done();
-
-    	AsyncStorage.getItem("speedData").then((value) => {
-      	console.log("Speed value.."+value);
-      	target = value;
-      	this.setState({"speeData": value});
-    	}).done();
-
-    	AsyncStorage.getItem("timeData").then((value) => {
-      	console.log("Time value.."+value);
-      	target = value;
-      	this.setState({"TimeData": value});
     	}).done();
 
     	AsyncStorage.getItem("pointCounts").then((value) => {
@@ -94,7 +97,7 @@ var Workout = React.createClass({
       return speedInFloat; 
     }
     else
-      return 0.000;
+      return 0.000; 
     },
 
  	_displayTime: function(val){
@@ -110,16 +113,9 @@ var Workout = React.createClass({
   },
 
  	onStopPressed: function(){
- 		this.saveData("speedData",speedData);
- 		this.saveData("timeData",timeData);
- 		this.saveData("pointCounts",pointCounts);
- 		this.props.navigator.replace({
-            component: Summary,marginRight: 5,
-    marginBottom: 5,
-    marginTop: 5,
-            componentConfig : {
-              title : "My New Title"
-            },
+ 	  this.props.navigator.replace({
+            component: Summary,
+            passProps:{speed : speedData,timeData : timeData},
           }
  			);
  	},
@@ -128,19 +124,21 @@ var Workout = React.createClass({
 		//console.log("Reaching...");
 		console.log("SpeedData->"+speedData+" TimeData"+timeData+" pointCounts"+pointCounts);
 		return(
-			<View>
+			<View style={styles.wholeScreen}>
+          <View style={styles.container}>
+          <Text style={styles.title}>Time: {}{}{}</Text>
+          <Text>------------------------------</Text>
+          <Text style={styles.title}>Target : {target}</Text>
+          <Text>------------------------------</Text>
+          <Text style={styles.title}>HeartBeat : {this.state.BLEData}</Text>
 
-				<View style={styles.container}>
-				<Text>Time:</Text>
-				<Text>------------------------------</Text>
-				<Text>Target : {target}</Text>
-   				</View>
-   				<TouchableHighlight onPress={(this.onStopPressed)} style={styles.button}>
-      				<Text style={styles.buttonText}>Stop</Text>
-      			</TouchableHighlight>
-      			<Text style={styles.buttonText}>The location data is being taken. {'\n'}Altitude Value :{this.getLocationData(this.state.lastPosition.coords)}</Text>
- 
-			</View>
+          
+          </View>
+          <TouchableHighlight onPress={(this.onStopPressed)} underlayColor="#EEEEEE" style={styles.button}>
+          <Text style={styles.buttonText}>Stop</Text>
+          </TouchableHighlight>
+          <Text style={styles.instructionFont}>The location data is being taken. {'\n'}Altitude Value :{this.getLocationData(this.state.lastPosition.coords)}</Text>
+        </View>
 		);
 
 	}
@@ -149,46 +147,83 @@ var Workout = React.createClass({
 });
 
 var styles = StyleSheet.create({
-   wholeScreen:{
-   		alignItems:'center',
-   		
+  bigTitle:{
+    fontWeight: '500',
+    fontSize: 30,
+  },
+  title: {
+    fontWeight: '500',
+    fontSize : 18,
+  },
+  wholeScreen:{
+    //backgroundColor: '#F5FCFF',
+    flex :1,
+    alignItems:'stretch',
+    justifyContent:'center',
+    marginTop: 70,
+    marginBottom:20,
+    //flexDirection: 'row',
+  },
+  scrollView: {
+    //backgroundColor: '#6A85B1',
+    //height: 300,
+    //alignItems:'center'
 
-   },
-     container: {
-    flex: 2,
+  },
+  buttonContainer:{
+    alignItems:'stretch',
+    flex:1,
+    //justifyContent:'center',
+    marginTop:10,
+  },
+  container: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    marginTop: 70,
-    height : 250,
+
+    //backgroundColor: '#F5FCFF',
+    
+    //height : 300,
+    //marginTop:10,
+    //marginBottom:10,
   },
-  rowStyle:{
-  	alignItems: 'stretch',
-  	flexDirection :'row',
-  	flex: 2,
+  graphContainer:{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    //backgroundColor: '#F5FCFF',
+    marginTop:70,
   },
-   button: {
-        height: 40,
-        flex: 1,
-        backgroundColor: "#555555",
-        borderColor: "#555555",
-        borderWidth: 1,
-        borderRadius: 8,
-        marginTop: 10,
-        justifyContent: "center"
-   },
+  changeButton: {
+    alignSelf: 'center',
+    marginTop: 5,
+    padding: 3,
+    borderWidth: 0.5,
+    borderColor: '#777777',
+  },
+  button: {
+    height: 40,
+    //flex: 1,
+    backgroundColor: "#FCB130",
+    borderColor: "#555555",
+    //borderWidth: 1,
+    borderRadius: 8,
+    //marginTop: 10,
+    marginRight: 15,
+    marginLeft: 15,
+    justifyContent: "center",
+  },
    buttonText: {
     fontSize: 18,
     color: "#ffffff",
-    alignSelf: "center"
-   },
-   separator: {
-    height: 5,
-    backgroundColor: '#dddddd',
-    alignSelf: 'center',
+    alignSelf: "center",
 
    },
-
+   instructionFont:{
+    color: "#7C7C7C",
+    fontSize:18,
+    alignSelf:"center",
+  },
 });
 
 module.exports = Workout;
