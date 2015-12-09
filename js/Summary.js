@@ -2,7 +2,8 @@
 
 var React = require('react-native');
 var DrawGraphs = require('./DrawGraph');
-var PreWorkout = require('./PreWorkout');
+var TargetOptions = require('./TargetOptions');
+
 
 var {  
   StyleSheet,
@@ -13,6 +14,7 @@ var {
   TouchableHighlight,
   PickerIOS,
   AsyncStorage,
+  ScrollView,
 } = React;
 
 var target = "Time";
@@ -22,29 +24,60 @@ var activity,workout;
 
 var Summary = React.createClass({
 
-	componentDidMount : function(){
+	getInitialState: function() {
+    return { 
+      targetOptions :[{id:0,value:'Elevation'},{id:1,value:'Speed'},{id:2,value:'HeartBeat'}],
+      currentOption : 0,
+      graphValue : 0,
+    };
+  },
+
+  componentDidMount : function(){
 	 AsyncStorage.getItem("targetWorkoutOption").then((value) => {
-        console.log("Target value.."+value);
+        //console.log("Target value.."+value);
         target = value;
         this.setState({"targetWorkoutOption": value});
       }).done();
 
     AsyncStorage.getItem("selectedActivity").then((value) => {
-      console.log("Async value "+value);
+      //console.log("Async value "+value);
       activity=value;
       this.setState({"selectedActivity": value});
     }).done();
 
     AsyncStorage.getItem("selectedWorkout").then((value) => {
-      console.log("Async value "+value);
+      //console.log("Async value "+value);
       workout=value;
       this.setState({"selectedWorkout": value});
     }).done();
 	},
 
+   _optionChanged: function(option){
+    console.log("Target changed"+option);
+    this.setState({currentOption: option});
+    //this.saveData("targetWorkoutOption",targetOptions.option);
+    if(option==0){
+      //this.saveData("targetWorkoutOption","Time");
+      console.log("0");
+      this.setState({graphValue:0});
+    }
+    else if(option==1){
+      console.log("1");
+      this.setState({graphValue:1});
+    }
+    else{
+      console.log("2");
+      this.setState({graphValue:2});
+      this.render;
+    }
+    
+
+  },
+
+
   onWorkoutAgainPressed: function(){
-    //this.props.timeData =[];
-    //this.props.speed = [];
+    var PreWorkout = require('./PreWorkout');
+
     this.props.navigator.replace({
             component: PreWorkout,
             
@@ -53,21 +86,107 @@ var Summary = React.createClass({
   },
 
 	render: function(){
-		return(
+		var graphValue = this.state.graphValue;
+    if(graphValue==0)
+    return(
 			<View>
           <View style={styles.graphContainer}>
-          <Text style={styles.bigTitle}>Summary</Text>
-          <Text style={styles.title}>Activity : {activity}</Text>
-          <Text style={styles.title}>Workout : {workout}</Text>
-          <View style={styles.buttonContainer}>
-          <TouchableHighlight onPress={(this.onWorkoutAgainPressed)} style={styles.button}>
-          <Text style={styles.buttonText}>Workout Again</Text>
-          </TouchableHighlight>
+            <Text style={styles.bigTitle}>Summary</Text>
+            <Text style={styles.title}>Activity : {activity}</Text>
+            <Text style={styles.title}>Workout : {workout}</Text>
+              <View style={styles.buttonContainer}>
+              <TouchableHighlight onPress={(this.onWorkoutAgainPressed)} style={styles.button}>
+              <Text style={styles.buttonText}>Workout Again</Text>
+              </TouchableHighlight>
+              </View>
           </View>
-          <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="elevation(in feet)" xData={this.props.timeData} yData={this.props.speed}/>
+        
+          <PickerIOS
+                selectedValue={this.state.currentOption}
+                onValueChange={this._optionChanged}>
+                {
+                  this.state.targetOptions.map((item)=> (
+                      <PickerIOS
+                        key={'_'+item.id}
+                        value={item.id}
+                        label={item.value}
+                        style={styles.item}/>
+                    ))
+                }
+            </PickerIOS>
+            <View style={styles.latterHalf}>
+          
+              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="elevation(in feet)" xData={this.props.timeData} yData={this.props.speed}/>
+            
           </View>
         </View>
 		);
+    else if(graphValue == 1)
+      return(
+      <View>
+          <View style={styles.graphContainer}>
+            <Text style={styles.bigTitle}>Summary</Text>
+            <Text style={styles.title}>Activity : {activity}</Text>
+            <Text style={styles.title}>Workout : {workout}</Text>
+              <View style={styles.buttonContainer}>
+              <TouchableHighlight onPress={(this.onWorkoutAgainPressed)} style={styles.button}>
+              <Text style={styles.buttonText}>Workout Again</Text>
+              </TouchableHighlight>
+              </View>
+          </View>
+        
+          <PickerIOS
+                selectedValue={this.state.currentOption}
+                onValueChange={this._optionChanged}>
+                {
+                  this.state.targetOptions.map((item)=> (
+                      <PickerIOS
+                        key={'_'+item.id}
+                        value={item.id}
+                        label={item.value}
+                        style={styles.item}/>
+                    ))
+                }
+            </PickerIOS>
+            <View style={styles.latterHalf}>
+          
+            <Text>No Data to show.</Text>
+          </View>
+        </View>
+    );
+  else
+    return(
+      <View>
+          <View style={styles.graphContainer}>
+            <Text style={styles.bigTitle}>Summary</Text>
+            <Text style={styles.title}>Activity : {activity}</Text>
+            <Text style={styles.title}>Workout : {workout}</Text>
+              <View style={styles.buttonContainer}>
+              <TouchableHighlight onPress={(this.onWorkoutAgainPressed)} style={styles.button}>
+              <Text style={styles.buttonText}>Workout Again</Text>
+              </TouchableHighlight>
+              </View>
+          </View>
+        
+          <PickerIOS
+                selectedValue={this.state.currentOption}
+                onValueChange={this._optionChanged}>
+                {
+                  this.state.targetOptions.map((item)=> (
+                      <PickerIOS
+                        key={'_'+item.id}
+                        value={item.id}
+                        label={item.value}
+                        style={styles.item}/>
+                    ))
+                }
+            </PickerIOS>
+            <View style={styles.latterHalf}>
+              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="Heartbeat(bpm)" xData={this.props.timeData_heart} yData={this.props.heartBeatData}/>
+            </View>
+        </View>
+    );
+    
 
 	},
 
@@ -82,9 +201,16 @@ var styles = StyleSheet.create({
     fontWeight: '500',
     fontSize : 18,
   },
+  subContainer: {
+    flex:1,
+    padding: 30,
+    marginTop: 5,
+    alignItems: "stretch"
+  },
   wholeScreen:{
     //backgroundColor: '#F5FCFF',
     flex :1,
+    //flexDirection:'row',
     alignItems:'stretch',
     justifyContent:'center',
     marginTop: 70,
@@ -92,10 +218,10 @@ var styles = StyleSheet.create({
     //flexDirection: 'row',
   },
   scrollView: {
-    //backgroundColor: '#6A85B1',
-    //height: 300,
-    //alignItems:'center'
-
+    height: 300,
+  },
+  horizontalScrollView: {
+    height: 120,
   },
   buttonContainer:{
     alignItems:'stretch',
@@ -113,6 +239,10 @@ var styles = StyleSheet.create({
     //height : 300,
     //marginTop:10,
     //marginBottom:10,
+  },
+  latterHalf:{
+    flex:1,
+    alignItems:'center'
   },
   graphContainer:{
     flex: 1,
@@ -151,6 +281,12 @@ var styles = StyleSheet.create({
     fontSize:18,
     alignSelf:"center",
   },
+  item:{
+    flex : 1,
+    height: 50,
+  },
 });
+
+
 module.exports =  Summary;
 

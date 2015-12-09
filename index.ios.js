@@ -23,7 +23,7 @@ var Healthmonitor = React.createClass({
       <NavigatorIOS
       style={styles.navigationContainer}
       initialRoute={{
-        title: "Fujikon",
+        title: "Profile",
         component: UserStats,
       }} />
       );

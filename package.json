@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "react-native": "^0.12.0",
-    "react-native-chart-nosensezzz": "0.0.1"
+    "react-native-chart-nosensezzz": "0.0.1",
+    "react-timer-mixin": "^0.13.3"
   }
 }

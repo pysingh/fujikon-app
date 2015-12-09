@@ -34,7 +34,7 @@ var ListViewSimpleExample = React.createClass({
 },
 
 getInitialState: function() {
-    console.log("Initialization..");
+    //console.log("Initialization..");
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
       dataSource: ds.cloneWithRows(['row1','row2']),
@@ -45,19 +45,19 @@ getInitialState: function() {
   
 },
 componentDidMount: function(){
-  console.log("Did Mounting...");
+  //console.log("Did Mounting...");
 
 },
 
 componentWillMount:function(){
-  console.log("Mounting..."+subTitle);
+  //console.log("Mounting..."+subTitle);
   AsyncStorage.getItem("selectedActivity").then((value) => {
-      console.log("Async value "+value);
+      //console.log("Async value "+value);
       activityName = value;
       this.setState({"selectedActivity": value});
     }).done();
   AsyncStorage.getItem("selectedWorkout").then((value) => {
-      console.log("Async value "+value);
+      //console.log("Async value "+value);
       workoutName=value;
       this.setState({"selectedWorkout": value});
     }).done();
@@ -106,6 +106,8 @@ onTabPressed: function(rowID){
     {
       this.props.navigator.push({
             component: ActivityOptions,
+            backButtonTitle: 'Back',
+
             componentConfig : {
               title : "My New Title"
             },
@@ -115,6 +117,7 @@ onTabPressed: function(rowID){
     {
       this.props.navigator.push({
             component: WorkoutOptions,
+            backButtonTitle: 'Back',
             componentConfig : {
               title : "My New Title"
             },

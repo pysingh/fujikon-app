@@ -24,6 +24,7 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		6E92C0ED1C11C32E00358652 /* SMBLEManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E92C0EC1C11C32E00358652 /* SMBLEManager.m */; };
 		6E9D8A571BEB97B10002E9DC /* libRNChart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E9D8A561BEB97A50002E9DC /* libRNChart.a */; };
+		6EF36FD71C16E167000C208B /* Timermanager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF36FD61C16E167000C208B /* Timermanager.m */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -137,6 +138,8 @@
 		6E92C0EB1C11C32E00358652 /* SMBLEManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SMBLEManager.h; path = ../../BLEDataReceiver/ios/BLEDataReceiver/SMBLEManager.h; sourceTree = "<group>"; };
 		6E92C0EC1C11C32E00358652 /* SMBLEManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SMBLEManager.m; path = ../../BLEDataReceiver/ios/BLEDataReceiver/SMBLEManager.m; sourceTree = "<group>"; };
 		6E9D8A511BEB97A50002E9DC /* RNChart.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNChart.xcodeproj; path = "../node_modules/react-native-chart-nosensezzz/RNChart.xcodeproj"; sourceTree = "<group>"; };
+		6EF36FD51C16E167000C208B /* Timermanager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timermanager.h; path = Healthmonitor/Timermanager.h; sourceTree = "<group>"; };
+		6EF36FD61C16E167000C208B /* Timermanager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Timermanager.m; path = Healthmonitor/Timermanager.m; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -255,6 +258,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				6EF36FD51C16E167000C208B /* Timermanager.h */,
+				6EF36FD61C16E167000C208B /* Timermanager.m */,
 			);
 			name = Healthmonitor;
 			sourceTree = "<group>";
@@ -565,6 +570,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				6EF36FD71C16E167000C208B /* Timermanager.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				6E92C0ED1C11C32E00358652 /* SMBLEManager.m in Sources */,
 			);

@@ -22,13 +22,14 @@ getInitialState: function() {
     return {
       dataSource: ds.cloneWithRows(['row1','row2','row3','row4']),
       dataSourceForActivity: ds.cloneWithRows(['row1','row2']),
+      activityName : '',
 
   };
 },
 
 componentWillMount: function(){
      AsyncStorage.getItem("selectedActivity").then((value) => {
-      console.log("Async value "+value);
+      //console.log("Async value "+value);
       this.setState({"selectedActivity": value});
     }).done();
 },
@@ -49,17 +50,42 @@ getOptions: function(){
 
 saveData: function(key,value) {
     AsyncStorage.setItem(key, value);
-    console.log("Data saved for key "+key+" value "+value);
+    //console.log("Data saved for key "+key+" value "+value);
     this.setState({key : value});
 },
 
 onTabPressed: function(rowID){
-    console.log("array : "+activityOptions+"count :"+rowID);
-    this.saveData("selectedActivity",activityOptions[rowID]);
-    console.log("Delegation..."+PreWorkout.activityName);
+    //console.log("array : "+activityOptions+"count :"+rowID);
+    {this._onValueChange(activityOptions[rowID])}
+    //this.saveData("selectedActivity",activityOptions[rowID]);
+    //console.log("Delegation..."+PreWorkout.activityName);
     this.props.navigator.pop();
 
 },
+
+_onValueChange: function (selectedValue) {
+    console.log("Activity changed to ",selectedValue);
+    AsyncStorage.setItem("activityName", selectedValue);
+    console.log("1");
+
+    AsyncStorage.getItem("activityName").then((value) => {
+      //console.log("Async value "+value);
+      //activityName = value;
+      this.setState({"activityName": value});
+    }).done();
+    console.log("this.state.activityName ", this.state.activityName);
+    // this.setState({selectedValue});
+    // try {
+    //   console.log("2");
+    //   AsyncStorage.setItem("activityName", selectedValue);
+    //   console.log("this.state.activityName ", this.state.activityName);
+    //   //this._appendMessage('Saved selection to disk: ' + selectedValue);
+    // } 
+    // catch (error) {
+    //   //this._appendMessage('AsyncStorage error: ' + error.message);
+    // }
+  },
+
 
 render: function() {
     //console.log("Activity Running");

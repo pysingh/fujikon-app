@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react-native');
-//var TimerMixin = require('react-timer-mixin');
+var { Timermanager } = require('NativeModules');
 var Summary = require('./Summary');
 var PreWorkout = require('./PreWorkout');
 
@@ -19,15 +19,19 @@ var {
   NativeAppEventEmitter,
 } = React;
 
+
 var target = "Running";
 var speedData = [];
 var timeData = [];
 var elevationData = [];
 var pointCounts = 0;
+var subscriptionBLE,subscriptionTimer;
+var heartBeatDatacount=0;
+var heartBeatData = [];
+var timeData_heart = [];
 
 var Workout = React.createClass({
 
-	//mixins: [TimerMixin],
 	watchID: (null: ?number),
 
 	getInitialState: function() {
@@ -35,19 +39,29 @@ var Workout = React.createClass({
       initialPosition: 'unknown',
       lastPosition: 'unknown',
       initialSpeed : 'unknown',
-      hour:0,
-      min : 0,
-      sec : 0,
-      speedData :[],
-      timeData:[],
+      hearBeatData:[],
+      timeData_heart:[],
     };
   	},
 
 	componentDidMount: function() {
-    NativeAppEventEmitter.addListener("receivedBLEData", (data) => { 
+
+  subscriptionBLE = NativeAppEventEmitter.addListener("receivedBLEData", (data) => { 
         
-        console.log("app event emitter: receivedBLEData:", data.value)
+        console.log("app event emitter: receivedBLEData:", data.value);
+        heartBeatData.push(data.value);
+        heartBeatDatacount = heartBeatDatacount +1;
+        timeData_heart.push(heartBeatDatacount.toString());
+        console.log("HeartBeat-->"+data.value+" Time-->"+heartBeatDatacount);
         this.setState({BLEData : data.value});
+        });
+
+  subscriptionTimer = NativeAppEventEmitter.addListener("timerData", (data) => { 
+        
+        console.log("app event emitter: receivedBLEData:", data.secData," : ",data.minData," : ",data.hourData);
+        this.setState({secData : data.secData});
+        this.setState({minData : data.minData});
+        this.setState({hourData : data.hourData});
         });
 
 
@@ -71,12 +85,20 @@ var Workout = React.createClass({
       	);
     	this.watchID = navigator.geolocation.watchPosition((lastPosition) => {
       	this.setState({lastPosition});
-    });	
- 	},
+    });
 
- 	componentWillMount: function() {
-    	navigator.geolocation.clearWatch(this.watchID);
  	},
+	componentWillMount: function() {
+    	speedData=[];
+      timeData=[];
+      navigator.geolocation.clearWatch(this.watchID);
+ 	},
+  
+  componentWillUnmount: function(){
+      Timermanager.resetTimer();
+      subscriptionTimer.remove();
+      subscriptionBLE.remove();
+  },
 
  	getLocationData: function(coordinates) {
     var speed = JSON.stringify(coordinates,['latitude']);
@@ -115,18 +137,23 @@ var Workout = React.createClass({
  	onStopPressed: function(){
  	  this.props.navigator.replace({
             component: Summary,
-            passProps:{speed : speedData,timeData : timeData},
+            passProps:{speed : speedData,timeData : timeData,
+              heartBeatData : heartBeatData,timeData_heart : timeData_heart},
           }
  			);
  	},
+
 	
 	render: function(){
+    //speedData= [];
+    //timeData=[];
 		//console.log("Reaching...");
 		console.log("SpeedData->"+speedData+" TimeData"+timeData+" pointCounts"+pointCounts);
+    Timermanager.startTimer();
 		return(
 			<View style={styles.wholeScreen}>
           <View style={styles.container}>
-          <Text style={styles.title}>Time: {}{}{}</Text>
+          <Text style={styles.title}>Time: {this.state.hourData}:{this.state.minData}:{this.state.secData}</Text>
           <Text>------------------------------</Text>
           <Text style={styles.title}>Target : {target}</Text>
           <Text>------------------------------</Text>
