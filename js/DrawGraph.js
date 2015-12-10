@@ -2,7 +2,7 @@ var React = require('react-native');
 var RNChart = require('react-native-chart-nosensezzz');
 
 var {
-    StyleSheet, View, Component,
+    StyleSheet, View, Component,Text,
 } = React;
 
 var styles = StyleSheet.create({
@@ -13,15 +13,21 @@ var styles = StyleSheet.create({
         // position: 'absolute', top: 100, left: 16, bottom: 100,right: 100
         position: 'absolute', 
         //top: 80, 
-        //width: 300, 
+        width: 700, 
         height: 200, 
-        left: -150,
-        right: -150,
-        marginRight: 30,
-        marginBottom: 20,
+        left: 0,
+        //right: -2000,
+        //marginRight: 30,
+        //marginBottom: 20,
         marginTop: 10,
-        marginLeft: 5,
-    }
+        //marginLeft: 5,
+    },
+    note:{
+        alignSelf:'center',
+        //marginLeft:20,
+        marginRight:20,
+        alignItems:'center',
+    },
 });
 
 
@@ -38,9 +44,21 @@ var styles = StyleSheet.create({
     // },
     
 //];
-class SimpleChart extends Component {
-    render() {
 
+class SimpleChart extends Component {
+    
+
+    render() {
+         xAxisArray : this.props.xData;
+    yAxisArray : this.props.yData;
+         
+         if((this.props.xData).length == 0)
+        return(
+            <View style={styles.container}>
+                <Text style={styles.note}>No Data to show.</Text>
+             </View>
+        );
+        
         return (
             <View style={styles.container}>
             <RNChart style={styles.chart}

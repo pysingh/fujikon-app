@@ -17,6 +17,8 @@ var {
   AlertIOS,
   PickerIOS,
   ScrollView,
+  Modal,
+  SwitchIOS,
 } = React;
 
 var buttonDisabled = 0;
@@ -61,6 +63,9 @@ var UserStats = React.createClass({
       age :'',
       genderOptions :[{id:0,value:'Male'},{id:1,value:'Female'}],
       currentGender : 0,
+      genderModalVisible: 'false',
+      animated: true,
+      transparent: true,
 
     };
   },
@@ -87,48 +92,158 @@ var UserStats = React.createClass({
     
   },
 
+  _setGenderModalVisible: function(visible) {
+    this.setState({genderModalVisible: visible});
+  },
+
   render: function() {
+    var modalBackgroundStyle = {
+      backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
+    };
+    var innerContainerTransparentStyle = this.state.transparent
+      ? {backgroundColor: '#fff', padding: 20}
+      : null;
+    var a=['1','2','3','4'];
+      console.log("Array lenght : "+a.length);
     return (
-      <ScrollView
-        automaticallyAdjustContentInsets={false}
-        onScroll={() => { console.log('onScroll!'); }}
-        scrollEventThrottle={200}
-        style={styles.scrollView}>
+      
       <View>
-      <View style={styles.container}>
-      <TextInput
-      placeholder="Gender"
-      onChange={(event) => this.setState({gender: event.nativeEvent.text})}
-      style={styles.formInput}/>
-      <TextInput
-      placeholder="Height"
-      onChange={(event) => this.setState({height: event.nativeEvent.text})}
-      style={styles.formInput}/>
-      <TextInput
-      placeholder="Weight"
-      onChange={(event) => this.setState({weight: event.nativeEvent.text})}
-      style={styles.formInput}/>
-      <TextInput
-      placeholder="Age"
-      onChange={(event) => this.setState({age: event.nativeEvent.text})}
-      style={styles.formInput}
-      value={this.state.password} />
-      <TouchableHighlight onPress={(this.onSubmitPressed)} underlayColor="#EEEEEE" style={styles.button}>
-      <Text style={styles.buttonText}>Submit</Text>
-      </TouchableHighlight>
-      <Text style={styles.instructionFont}>Please enable location services in-order to use the app.</Text>
+            
+
+
+            <View style={styles.container}>
+            <TextInput
+            placeholder="Gender"
+            onChange={this._setGenderModalVisible.bind(this, true)}
+            style={styles.formInput}/>
+            <TextInput
+            placeholder="Height"
+            onChange={(event) => this.setState({height: event.nativeEvent.text})}
+            style={styles.formInput}/>
+            <TextInput
+            placeholder="Weight"
+            onChange={(event) => this.setState({weight: event.nativeEvent.text})}
+            style={styles.formInput}/>
+            <TextInput
+            placeholder="Age"
+            onChange={(event) => this.setState({age: event.nativeEvent.text})}
+            style={styles.formInput}
+            value={this.state.password} />
+            <TouchableHighlight onPress={(this.onSubmitPressed)} underlayColor="#EEEEEE" style={styles.button}>
+            <Text style={styles.buttonText}>Submit</Text>
+            </TouchableHighlight>
+            <Text style={styles.instructionFont}>Please enable location services in-order to use the app.</Text>
+            
+            </View>
       </View>
-      </View>
-      </ScrollView>
+      
       );
   },
+});
+
+var ModalExample = React.createClass({
+  getInitialState() {
+    return {
+      animated: true,
+      modalVisible: false,
+      transparent: false,
+    };
+  },
+
+  _setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  },
+
+  _toggleAnimated() {
+    this.setState({animated: !this.state.animated});
+  },
+
+  _toggleTransparent() {
+    this.setState({transparent: !this.state.transparent});
+  },
+
+  render() {
+    var modalBackgroundStyle = {
+      backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
+    };
+    var innerContainerTransparentStyle = this.state.transparent
+      ? {backgroundColor: '#fff', padding: 20}
+      : null;
+
+    return (
+      <View>
+        <Modal
+          animated={this.state.animated}
+          transparent={this.state.transparent}
+          visible={this.state.modalVisible}>
+          <View style={[styles.container, modalBackgroundStyle]}>
+            <View style={[styles.innerContainer, innerContainerTransparentStyle]}>
+              <Text>This modal was presented {this.state.animated ? 'with' : 'without'} animation.</Text>
+              <Button
+                onPress={this._setModalVisible.bind(this, false)}
+                style={styles.modalButton}>
+                Close
+              </Button>
+            </View>
+          </View>
+        </Modal>
+
+        <View style={styles.row}>
+          <Text style={styles.rowTitle}>Animated</Text>
+          <SwitchIOS value={this.state.animated} onValueChange={this._toggleAnimated} />
+        </View>
+
+        <View style={styles.row}>
+          <Text style={styles.rowTitle}>Transparent</Text>
+          <SwitchIOS value={this.state.transparent} onValueChange={this._toggleTransparent} />
+        </View>
+
+        <Button onPress={this._setModalVisible.bind(this, true)}>
+          Present
+        </Button>
+      </View>
+    );
+  },
+});
+
+var Button = React.createClass({
+  getInitialState() {
+    return {
+      active: false,
+    };
+  },
+
+  _onHighlight() {
+    this.setState({active: true});
+  },
+
+  _onUnhighlight() {
+    this.setState({active: false});
+  },
+
+  render() {
+    var colorStyle = {
+      color: this.state.active ? '#fff' : '#000',
+    };
+    return (
+      <TouchableHighlight
+        onHideUnderlay={this._onUnhighlight}
+        onPress={this.props.onPress}
+        onShowUnderlay={this._onHighlight}
+        style={[styles.button, this.props.style]}
+        underlayColor="#a9d9d4">
+          <Text style={[styles.buttonText, colorStyle]}>{this.props.children}</Text>
+      </TouchableHighlight>
+    );
+  }
 });
 
 var styles = StyleSheet.create({
   container: {
     padding: 30,
     marginTop: 65,
-    alignItems: "stretch"
+    alignItems: "stretch",
+    justifyContent: 'center',
   },
   scrollView: {
     //backgroundColor: '#6A85B1',
@@ -178,7 +293,24 @@ var styles = StyleSheet.create({
   picker:{
     flex:1,
     height : 36,
-  }
+  },
+  innerContainer: {
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  row: {
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  rowTitle: {
+    flex: 1,
+    fontWeight: 'bold',
+  },
+  modalButton: {
+    marginTop: 10,
+  },
 });
 
 module.exports = UserStats;

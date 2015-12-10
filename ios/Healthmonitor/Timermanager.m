@@ -85,6 +85,7 @@ RCT_EXPORT_METHOD(resetTimer)
   [self.bridge.eventDispatcher sendAppEventWithName:@"timerData"
                                                body:data];
   //[timer invalidate];
+  //dispatch_source_cancel(timer);
  
 }
 

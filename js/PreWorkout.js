@@ -117,7 +117,7 @@ onTabPressed: function(rowID){
     {
       this.props.navigator.push({
             component: WorkoutOptions,
-            backButtonTitle: 'Back',
+            backButtonTitle: 'Back', 
             componentConfig : {
               title : "My New Title"
             },

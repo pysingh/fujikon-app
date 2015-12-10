@@ -89,7 +89,13 @@ var Summary = React.createClass({
 		var graphValue = this.state.graphValue;
     if(graphValue==0)
     return(
-			<View>
+			<ScrollView
+        automaticallyAdjustContentInsets={false}
+        onScroll={() => { console.log('onScroll!'); }}
+        scrollEventThrottle={200}
+        style={styles.scrollView}>
+      <View>
+              
           <View style={styles.graphContainer}>
             <Text style={styles.bigTitle}>Summary</Text>
             <Text style={styles.title}>Activity : {activity}</Text>
@@ -114,15 +120,30 @@ var Summary = React.createClass({
                     ))
                 }
             </PickerIOS>
+            <ScrollView
+                automaticallyAdjustContentInsets={false}
+                horizontal={true}
+                style={[styles.scrollView, styles.horizontalScrollView]}
+                pagingEnabled={true}
+                showsHorizontalScrollIndicator={true}
+                scrollEventThrottle={500}
+                >
             <View style={styles.latterHalf}>
-          
+              
               <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="elevation(in feet)" xData={this.props.timeData} yData={this.props.speed}/>
-            
+              
           </View>
+          </ScrollView>
         </View>
+        </ScrollView>
 		);
     else if(graphValue == 1)
       return(
+      <ScrollView
+        automaticallyAdjustContentInsets={false}
+        onScroll={() => { console.log('onScroll!'); }}
+        scrollEventThrottle={200}
+        style={styles.scrollView}>
       <View>
           <View style={styles.graphContainer}>
             <Text style={styles.bigTitle}>Summary</Text>
@@ -134,7 +155,7 @@ var Summary = React.createClass({
               </TouchableHighlight>
               </View>
           </View>
-        
+          
           <PickerIOS
                 selectedValue={this.state.currentOption}
                 onValueChange={this._optionChanged}>
@@ -148,14 +169,30 @@ var Summary = React.createClass({
                     ))
                 }
             </PickerIOS>
+            <ScrollView
+                automaticallyAdjustContentInsets={false}
+                horizontal={true}
+                style={[styles.scrollView, styles.horizontalScrollView]}
+                pagingEnabled={true}
+                showsHorizontalScrollIndicator={true}
+                scrollEventThrottle={500}
+                >
             <View style={styles.latterHalf}>
+
           
             <Text>No Data to show.</Text>
           </View>
+          </ScrollView>
         </View>
+        </ScrollView>
     );
   else
     return(
+      <ScrollView
+        automaticallyAdjustContentInsets={false}
+        onScroll={() => { console.log('onScroll!'); }}
+        scrollEventThrottle={200}
+        style={styles.scrollView}>
       <View>
           <View style={styles.graphContainer}>
             <Text style={styles.bigTitle}>Summary</Text>
@@ -181,10 +218,21 @@ var Summary = React.createClass({
                     ))
                 }
             </PickerIOS>
+            <ScrollView
+                automaticallyAdjustContentInsets={false}
+                horizontal={true}
+                style={[styles.scrollView, styles.horizontalScrollView]}
+                pagingEnabled={true}
+                showsHorizontalScrollIndicator={true}
+                scrollEventThrottle={500}
+                >
             <View style={styles.latterHalf}>
+              
               <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="Heartbeat(bpm)" xData={this.props.timeData_heart} yData={this.props.heartBeatData}/>
             </View>
+            </ScrollView>
         </View>
+        </ScrollView>
     );
     
 
@@ -221,7 +269,8 @@ var styles = StyleSheet.create({
     height: 300,
   },
   horizontalScrollView: {
-    height: 120,
+    height: 600,
+    //flex:1,
   },
   buttonContainer:{
     alignItems:'stretch',
