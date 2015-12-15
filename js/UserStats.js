@@ -19,9 +19,11 @@ var {
   ScrollView,
   Modal,
   SwitchIOS,
+  DatePickerIOS,
 } = React;
 
 var buttonDisabled = 0;
+var genderArray=['Male','Female'];
 var UserStats = React.createClass({
 
   
@@ -55,6 +57,13 @@ var UserStats = React.createClass({
     
   },
 
+  getDefaultProps: function () {
+    console.log("Date...");
+    return {
+      date: new Date(),
+    };
+  },
+
   getInitialState: function() {
     return { 
       gender :'',
@@ -66,13 +75,18 @@ var UserStats = React.createClass({
       genderModalVisible: 'false',
       animated: true,
       transparent: true,
-
+      isGenderOptionsVisible: false,
+      isAgeVisible: false,  
+      date: this.props.date,
     };
   },
 
   saveData: function(key,value) {
     AsyncStorage.setItem(key, value);
     this.setState({key : value});
+  },
+  onDateChange: function(date) {
+    this.setState({date: date});
   },
 
   onSubmitPressed: function(){
@@ -92,150 +106,142 @@ var UserStats = React.createClass({
     
   },
 
+  toggleGender: function () {
+        console.log("Toggling...");
+        this.setState({
+            isAgeVisible :!this.state.isAgeVisible
+            
+        });
+        this.setState({
+            isGenderOptionsVisible: !this.state.isGenderOptionsVisible
+        });
+        
+  },
+
+  _optionChanged: function(option){
+    console.log("Target changed"+option);
+    this.setState({currentGender: option});
+  },
+
+  _renderGenderOptions: function(){
+    console.log("calledAgain");
+    if (this.state.isGenderOptionsVisible) {
+            return (
+                <View style={styles.restContainer} removeClippedSubviews={true}>
+                  <PickerIOS
+                    selectedValue={this.state.currentGender}
+                    onValueChange={this._optionChanged}>
+                    {
+                      this.state.genderOptions.map((item)=> (
+                          <PickerIOS
+                            key={'_'+item.id}
+                            value={item.id}
+                            label={item.value}
+                            style={styles.item}/>
+                        ))
+                    }
+                </PickerIOS>
+                <TouchableHighlight onPress={(this.onSubmitPressed)} underlayColor="#EEEEEE" style={styles.button}>
+                  <Text style={styles.buttonText}>Okay</Text>
+                </TouchableHighlight>
+                </View>
+            );
+        } else {
+            return;
+        }
+  },
   _setGenderModalVisible: function(visible) {
     this.setState({genderModalVisible: visible});
   },
 
+  toggleDate: function () {
+        console.log("Toggling");
+        this.setState({
+            isAgeVisible: !this.state.isAgeVisible
+        });
+  },
+
+  _renderDatePicker: function(){
+    
+    if(this.state.isAgeVisible){
+      return(
+      <View style={styles.restContainer}>
+        <DatePickerIOS
+          date={this.state.date}
+          mode="date"
+          onDateChange={this.onDateChange}/>
+      </View>
+      );
+    }
+    else{
+      return;
+    }
+  },
+
   render: function() {
-    var modalBackgroundStyle = {
-      backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
-    };
-    var innerContainerTransparentStyle = this.state.transparent
-      ? {backgroundColor: '#fff', padding: 20}
-      : null;
-    var a=['1','2','3','4'];
-      console.log("Array lenght : "+a.length);
+      // console.log("Render");
     return (
       
+      <ScrollView
+        automaticallyAdjustContentInsets={false}
+        onScroll={() => { console.log('onScroll!'); }}
+        scrollEventThrottle={200}
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={true}
+        scrollable={false}>
       <View>
-            
-
-
             <View style={styles.container}>
-            <TextInput
-            placeholder="Gender"
-            onChange={this._setGenderModalVisible.bind(this, true)}
-            style={styles.formInput}/>
-            <TextInput
-            placeholder="Height"
+             <View style={styles.inputcontainer}>
+                <Text style={styles.btnText}>Gender :</Text>
+                <TouchableHighlight
+                  style={styles.btn}
+                  onPress={() => this.toggleGender()}
+                  underlayColor='#dddddd'>
+                  <Text style={styles.labelText}>{genderArray[this.state.currentGender]}</Text>
+                </TouchableHighlight>
+            </View>
+            
+            <View style={styles.inputcontainer}>
+                <Text style={styles.btnText}>Height :</Text>
+                <TextInput
+            placeholder="     Height(cms)"
+            returnKeyType='next'
+            keyboardType='numeric'
             onChange={(event) => this.setState({height: event.nativeEvent.text})}
             style={styles.formInput}/>
-            <TextInput
-            placeholder="Weight"
+            </View>
+            
+            <View style={styles.inputcontainer}>
+                <Text style={styles.btnText}>Weight :</Text>
+                <TextInput
+            placeholder="     Weight(lbs)"
+            keyboardType='numeric'
             onChange={(event) => this.setState({weight: event.nativeEvent.text})}
             style={styles.formInput}/>
-            <TextInput
-            placeholder="Age"
-            onChange={(event) => this.setState({age: event.nativeEvent.text})}
-            style={styles.formInput}
-            value={this.state.password} />
+            </View>
+
+            <View style={styles.inputcontainer}>
+                <Text style={styles.btnText}>DOB :</Text>
+                <TouchableHighlight
+                  style={styles.btn}
+                  onPress={() => this.toggleDate()}
+                  underlayColor='#dddddd'>
+                  <Text style={styles.labelText}>{this.state.date.toLocaleDateString()}</Text>
+                </TouchableHighlight>
+            </View>
+      
             <TouchableHighlight onPress={(this.onSubmitPressed)} underlayColor="#EEEEEE" style={styles.button}>
             <Text style={styles.buttonText}>Submit</Text>
             </TouchableHighlight>
-            <Text style={styles.instructionFont}>Please enable location services in-order to use the app.</Text>
-            
+             <Text style={styles.instructionFont}>Please enable location services in-order to use the app.</Text>
+             {this._renderGenderOptions()}
+             {this._renderDatePicker()}
             </View>
       </View>
+      </ScrollView>
       
       );
   },
-});
-
-var ModalExample = React.createClass({
-  getInitialState() {
-    return {
-      animated: true,
-      modalVisible: false,
-      transparent: false,
-    };
-  },
-
-  _setModalVisible(visible) {
-    this.setState({modalVisible: visible});
-  },
-
-  _toggleAnimated() {
-    this.setState({animated: !this.state.animated});
-  },
-
-  _toggleTransparent() {
-    this.setState({transparent: !this.state.transparent});
-  },
-
-  render() {
-    var modalBackgroundStyle = {
-      backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
-    };
-    var innerContainerTransparentStyle = this.state.transparent
-      ? {backgroundColor: '#fff', padding: 20}
-      : null;
-
-    return (
-      <View>
-        <Modal
-          animated={this.state.animated}
-          transparent={this.state.transparent}
-          visible={this.state.modalVisible}>
-          <View style={[styles.container, modalBackgroundStyle]}>
-            <View style={[styles.innerContainer, innerContainerTransparentStyle]}>
-              <Text>This modal was presented {this.state.animated ? 'with' : 'without'} animation.</Text>
-              <Button
-                onPress={this._setModalVisible.bind(this, false)}
-                style={styles.modalButton}>
-                Close
-              </Button>
-            </View>
-          </View>
-        </Modal>
-
-        <View style={styles.row}>
-          <Text style={styles.rowTitle}>Animated</Text>
-          <SwitchIOS value={this.state.animated} onValueChange={this._toggleAnimated} />
-        </View>
-
-        <View style={styles.row}>
-          <Text style={styles.rowTitle}>Transparent</Text>
-          <SwitchIOS value={this.state.transparent} onValueChange={this._toggleTransparent} />
-        </View>
-
-        <Button onPress={this._setModalVisible.bind(this, true)}>
-          Present
-        </Button>
-      </View>
-    );
-  },
-});
-
-var Button = React.createClass({
-  getInitialState() {
-    return {
-      active: false,
-    };
-  },
-
-  _onHighlight() {
-    this.setState({active: true});
-  },
-
-  _onUnhighlight() {
-    this.setState({active: false});
-  },
-
-  render() {
-    var colorStyle = {
-      color: this.state.active ? '#fff' : '#000',
-    };
-    return (
-      <TouchableHighlight
-        onHideUnderlay={this._onUnhighlight}
-        onPress={this.props.onPress}
-        onShowUnderlay={this._onHighlight}
-        style={[styles.button, this.props.style]}
-        underlayColor="#a9d9d4">
-          <Text style={[styles.buttonText, colorStyle]}>{this.props.children}</Text>
-      </TouchableHighlight>
-    );
-  }
 });
 
 var styles = StyleSheet.create({
@@ -244,6 +250,17 @@ var styles = StyleSheet.create({
     marginTop: 65,
     alignItems: "stretch",
     justifyContent: 'center',
+  },
+  rowContainer :{
+
+  },
+  restContainer:{
+    flex:1,
+    //marginRight: 5,
+    //padding:30,
+    alignItems: "stretch",
+    //justifyContent: 'center',
+    //backgroundColor: '#fff',
   },
   scrollView: {
     //backgroundColor: '#6A85B1',
@@ -254,12 +271,12 @@ var styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10
   },
-  formInput: {
+  labelInput: {
     height: 40,
-    padding: 10,
-    marginRight: 5,
-    marginBottom: 5,
-    marginTop: 5,
+    //padding: 10,
+    //marginRight: 5,
+    //marginBottom: 5,
+    marginTop: 15,
     flex: 1,
     fontSize: 18,
     borderWidth: 1,
@@ -288,11 +305,10 @@ var styles = StyleSheet.create({
   },
   item:{
     flex : 1,
-    height: 180,
+    //height: 180,
   },
   picker:{
-    flex:1,
-    height : 36,
+    height : 15,
   },
   innerContainer: {
     borderRadius: 10,
@@ -311,6 +327,67 @@ var styles = StyleSheet.create({
   modalButton: {
     marginTop: 10,
   },
+  inputcontainer: {
+    marginTop: 5,
+    padding: 3,
+    flexDirection: 'row'
+  },
+  btn:{
+    flex : 2,
+    height: 40,
+    //padding: 10,
+    //marginRight: 5,
+    //marginBottom: 5,
+    //marginTop: 5,
+    //fontSize: 20,
+    borderWidth: 1,
+    borderColor: "#555555",
+    borderRadius: 8,
+    //color: "#555555",
+    justifyContent:"center",
+    //alignSelf:"center"
+  },
+  btnText:{
+    flex: 1,
+    height: 40,
+    padding: 10,
+    //marginRight: 5,
+    //marginBottom: 5,
+    //marginTop: 5,
+    fontSize: 18,
+    color: "#555555",
+  },
+  labelText:{
+    height: 40,
+    //justifyContent:"center",
+    alignSelf:"center",
+    fontSize: 15,
+    color: "#555555",
+    //marginRight: 5,
+    //marginBottom: 5,
+    marginTop: 10,
+    //borderWidth: 1,
+    //borderColor: "#555555",
+    //borderRadius: 8,
+    flex:2,
+  },
+  formInput: {
+    height: 40,
+    //padding: 10,
+    //marginRight: 15,
+    //marginBottom: 5,
+    //marginTop: 5,
+    flex: 2,
+    fontSize: 18,
+    borderWidth: 1,
+    borderColor: "#555555",
+    borderRadius: 8,
+    color: "#555555",
+    //alignItems:'center',
+    alignSelf:'center',
+    justifyContent:'center',
+  },
+
 });
 
 module.exports = UserStats;

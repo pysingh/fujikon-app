@@ -6,6 +6,7 @@
 
 var React = require('react-native');
 var UserStats = require('./js/UserStats');
+var Pick = require('./js/DatePickerExample');
  
 var {  
   AppRegistry,
@@ -23,8 +24,9 @@ var Healthmonitor = React.createClass({
       <NavigatorIOS
       style={styles.navigationContainer}
       initialRoute={{
-        title: "Profile",
+        title: "Fujikon",
         component: UserStats,
+        navigationBarHidden: true,
       }} />
       );
   }

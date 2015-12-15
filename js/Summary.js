@@ -86,6 +86,7 @@ var Summary = React.createClass({
   },
 
 	render: function(){
+    console.log("Speed data -->",this.props.speed,"Time data -->",this.props.timeData);
 		var graphValue = this.state.graphValue;
     if(graphValue==0)
     return(
