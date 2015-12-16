@@ -22,9 +22,9 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		6E92C0ED1C11C32E00358652 /* SMBLEManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E92C0EC1C11C32E00358652 /* SMBLEManager.m */; };
 		6E9D8A571BEB97B10002E9DC /* libRNChart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E9D8A561BEB97A50002E9DC /* libRNChart.a */; };
 		6EF36FD71C16E167000C208B /* Timermanager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF36FD61C16E167000C208B /* Timermanager.m */; };
+		7D51FD361C1A9C4E004F791F /* SMBLEManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D51FD351C1A9C4E004F791F /* SMBLEManager.m */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -135,12 +135,12 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Healthmonitor/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Healthmonitor/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
-		6E92C0EB1C11C32E00358652 /* SMBLEManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SMBLEManager.h; path = ../../BLEDataReceiver/ios/BLEDataReceiver/SMBLEManager.h; sourceTree = "<group>"; };
-		6E92C0EC1C11C32E00358652 /* SMBLEManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SMBLEManager.m; path = ../../BLEDataReceiver/ios/BLEDataReceiver/SMBLEManager.m; sourceTree = "<group>"; };
 		6E9D8A511BEB97A50002E9DC /* RNChart.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNChart.xcodeproj; path = "../node_modules/react-native-chart-nosensezzz/RNChart.xcodeproj"; sourceTree = "<group>"; };
 		6EF36FD51C16E167000C208B /* Timermanager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timermanager.h; path = Healthmonitor/Timermanager.h; sourceTree = "<group>"; };
 		6EF36FD61C16E167000C208B /* Timermanager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Timermanager.m; path = Healthmonitor/Timermanager.m; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		7D51FD341C1A9C4E004F791F /* SMBLEManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SMBLEManager.h; path = Healthmonitor/SMBLEManager.h; sourceTree = "<group>"; };
+		7D51FD351C1A9C4E004F791F /* SMBLEManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SMBLEManager.m; path = Healthmonitor/SMBLEManager.m; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -249,8 +249,8 @@
 		13B07FAE1A68108700A75B9A /* Healthmonitor */ = {
 			isa = PBXGroup;
 			children = (
-				6E92C0EB1C11C32E00358652 /* SMBLEManager.h */,
-				6E92C0EC1C11C32E00358652 /* SMBLEManager.m */,
+				7D51FD341C1A9C4E004F791F /* SMBLEManager.h */,
+				7D51FD351C1A9C4E004F791F /* SMBLEManager.m */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -572,7 +572,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				6EF36FD71C16E167000C208B /* Timermanager.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				6E92C0ED1C11C32E00358652 /* SMBLEManager.m in Sources */,
+				7D51FD361C1A9C4E004F791F /* SMBLEManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

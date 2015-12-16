@@ -246,7 +246,7 @@ RCT_EXPORT_METHOD(initParameters:(NSString *)service :(NSString *)characteristic
 - (void)cleanup
 {
   // Don't do anything if we're not connected
-  if (!self.discoveredPeripheral.isConnected) {
+  if (self.discoveredPeripheral.state != CBPeripheralStateConnected) {
           return;
   }
   
