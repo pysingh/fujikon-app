@@ -6,7 +6,6 @@
 
 var React = require('react-native');
 var UserStats = require('./js/UserStats');
-var Pick = require('./js/DatePickerExample');
  
 var {  
   AppRegistry,

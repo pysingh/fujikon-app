@@ -53,6 +53,8 @@ RCT_EXPORT_METHOD(resetTimer)
   currMinute = 0;
   currSeconds = 0;
   totalSeconds = 0;
+  //dispatch_source_cancel(timer);
+  NSLog(@"From Timer.. stopping");
 }
 
 -(void)timerFired
