@@ -58,7 +58,7 @@ var UserStats = React.createClass({
   },
 
   getDefaultProps: function () {
-    console.log("Date...");
+    ///console.log("Date...");
     return {
       date: new Date(),
     };
@@ -107,30 +107,27 @@ var UserStats = React.createClass({
   },
 
   toggleGender: function () {
-        console.log("Toggling...");
+       // console.log("Toggling...");
         this.setState({
-            isAgeVisible :!this.state.isAgeVisible
+            isGenderOptionsVisible :!this.state.isGenderOptionsVisible,isAgeVisible:false
             
-        });
-        this.setState({
-            isGenderOptionsVisible: !this.state.isGenderOptionsVisible
-        });
-        
+        });        
   },
 
   _optionChanged: function(option){
-    console.log("Target changed"+option);
+    //console.log("Target changed"+option);
     this.setState({currentGender: option});
   },
 
   _renderGenderOptions: function(){
-    console.log("calledAgain");
+    //console.log("calledAgain Gender"+this.state.isGenderOptionsVisible);
     if (this.state.isGenderOptionsVisible) {
             return (
                 <View style={styles.restContainer} removeClippedSubviews={true}>
                   <PickerIOS
                     selectedValue={this.state.currentGender}
-                    onValueChange={this._optionChanged}>
+                    onValueChange={this._optionChanged}
+                    style={styles.pickerStyle}>
                     {
                       this.state.genderOptions.map((item)=> (
                           <PickerIOS
@@ -141,9 +138,6 @@ var UserStats = React.createClass({
                         ))
                     }
                 </PickerIOS>
-                <TouchableHighlight onPress={(this.onSubmitPressed)} underlayColor="#EEEEEE" style={styles.button}>
-                  <Text style={styles.buttonText}>Okay</Text>
-                </TouchableHighlight>
                 </View>
             );
         } else {
@@ -155,9 +149,9 @@ var UserStats = React.createClass({
   },
 
   toggleDate: function () {
-        console.log("Toggling");
+        //console.log("Toggling");
         this.setState({
-            isAgeVisible: !this.state.isAgeVisible
+            isAgeVisible: !this.state.isAgeVisible,isGenderOptionsVisible:false
         });
   },
 
@@ -176,6 +170,14 @@ var UserStats = React.createClass({
     else{
       return;
     }
+  },
+
+  onTextEditingEnd:function(){
+   this.refs.myScrollView.scrollTo(-0);
+  },
+  
+  _scrollToInput :function(){
+   this.refs.myScrollView.scrollTo(150);
   },
 
   render: function() {
@@ -217,7 +219,8 @@ var UserStats = React.createClass({
             placeholder="     Weight(lbs)"
             keyboardType='numeric'
             onChange={(event) => this.setState({weight: event.nativeEvent.text})}
-            style={styles.formInput}/>
+            style={styles.formInput}
+            />
             </View>
 
             <View style={styles.inputcontainer}>
@@ -234,9 +237,10 @@ var UserStats = React.createClass({
             <Text style={styles.buttonText}>Submit</Text>
             </TouchableHighlight>
              <Text style={styles.instructionFont}>Please enable location services in-order to use the app.</Text>
+             </View>
              {this._renderGenderOptions()}
              {this._renderDatePicker()}
-            </View>
+            
       </View>
       </ScrollView>
       
@@ -255,12 +259,16 @@ var styles = StyleSheet.create({
 
   },
   restContainer:{
-    flex:1,
+    //flex:1,
     //marginRight: 5,
     //padding:30,
-    alignItems: "stretch",
+    //flexDirection: "column",
+    alignItems:'center',
     //justifyContent: 'center',
     //backgroundColor: '#fff',
+  },
+  pickerStyle:{
+    width:320,
   },
   scrollView: {
     //backgroundColor: '#6A85B1',

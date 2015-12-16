@@ -42,6 +42,7 @@ onTabPressed: function(rowID){
       this.props.navigator.push({
         component : TargetOptions,
         });
+    this.props.obj.refreshWorkoutData(workoutOptions[rowID]);
     this.props.navigator.pop();
 
 },

@@ -53,7 +53,7 @@ var Summary = React.createClass({
 	},
 
    _optionChanged: function(option){
-    console.log("Target changed"+option);
+    //console.log("Target changed"+option);
     this.setState({currentOption: option});
     //this.saveData("targetWorkoutOption",targetOptions.option);
     if(option==0){
@@ -86,7 +86,7 @@ var Summary = React.createClass({
   },
 
 	render: function(){
-    console.log("Speed data -->",this.props.speed,"Time data -->",this.props.timeData);
+    //console.log("Speed data -->",this.props.speed,"Time data -->",this.props.timeData);
 		var graphValue = this.state.graphValue;
     if(graphValue==0)
     return(
@@ -95,8 +95,7 @@ var Summary = React.createClass({
         onScroll={() => { console.log('onScroll!'); }}
         scrollEventThrottle={200}
         style={styles.scrollView}>
-      <View>
-              
+      <View> 
           <View style={styles.graphContainer}>
             <Text style={styles.bigTitle}>Summary</Text>
             <Text style={styles.title}>Activity : {activity}</Text>
@@ -107,8 +106,9 @@ var Summary = React.createClass({
               </TouchableHighlight>
               </View>
           </View>
-        
+          <View style={styles.pickerOneStyle}>
           <PickerIOS
+                style={styles.pickerStyle}
                 selectedValue={this.state.currentOption}
                 onValueChange={this._optionChanged}>
                 {
@@ -121,6 +121,7 @@ var Summary = React.createClass({
                     ))
                 }
             </PickerIOS>
+            </View>
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 horizontal={true}
@@ -131,7 +132,7 @@ var Summary = React.createClass({
                 >
             <View style={styles.latterHalf}>
               
-              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="elevation(in feet)" xData={this.props.timeData} yData={this.props.speed}/>
+              <DrawGraphs {...this.props} xAxisName="(in secs)" yAxisName="elevation(in feet)" xData={this.props.timeData} yData={this.props.speed}/>
               
           </View>
           </ScrollView>
@@ -156,8 +157,9 @@ var Summary = React.createClass({
               </TouchableHighlight>
               </View>
           </View>
-          
+          <View style={styles.pickerOneStyle}>
           <PickerIOS
+                style={styles.pickerStyle}
                 selectedValue={this.state.currentOption}
                 onValueChange={this._optionChanged}>
                 {
@@ -170,6 +172,7 @@ var Summary = React.createClass({
                     ))
                 }
             </PickerIOS>
+            </View>
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 horizontal={true}
@@ -205,8 +208,9 @@ var Summary = React.createClass({
               </TouchableHighlight>
               </View>
           </View>
-        
+          <View style={styles.pickerOneStyle}>
           <PickerIOS
+                style={styles.pickerStyle}
                 selectedValue={this.state.currentOption}
                 onValueChange={this._optionChanged}>
                 {
@@ -219,6 +223,7 @@ var Summary = React.createClass({
                     ))
                 }
             </PickerIOS>
+            </View>
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 horizontal={true}
@@ -255,6 +260,12 @@ var styles = StyleSheet.create({
     padding: 30,
     marginTop: 5,
     alignItems: "stretch"
+  },
+  pickerOneStyle: {
+    alignItems:"center",
+  },
+  pickerStyle : {
+    width:320,
   },
   wholeScreen:{
     //backgroundColor: '#F5FCFF',
@@ -334,6 +345,7 @@ var styles = StyleSheet.create({
   item:{
     flex : 1,
     height: 50,
+    width:320,
   },
 });
 

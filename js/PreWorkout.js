@@ -31,19 +31,32 @@ var ListViewSimpleExample = React.createClass({
   statics: {
     title: '<ListView> - Simple',
     description: 'Performant, scrollable list of data.'
-},
+  },
 
-getInitialState: function() {
+  getInitialState: function() {
     //console.log("Initialization..");
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
       dataSource: ds.cloneWithRows(['row1','row2']),
       dataSourceForActivity: ds.cloneWithRows(['row1','row2','row3']),
+      selectedActivity:"Running",
+    };
 
-  };
 
-  
+  },
+
+  refreshActivityData: function(data) {
+  // console.log(this.state);
+    this.setState({selectedActivity:data});
+
+  },
+  refreshWorkoutData: function(data) {
+  // console.log(this.state);
+  this.setState({selectedWorkout:data});
+
 },
+
+
 componentDidMount: function(){
   //console.log("Did Mounting...");
 
@@ -65,16 +78,16 @@ componentWillMount:function(){
 },
 
 getOptions: function(){
-    
+
     //activityName = this.state.selectedActivity;
     console.log("Get Options called.."+activityName);
     return (
-      
+
       <TouchableHighlight onPress={(this.onTabPressed.bind(this,count))} underlayColor="#EEEEEE">
       <View style={styles.container}>
       <View style={styles.rightContainer}>
-      <Text style={styles.title}>{listOptions[count]}</Text>
-      <Text style={styles.year}>{subTitle[count++]}</Text>
+      <Text style={styles.title}>{listOptions[count++]}</Text>
+      <Text style={styles.year}>{this.state.intialValue}</Text>
       <View style={styles.separator} />
       </View>
       </View>
@@ -83,8 +96,8 @@ getOptions: function(){
 
       );
     count++;
-},
-onStartPressed: function(){
+  },
+  onStartPressed: function(){
     SMBLEManager.initParameters("180D","2A37");
     
     
@@ -92,104 +105,117 @@ onStartPressed: function(){
     var Workout = require('./Workout');
 
     this.props.navigator.replace({
-            component: Workout,
-            componentConfig : {
-              title : "My New Title"
-            },
-          });  
-  
-},
+      component: Workout,
+      componentConfig : {
+        title : "My New Title"
+      },
+    });  
 
-onTabPressed: function(rowID){
+  },
+
+  onTabPressed: function(rowID){
     console.log("Tab pressed...."+rowID);
     if(rowID==0)
     {
       this.props.navigator.push({
-            component: ActivityOptions,
-            backButtonTitle: 'Back',
-
-            componentConfig : {
-              title : "My New Title"
-            },
-          });
+        component: ActivityOptions,
+        backButtonTitle: 'Back',
+        passProps : {obj: this},
+        componentConfig : {
+          title : "My New Title"
+        },
+      });
     }
     else
     {
       this.props.navigator.push({
-            component: WorkoutOptions,
-            backButtonTitle: 'Back', 
-            componentConfig : {
-              title : "My New Title"
-            },
-          });
+        component: WorkoutOptions,
+        backButtonTitle: 'Back',
+        passProps : {obj: this}, 
+        componentConfig : {
+          title : "My New Title"
+        },
+      });
     }
 
-      
-},
 
-render: function() {
+  },
+
+  render: function() {
     AsyncStorage.getItem("selectedActivity").then((value) =>{activityName=value});
     console.log("this is called.."+activityName);
     if(count!=0)
       count=0;
     return (
-        <View style ={styles.screenContainer}>
-        <View style = {styles.container}>
-        <ListView
-        //contentInset={{top:49}}
-        //automaticallyAdjustContentInsets={false}
-        dataSource={this.state.dataSource}
-        renderRow={this.getOptions}//{(rowData) => <Text>{rowData}</Text>}
-        style = {styles.listView}/>             
+      <View style ={styles.screenContainer}>
+          <View style = {styles.container}>
+          <TouchableHighlight onPress={(this.onTabPressed.bind(this,count))} underlayColor="#EEEEEE">
+            <View style={styles.container}>
+              <View style={styles.rightContainer}>
+              <Text style={styles.title}>{listOptions[count++]}</Text>
+              <Text style={styles.year}>{this.state.selectedActivity}</Text>
+              </View>
+              <View style={styles.separator} />
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={(this.onTabPressed.bind(this,count))} underlayColor="#EEEEEE">
+            <View style={styles.container}>
+              <View style={styles.rightContainer}>
+              <Text style={styles.title}>{listOptions[count++]}</Text>
+              <Text style={styles.year}>{this.state.selectedWorkout}</Text>
+              <View style={styles.separator} />
+              </View>
+            </View>
+          </TouchableHighlight>             
         </View>
-        <View style={styles.bottomContainer}>
-            <TouchableHighlight onPress={(this.onStartPressed)} underlayColor="#EEEEEE" style={styles.button}>
-            <Text style={styles.buttonText}>Start</Text>
-            </TouchableHighlight>
-        </View>
-        </View>
-    );
+      <View style={styles.bottomContainer}>
+      <TouchableHighlight onPress={(this.onStartPressed)} underlayColor="#EEEEEE" style={styles.button}>
+      <Text style={styles.buttonText}>Start</Text>
+      </TouchableHighlight>
+      </View>
+      </View>
+      );
 
 },
 
 });
 
 var styles = StyleSheet.create({
-    listView: {
-        paddingTop: 30,
+  listView: {
+    paddingTop: 30,
         //backgroundColor: '#F5FCFF',
         height:200,
-    },
-    screenContainer:{
+      },
+      screenContainer:{
         paddingTop:50,
-    },
-    container: {
+      },
+      container: {
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-        //backgroundColor: '#F5FCFF',
-    },
-    rightContainer: {
+        //flexDirection: 'row',
+        marginTop:10,
+        alignItems: 'stretch',
+        justifyContent: 'center',        //backgroundColor: '#F5FCFF',
+      },
+      rightContainer: {
         flex: 1,
         height: 70,
         alignItems : 'center',
         justifyContent: 'center',
-    },
-    bottomContainer:{
+      },
+      bottomContainer:{
         flex:1,
         justifyContent: 'flex-end',
         marginBottom:100,
-    },
-    title: {
+      },
+      title: {
         fontSize: 20,
         marginBottom: 6,
         textAlign: 'center',
-    },
-    year: {
+      },
+      year: {
         textAlign: 'center',
-    },
-    button: {
+      },
+      button: {
         height: 40,
         flex: 1,
         backgroundColor: "#FCB130",
@@ -208,7 +234,9 @@ var styles = StyleSheet.create({
   },
   separator: {
     height: 1,
-    backgroundColor: '#555555',
+    backgroundColor:"#7C7C7C",
+    marginRight:50,
+    marginLeft:50,
   },
 });
 module.exports = ListViewSimpleExample;

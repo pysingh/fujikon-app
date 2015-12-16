@@ -55,10 +55,12 @@ var Workout = React.createClass({
         console.log("HeartBeat-->"+data.value+" Time-->"+heartBeatDatacount);
         this.setState({BLEData : data.value});
         });
+  console.log("Timer starting...");
+  Timermanager.startTimer();
 
   subscriptionTimer = NativeAppEventEmitter.addListener("timerData", (data) => { 
         
-        console.log("app event emitter: receivedBLEData:", data.secData," : ",data.minData," : ",data.hourData);
+        console.log("TimerData:", data.secData," : ",data.minData," : ",data.hourData);
         this.setState({secData : data.secData});
         this.setState({minData : data.minData});
         this.setState({hourData : data.hourData});
@@ -93,11 +95,14 @@ var Workout = React.createClass({
       timeData=[];
       heartBeatData=[];
       timeData_heart=[];
+      pointCounts=0;
+      heartBeatDatacount=0;
+      Timermanager.resetTimer();
       navigator.geolocation.clearWatch(this.watchID);
  	},
   
   componentWillUnmount: function(){
-      Timermanager.resetTimer();
+      //Timermanager.resetTimer();
       subscriptionTimer.remove();
       subscriptionBLE.remove();
   },
@@ -124,14 +129,8 @@ var Workout = React.createClass({
       return 0.000; 
     },
 
- 	_displayTime: function(val){
- 		console.log(val);
- 		return val;
-
- 	},
-
  	saveData: function(key,value) {
-    console.log(key+" :storing :"+value);
+    //console.log(key+" :storing :"+value);
     AsyncStorage.setItem(key, value);
     this.setState({key : value});
   },
@@ -139,7 +138,7 @@ var Workout = React.createClass({
  	onStopPressed: function(){
  	  this.props.navigator.replace({
             component: Summary,
-            passProps:{speed : [30, 1, 1, 2, 3, 5, 21, 13, 21, 34, 55, 30, 23, 54, 76, 21, 32],timeData : [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
+            passProps:{speed : speedData,timeData : timeData,
               heartBeatData : heartBeatData,timeData_heart : timeData_heart},
           }
  			);
@@ -150,8 +149,9 @@ var Workout = React.createClass({
     //speedData= [];
     //timeData=[];
 		//console.log("Reaching...");
-		console.log("SpeedData->"+speedData+" TimeData"+timeData+" pointCounts"+pointCounts);
-    Timermanager.startTimer();
+		//console.log("SpeedData->"+speedData+" TimeData"+timeData+" pointCounts"+pointCounts);
+    
+    
 		return(
 			<View style={styles.wholeScreen}>
           <View style={styles.container}>
