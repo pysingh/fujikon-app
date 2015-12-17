@@ -5,7 +5,6 @@ var { SMBLEManager } = require('NativeModules');
 
 var ActivityOptions = require('./ActivityOptionListView');
 var WorkoutOptions = require('./WorkoutOptionsListView');
-var Geo = require('./Geolocation');
 
 
 var count = 0;
@@ -63,7 +62,6 @@ componentDidMount: function(){
 },
 
 componentWillMount:function(){
-  //console.log("Mounting..."+subTitle);
   AsyncStorage.getItem("selectedActivity").then((value) => {
       //console.log("Async value "+value);
       activityName = value;
@@ -80,7 +78,7 @@ componentWillMount:function(){
 getOptions: function(){
 
     //activityName = this.state.selectedActivity;
-    console.log("Get Options called.."+activityName);
+    //console.log("Get Options called.."+activityName);
     return (
 
       <TouchableHighlight onPress={(this.onTabPressed.bind(this,count))} underlayColor="#EEEEEE">
@@ -97,9 +95,10 @@ getOptions: function(){
       );
     count++;
   },
+  
   onStartPressed: function(){
     SMBLEManager.initParameters("180D","2A37");
-    
+   
     
 
     var Workout = require('./Workout');
@@ -142,8 +141,6 @@ getOptions: function(){
   },
 
   render: function() {
-    AsyncStorage.getItem("selectedActivity").then((value) =>{activityName=value});
-    console.log("this is called.."+activityName);
     if(count!=0)
       count=0;
     return (

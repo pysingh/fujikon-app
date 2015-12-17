@@ -10,6 +10,5 @@
 
 @interface SMBLEManager : NSObject <RCTBridgeModule>
 
--(void) initParameters:(NSString *)name;
 
 @end

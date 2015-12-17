@@ -8,7 +8,7 @@ var {
   TextInput,
   View,
   AsyncStorage,
-  TouchableHighlights,
+  TouchableHighlight,
   PickerIOS,
   AsyncStorage,
 } = React;
@@ -62,6 +62,10 @@ var TargetOptions = React.createClass({
     this.setState({key : value});
   },
 
+  onSetPressed: function(){
+    this.props.navigator.popToTop();
+  },
+
   render : function(){
     return(
     <View>
@@ -79,6 +83,9 @@ var TargetOptions = React.createClass({
           ))
       }
       </PickerIOS>
+      <TouchableHighlight onPress={(this.onSetPressed)} underlayColor="#EEEEEE" style={styles.button}>
+            <Text style={styles.buttonText}>Set</Text>
+            </TouchableHighlight>
     </View>
 
     </View>
@@ -91,7 +98,8 @@ var styles = StyleSheet.create({
   container: {
     padding: 30,
     marginTop: 5,
-    alignItems: "stretch"
+    alignItems: "stretch",
+    justifyContent: 'center',
   },
   subContainer:{
     flex :1,
@@ -102,31 +110,18 @@ var styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10
   },
-  formInput: {
-    height: 36,
-    padding: 10,
-    marginRight: 5,
-    marginBottom: 5,
-    marginTop: 5,
-    flex: 1,
-    fontSize: 18,
-    borderWidth: 1,
-    borderColor: "#555555",
-    borderRadius: 8,
-    color: "#555555"
-  },
   button: {
-    height: 36,
-    flex: 1,
-    backgroundColor: "#555555",
-    borderColor: "#555555",
-    borderWidth: 1,
     borderRadius: 8,
     marginTop: 10,
-    justifyContent: "center"
+    justifyContent: "center",
+    height: 36,
+    flex: 1,
+    backgroundColor: "#FCB130",
+    borderColor: "#555555",
   },
   buttonText: {
     fontSize: 18,
+    fontWeight:"500",
     color: "#ffffff",
     alignSelf: "center"
   },

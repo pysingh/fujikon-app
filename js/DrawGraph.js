@@ -52,7 +52,7 @@ class SimpleChart extends Component {
          xAxisArray : this.props.xData;
     yAxisArray : this.props.yData;
          
-         if((this.props.xData).length == 0)
+         if((this.props.xData).length <= 3)
         return(
             <View style={styles.container}>
                 <Text style={styles.note}>No Data to show.</Text>

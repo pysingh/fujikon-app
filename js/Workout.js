@@ -41,6 +41,7 @@ var Workout = React.createClass({
       initialSpeed : 'unknown',
       hearBeatData:[],
       timeData_heart:[],
+      altitudeValue:'unknown',
     };
   	},
 
@@ -48,6 +49,16 @@ var Workout = React.createClass({
 
   subscriptionBLE = NativeAppEventEmitter.addListener("receivedBLEData", (data) => { 
         
+        navigator.geolocation.getCurrentPosition(
+        (initialPosition) => this.setState({initialPosition}),
+        (error) => { 
+        alert(error.message)},
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+        );
+      this.watchID = navigator.geolocation.watchPosition((lastPosition) => {
+        this.setState({lastPosition});
+        });
+
         console.log("app event emitter: receivedBLEData:", data.value);
         heartBeatData.push(data.value);
         heartBeatDatacount = heartBeatDatacount +1;
@@ -64,6 +75,7 @@ var Workout = React.createClass({
         this.setState({secData : data.secData});
         this.setState({minData : data.minData});
         this.setState({hourData : data.hourData});
+        this.getLocationData(this.state.lastPosition.coords);
         });
 
 
@@ -108,7 +120,8 @@ var Workout = React.createClass({
   },
 
  	getLocationData: function(coordinates) {
-    var speed = JSON.stringify(coordinates,['latitude']);
+    
+    var speed = JSON.stringify(coordinates,['altitude']);
     var timeValue ;
     pointCounts = pointCounts +1;
     speed = (speed +'');
@@ -120,13 +133,19 @@ var Workout = React.createClass({
       {
         timeValue = pointCounts;
         speedInFloat = parseFloat(speedInFloat*3.28).toFixed(2); //Converting meters to feet.
-        speedData.push(speedInFloat.toString());
-        timeData.push(timeValue.toString());
+        if(timeValue<10 || timeValue%10==0)
+        {
+          console.log("time value-->"+timeValue);
+          speedData.push(speedInFloat.toString());
+          timeData.push(timeValue.toString());  
+        }
       }
-      return speedInFloat; 
+      console.log("Location data is called"+speedInFloat);
+      this.setState({altitudeValue:speedInFloat});
+      return;// speedInFloat; 
     }
     else
-      return 0.000; 
+      return;// 0.000; 
     },
 
  	saveData: function(key,value) {
@@ -166,7 +185,7 @@ var Workout = React.createClass({
           <TouchableHighlight onPress={(this.onStopPressed)} underlayColor="#EEEEEE" style={styles.button}>
           <Text style={styles.buttonText}>Stop</Text>
           </TouchableHighlight>
-          <Text style={styles.instructionFont}>The location data is being taken. {'\n'}Altitude Value :{this.getLocationData(this.state.lastPosition.coords)}</Text>
+          <Text style={styles.instructionFont}>The location data is being taken. {'\n'}Altitude Value :{this.state.altitudeValue}</Text>
         </View>
 		);
 
