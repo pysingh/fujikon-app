@@ -52,7 +52,6 @@ var ListViewSimpleExample = React.createClass({
   refreshWorkoutData: function(data) {
   // console.log(this.state);
   this.setState({selectedWorkout:data});
-
 },
 
 
@@ -95,12 +94,9 @@ getOptions: function(){
       );
     count++;
   },
-  
+
   onStartPressed: function(){
     SMBLEManager.initParameters("180D","2A37");
-   
-    
-
     var Workout = require('./Workout');
 
     this.props.navigator.replace({
