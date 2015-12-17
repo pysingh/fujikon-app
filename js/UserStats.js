@@ -24,6 +24,7 @@ var {
 
 var buttonDisabled = 0;
 var genderArray=['Male','Female'];
+var devWidth=320;
 var UserStats = React.createClass({
 
   
@@ -78,6 +79,7 @@ var UserStats = React.createClass({
       isGenderOptionsVisible: false,
       isAgeVisible: false,  
       date: this.props.date,
+      deviceWidth : '',
     };
   },
 
@@ -121,9 +123,18 @@ var UserStats = React.createClass({
 
   _renderGenderOptions: function(){
     //console.log("calledAgain Gender"+this.state.isGenderOptionsVisible);
+    //console.log(this.refs.sampleView.measure(sampleMeasurement()))
+
+
+    //this.refs.sampleView.measure(this.logLayout);
     if (this.state.isGenderOptionsVisible) {
             return (
-                <View style={styles.restContainer} removeClippedSubviews={true}>
+                  <View style={styles.genderPickerStyle}>
+                  <View>
+                    <TouchableHighlight onPress={() => this.setState({isGenderOptionsVisible:false})} style={styles.pickerDoneStyle}>
+                      <Text style={styles.doneText}>Done</Text>
+                    </TouchableHighlight>
+                  </View>
                   <PickerIOS
                     selectedValue={this.state.currentGender}
                     onValueChange={this._optionChanged}
@@ -138,12 +149,16 @@ var UserStats = React.createClass({
                         ))
                     }
                 </PickerIOS>
+                
                 </View>
+
+                
             );
         } else {
             return;
         }
   },
+
   _setGenderModalVisible: function(visible) {
     this.setState({genderModalVisible: visible});
   },
@@ -155,15 +170,26 @@ var UserStats = React.createClass({
         });
   },
 
+  logLayout:function(ox, oy, width, height, px, py){
+      devWidth=width;
+      this.setState({deviceWidth:width});
+  },
   _renderDatePicker: function(){
     
     if(this.state.isAgeVisible){
       return(
+      <View style={styles.genderPickerStyle}>
+          <View>
+              <TouchableHighlight onPress={() => this.setState({isAgeVisible:false})} style={styles.pickerDoneStyle}>
+                  <Text style={styles.doneText}>Done</Text>
+              </TouchableHighlight>
+          </View>
       <View style={styles.restContainer}>
         <DatePickerIOS
           date={this.state.date}
           mode="date"
           onDateChange={this.onDateChange}/>
+      </View>
       </View>
       );
     }
@@ -190,56 +216,63 @@ var UserStats = React.createClass({
         scrollEventThrottle={200}
         style={styles.scrollView}
         showsVerticalScrollIndicator={true}
-        scrollable={false}>
-      <View>
+        //scrollable={false}
+        keyboardShouldPersistTaps={false} >
+      <View ref="sampleView">
             <View style={styles.container}>
-             <View style={styles.inputcontainer}>
-                <Text style={styles.btnText}>Gender :</Text>
-                <TouchableHighlight
-                  style={styles.btn}
-                  onPress={() => this.toggleGender()}
-                  underlayColor='#dddddd'>
-                  <Text style={styles.labelText}>{genderArray[this.state.currentGender]}</Text>
-                </TouchableHighlight>
-            </View>
-            
-            <View style={styles.inputcontainer}>
-                <Text style={styles.btnText}>Height :</Text>
-                <TextInput
-            placeholder="     Height(cms)"
-            returnKeyType='next'
-            keyboardType='numeric'
-            onChange={(event) => this.setState({height: event.nativeEvent.text})}
-            style={styles.formInput}/>
-            </View>
-            
-            <View style={styles.inputcontainer}>
-                <Text style={styles.btnText}>Weight :</Text>
-                <TextInput
-            placeholder="     Weight(lbs)"
-            keyboardType='numeric'
-            onChange={(event) => this.setState({weight: event.nativeEvent.text})}
-            style={styles.formInput}
-            />
-            </View>
+               <View style={styles.inputcontainer}>
+                  <Text style={styles.btnText}>Gender :</Text>
+                  <TouchableHighlight
+                    style={styles.btn}
+                    onPress={() => this.toggleGender()}
+                    underlayColor='#dddddd'>
+                    <Text style={styles.labelText}>{genderArray[this.state.currentGender]}</Text>
+                  </TouchableHighlight>
+              </View>
+              <View style={styles.inputcontainer}>
+              
+                  <Text style={styles.btnText}>Height :</Text>
+                  <TextInput
+                ref="heightInput"
+              placeholder="Height(cms)"
+              returnKeyType='next'
+              keyboardType='numeric'
+              onChange={(event) => this.setState({height: event.nativeEvent.text})}
+              onFocus={()=>{this.refs.heightInput.focus()}}
+              style={styles.formInput}/>
+              </View>
+           
+              <View style={styles.inputcontainer}>
+                  <Text style={styles.btnText}>Weight :</Text>
+                  <TextInput
+                  ref="weightInput"
+              placeholder="Weight(lbs)"
+              keyboardType='numeric'
+              onChange={(event) => this.setState({weight: event.nativeEvent.text})}
+              onFocus={()=>{this.refs.weightInput.focus()}}
+              style={styles.formInput}
+              />
+              </View>
 
-            <View style={styles.inputcontainer}>
-                <Text style={styles.btnText}>DOB :</Text>
-                <TouchableHighlight
-                  style={styles.btn}
-                  onPress={() => this.toggleDate()}
-                  underlayColor='#dddddd'>
-                  <Text style={styles.labelText}>{this.state.date.toLocaleDateString()}</Text>
-                </TouchableHighlight>
-            </View>
+              <View style={styles.inputcontainer}>
+                  <Text style={styles.btnText}>DOB :</Text>
+                  <TouchableHighlight
+                    style={styles.btn}
+                    onPress={() => this.toggleDate()}
+                    underlayColor='#dddddd'>
+                    <Text style={styles.labelText}>{this.state.date.toLocaleDateString()}</Text>
+                  </TouchableHighlight>
+              </View>
       
-            <TouchableHighlight onPress={(this.onSubmitPressed)} underlayColor="#EEEEEE" style={styles.button}>
-            <Text style={styles.buttonText}>Submit</Text>
-            </TouchableHighlight>
-             <Text style={styles.instructionFont}>Please enable location services in-order to use the app.</Text>
-             </View>
+              <TouchableHighlight onPress={(this.onSubmitPressed)} underlayColor="#EEEEEE" style={styles.button}>
+              <Text style={styles.buttonText}>Submit</Text>
+              </TouchableHighlight>
+               <Text style={styles.instructionFont}>Please enable location services in-order to use the app.</Text>
+            </View>
+            <View style={styles.restContainer} removeClippedSubviews={true}>
              {this._renderGenderOptions()}
              {this._renderDatePicker()}
+            </View>
             
       </View>
       </ScrollView>
@@ -252,8 +285,8 @@ var styles = StyleSheet.create({
   container: {
     padding: 30,
     marginTop: 65,
-    alignItems: "stretch",
-    justifyContent: 'center',
+    //alignItems: "stretch",
+    //justifyContent: 'center',
   },
   rowContainer :{
 
@@ -264,13 +297,31 @@ var styles = StyleSheet.create({
     //padding:30,
     //flexDirection: "column",
     alignItems:'center',
-    //justifyContent: 'center',
+    justifyContent: 'center',
     //backgroundColor: '#fff',
   },
   pickerStyle:{
-    width:320,
+    width:414,
   },
-  scrollView: {
+  genderPickerStyle:{
+    flex:1,
+    alignItems:'stretch',
+    width:414,
+    borderWidth:1,
+    borderColor:'#FCB130',
+    backgroundColor:'#FCB130',
+  },
+  pickerDoneStyle:{
+    height: 30,
+    alignSelf:'flex-end',
+    marginTop:5,
+    marginRight:10,
+  },
+  doneText:{
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  View: {
     //backgroundColor: '#6A85B1',
     height: 300,
 
@@ -338,12 +389,13 @@ var styles = StyleSheet.create({
   inputcontainer: {
     marginTop: 5,
     padding: 3,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems:'stretch'
   },
   btn:{
     flex : 2,
     height: 40,
-    //padding: 10,
+    padding: 10,
     //marginRight: 5,
     //marginBottom: 5,
     //marginTop: 5,
@@ -352,7 +404,7 @@ var styles = StyleSheet.create({
     borderColor: "#555555",
     borderRadius: 8,
     //color: "#555555",
-    justifyContent:"center",
+    //justifyContent:"center",
     //alignSelf:"center"
   },
   btnText:{
@@ -366,23 +418,23 @@ var styles = StyleSheet.create({
     color: "#555555",
   },
   labelText:{
-    height: 40,
+    //height: 40,
     //justifyContent:"center",
-    alignSelf:"center",
-    fontSize: 15,
-    color: "#555555",
+    //alignSelf:"center",
+    fontSize: 18,
+    //color: "#555555",
     //marginRight: 5,
     //marginBottom: 5,
-    marginTop: 10,
+    //marginTop: 10,
     //borderWidth: 1,
     //borderColor: "#555555",
     //borderRadius: 8,
-    flex:2,
+    //flex:2,
   },
   formInput: {
     height: 40,
-    //padding: 10,
-    //marginRight: 15,
+    padding: 10,
+    //marginRight: 5,
     //marginBottom: 5,
     //marginTop: 5,
     flex: 2,
@@ -392,8 +444,8 @@ var styles = StyleSheet.create({
     borderRadius: 8,
     color: "#555555",
     //alignItems:'center',
-    alignSelf:'center',
-    justifyContent:'center',
+    //alignSelf:'center',
+    //justifyContent:'center',
   },
 
 });

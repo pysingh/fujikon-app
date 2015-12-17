@@ -155,7 +155,7 @@ var Workout = React.createClass({
   },
 
  	onStopPressed: function(){
- 	  this.props.navigator.replace({
+    this.props.navigator.replace({
             component: Summary,
             passProps:{speed : speedData,timeData : timeData,
               heartBeatData : heartBeatData,timeData_heart : timeData_heart},
@@ -165,8 +165,6 @@ var Workout = React.createClass({
 
 	
 	render: function(){
-    //speedData= [];
-    //timeData=[];
 		//console.log("Reaching...");
 		//console.log("SpeedData->"+speedData+" TimeData"+timeData+" pointCounts"+pointCounts);
     
@@ -176,7 +174,7 @@ var Workout = React.createClass({
           <View style={styles.container}>
           <Text style={styles.title}>Time: {this.state.hourData}:{this.state.minData}:{this.state.secData}</Text>
           <Text>------------------------------</Text>
-          <Text style={styles.title}>Target : {target}</Text>
+          <Text style={styles.title}>Target : {this.state.targetWorkoutOption}</Text>
           <Text>------------------------------</Text>
           <Text style={styles.title}>HeartBeat : {this.state.BLEData}</Text>
 

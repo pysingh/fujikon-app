@@ -23,10 +23,16 @@ var styles = StyleSheet.create({
         //marginLeft: 5,
     },
     note:{
-        alignSelf:'center',
+        //alignSelf:'center',
         //marginLeft:20,
-        marginRight:20,
+        //marginRight:20,
         alignItems:'center',
+    },
+    instructionContainer:{
+        //alignSelf:'center',
+        //justifyContent:'center',
+        padding: 150,
+        //alignItems: "stretch",
     },
 });
 
@@ -49,12 +55,12 @@ class SimpleChart extends Component {
     
 
     render() {
-         xAxisArray : this.props.xData;
-    yAxisArray : this.props.yData;
+        xAxisArray : this.props.xData;
+        yAxisArray : this.props.yData;
          
          if((this.props.xData).length <= 3)
         return(
-            <View style={styles.container}>
+            <View style={styles.instructionContainer}>
                 <Text style={styles.note}>No Data to show.</Text>
              </View>
         );

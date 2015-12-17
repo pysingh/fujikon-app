@@ -96,8 +96,9 @@ getOptions: function(){
   },
 
   onStartPressed: function(){
-    SMBLEManager.initParameters("180D","2A37");
     var Workout = require('./Workout');
+    SMBLEManager.initParameters("180D","2A37");
+    
 
     this.props.navigator.replace({
       component: Workout,

@@ -43,6 +43,12 @@ RCT_EXPORT_METHOD(initParameters:(NSString *)service :(NSString *)characteristic
   _data = [[NSMutableData alloc] init];
   _servicesArray = [[NSArray alloc] initWithObjects:[CBUUID UUIDWithString:serviceUUID], nil];
   _characteristicArray = [[NSArray alloc] initWithObjects:[CBUUID UUIDWithString:characteristicUUID], nil];
+
+}
+RCT_EXPORT_METHOD(stopScannig)
+{
+  [self.centralManager stopScan];
+  _centralManager=nil;
 }
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
@@ -50,6 +56,12 @@ RCT_EXPORT_METHOD(initParameters:(NSString *)service :(NSString *)characteristic
   if (central.state != CBCentralManagerStatePoweredOn) {
     //Deal with othre states as well : CBCentralManagerStateResetting,CBCentralManagerStateUnsupported,CBCentralManagerStateUnauthorized,CBCentralManagerStatePoweredOff,CBCentralManagerStatePoweredOn,
     NSLog(@"Returning.. Power is not on..");
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Bluetooth is not on."
+                                                    message:@"Heartbeat data can not be recorded."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
     return;
     }
   // Start scanning
@@ -63,6 +75,12 @@ RCT_EXPORT_METHOD(initParameters:(NSString *)service :(NSString *)characteristic
   [self.centralManager scanForPeripheralsWithServices:_servicesArray options:@{ CBCentralManagerScanOptionAllowDuplicatesKey : @YES }];
   
   NSLog(@"Scanning started");
+  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"BLE Connection"
+                                                  message:@"Scanning..."
+                                                 delegate:nil
+                                        cancelButtonTitle:@"OK"
+                                        otherButtonTitles:nil];
+  [alert show];
 }
 
 /** This callback comes whenever a peripheral that is advertising the TRANSFER_SERVICE_UUID is discovered.
@@ -107,6 +125,12 @@ RCT_EXPORT_METHOD(initParameters:(NSString *)service :(NSString *)characteristic
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
 {
   NSLog(@"Peripheral Connected");
+  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"BLE Connection"
+                                                  message:@"Device Connected."
+                                                 delegate:nil
+                                        cancelButtonTitle:@"OK"
+                                        otherButtonTitles:nil];
+  [alert show];
   
   // Stop scanning
   [self.centralManager stopScan];

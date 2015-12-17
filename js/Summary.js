@@ -19,6 +19,8 @@ var {
 
 var target = "Time";
 var activity,workout;
+var x=[];
+var y=[];
 //var speedData = [];
 
 
@@ -132,7 +134,7 @@ var Summary = React.createClass({
                 >
             <View style={styles.latterHalf}>
               
-              <DrawGraphs {...this.props} xAxisName="(in secs)" yAxisName="elevation(in feet)" xData={this.props.timeData} yData={this.props.speed}/>
+              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="elevation(in feet)" xData={this.props.timeData} yData={this.props.speed}/>
               
           </View>
           </ScrollView>
@@ -182,13 +184,12 @@ var Summary = React.createClass({
                 scrollEventThrottle={500}
                 >
             <View style={styles.latterHalf}>
-
-          
-            <Text>No Data to show.</Text>
-          </View>
-          </ScrollView>
+              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="speed(in m/s)" xData={x} yData={y}/>
+            </View>
+            </ScrollView>
         </View>
         </ScrollView>
+      
     );
   else
     return(
@@ -265,7 +266,7 @@ var styles = StyleSheet.create({
     alignItems:"center",
   },
   pickerStyle : {
-    width:320,
+    width:414,
   },
   wholeScreen:{
     //backgroundColor: '#F5FCFF',
@@ -302,8 +303,9 @@ var styles = StyleSheet.create({
     //marginBottom:10,
   },
   latterHalf:{
-    flex:1,
-    alignItems:'center'
+    //flex:1,
+    alignItems:'center',
+    //justifyContent:'center',
   },
   graphContainer:{
     flex: 1,
