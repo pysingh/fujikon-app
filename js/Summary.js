@@ -127,16 +127,12 @@ var Summary = React.createClass({
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 horizontal={true}
-                style={[styles.scrollView, styles.horizontalScrollView]}
+                style={styles.horizontalScrollView}
                 pagingEnabled={true}
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-            <View style={styles.latterHalf}>
-              
-              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="elevation(in feet)" xData={this.props.timeData} yData={this.props.speed}/>
-              
-          </View>
+              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="speed(in m/s)" xData={this.props.timeData} yData={this.props.speed}/>
           </ScrollView>
         </View>
         </ScrollView>
@@ -282,7 +278,11 @@ var styles = StyleSheet.create({
     height: 300,
   },
   horizontalScrollView: {
-    height: 600,
+    height: 300,
+    // width: 300,
+    //backgroundColor: '#43878',
+    left:0,
+    right:0,
     //flex:1,
   },
   buttonContainer:{
@@ -303,8 +303,10 @@ var styles = StyleSheet.create({
     //marginBottom:10,
   },
   latterHalf:{
-    //flex:1,
-    alignItems:'center',
+    flex:1,
+    // alignItems:'center',
+    width: 1000,
+    backgroundColor: '#0000FF',
     //justifyContent:'center',
   },
   graphContainer:{

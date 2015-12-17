@@ -1,5 +1,6 @@
 var React = require('react-native');
 var RNChart = require('react-native-chart-nosensezzz');
+var countWidth=
 
 var {
     StyleSheet, View, Component,Text,
@@ -7,16 +8,17 @@ var {
 
 var styles = StyleSheet.create({
     container: {
-        flex: 1, justifyContent: 'center', alignItems: 'center'
+        flex: 1, justifyContent: 'center', alignItems: 'center',width: 1000,
     },
     chart: {
         // position: 'absolute', top: 100, left: 16, bottom: 100,right: 100
         position: 'absolute', 
         //top: 80, 
-        width: 700, 
+        //width: 700, 
         height: 200, 
         left: 0,
-        //right: -2000,
+        flex:1,
+        right: -800,
         //marginRight: 30,
         //marginBottom: 20,
         marginTop: 10,
