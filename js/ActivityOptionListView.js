@@ -57,7 +57,7 @@ saveData: function(key,value) {
 onTabPressed: function(rowID){
     //console.log("array : "+activityOptions+"count :"+rowID);
     {this._onValueChange(activityOptions[rowID])};
-    //this.saveData("selectedActivity",activityOptions[rowID]);
+    this.saveData("selectedActivity",activityOptions[rowID]);
     //console.log("Delegation..."+PreWorkout.activityName);
     // console.log(this.props.obj);
     // this.props.obj.setState({initialValue:"Walking"});
