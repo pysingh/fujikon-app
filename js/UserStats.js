@@ -3,6 +3,8 @@
 var React = require('react-native');
 var Geolocation = require('./Geolocation');
 var PreWorkout = require('./PreWorkout');
+var Dimensions = require('Dimensions');
+var {width, height} = Dimensions.get('window');
 
 exports.framework = 'React';
 exports.title = 'Geolocation';
@@ -306,7 +308,7 @@ var styles = StyleSheet.create({
   genderPickerStyle:{
     flex:1,
     alignItems:'stretch',
-    width:414,
+    width:width,
     borderWidth:1,
     borderColor:'#FCB130',
     backgroundColor:'#FCB130',

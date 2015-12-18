@@ -1,42 +1,16 @@
 var React = require('react-native');
 var RNChart = require('react-native-chart-nosensezzz');
-var countWidth=
+var Dimensions = require('Dimensions');
+var {width, height} = Dimensions.get('window');
+var dynamicGraphWidth=0;
+var dynamicContainerWidth=0;
+var isArrayZero=0;
 
 var {
     StyleSheet, View, Component,Text,
 } = React;
 
-var styles = StyleSheet.create({
-    container: {
-        flex: 1, justifyContent: 'center', alignItems: 'center',width: 1000,
-    },
-    chart: {
-        // position: 'absolute', top: 100, left: 16, bottom: 100,right: 100
-        position: 'absolute', 
-        //top: 80, 
-        //width: 700, 
-        height: 200, 
-        left: 0,
-        flex:1,
-        right: -800,
-        //marginRight: 30,
-        //marginBottom: 20,
-        marginTop: 10,
-        //marginLeft: 5,
-    },
-    note:{
-        //alignSelf:'center',
-        //marginLeft:20,
-        //marginRight:20,
-        alignItems:'center',
-    },
-    instructionContainer:{
-        //alignSelf:'center',
-        //justifyContent:'center',
-        padding: 150,
-        //alignItems: "stretch",
-    },
-});
+
 
 
 //var xLabels = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16'];
@@ -56,11 +30,57 @@ var styles = StyleSheet.create({
 class SimpleChart extends Component {
     
 
+    applyMultiplyingFactor(){
+        noOfPoints = (this.props.xData).length;
+        if(noOfPoints < 10)
+        {
+            dynamicGraphWidth=400;
+            dynamicContainerWidth=600;
+            console.log("Under 10 -->"+dynamicGraphWidth+"-->"+dynamicContainerWidth);
+        }   
+        else
+        {
+            dynamicGraphWidth= width*(noOfPoints/10);
+            dynamicContainerWidth = dynamicGraphWidth+200;
+            console.log("Above 50 -->"+dynamicGraphWidth+"-->"+dynamicContainerWidth);    
+        }
+
+    }
+
+    chartStyle(){
+        return{
+            position: 'absolute', 
+            width: dynamicGraphWidth, 
+            height: 200, 
+            left: 0,
+            flex:1,
+            marginTop: 10,
+        }
+    }
+
+    containerStyle(){
+        return{
+            flex: 1, 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            width:dynamicContainerWidth,
+        }
+    }
+
+
     render() {
         xAxisArray : this.props.xData;
         yAxisArray : this.props.yData;
-         
-         if((this.props.xData).length <= 3)
+        
+
+        this.applyMultiplyingFactor();
+        for (i = 0; i < (this.props.yData).length; i++) { 
+                if((this.props.yData)[i]!== 0){
+                    isArrayZero=1;
+                }
+        }
+
+         if((this.props.xData).length <= 3 || isArrayZero==0)
         return(
             <View style={styles.instructionContainer}>
                 <Text style={styles.note}>No Data to show.</Text>
@@ -68,8 +88,8 @@ class SimpleChart extends Component {
         );
         
         return (
-            <View style={styles.container}>
-            <RNChart style={styles.chart}
+            <View style={this.containerStyle()}>
+            <RNChart style={this.chartStyle()}
             chartData={[{
                 name:'LineChart',
                 lineWidth:2,
@@ -87,5 +107,37 @@ class SimpleChart extends Component {
             );
     }
 }
+
+var styles = StyleSheet.create({
+    container: {
+        flex: 1, justifyContent: 'center', alignItems: 'center',width:dynamicContainerWidth,
+    },
+    chart: {
+        // position: 'absolute', top: 100, left: 16, bottom: 100,right: 100
+        position: 'absolute', 
+        //top: 80, 
+        width: dynamicGraphWidth, 
+        height: 200, 
+        left: 0,
+        flex:1,
+        //right: dynamicGraphWidth,
+        //marginRight: 30,
+        //marginBottom: 20,
+        marginTop: 10,
+        //marginLeft: 5,
+    },
+    note:{
+        //alignSelf:'center',
+        //marginLeft:20,
+        //marginRight:20,
+        alignItems:'center',
+    },
+    instructionContainer:{
+        //alignSelf:'center',
+        //justifyContent:'center',
+        padding: 150,
+        //alignItems: "stretch",
+    },
+});
 
 module.exports = SimpleChart;

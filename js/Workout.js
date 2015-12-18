@@ -21,9 +21,11 @@ var {
 
 
 var target = "Running";
-var speedData = [];
+var elevationData = [];
 var timeData = [];
 var elevationData = [];
+var speedData = [];
+var timeDataForSpeed = [];
 var pointCounts = 0;
 var subscriptionBLE,subscriptionTimer;
 var heartBeatDatacount=0;
@@ -39,8 +41,9 @@ var Workout = React.createClass({
       initialPosition: 'unknown',
       lastPosition: 'unknown',
       initialSpeed : 'unknown',
-      hearBeatData:[],
-      timeData_heart:[],
+      //hearBeatData:[],
+      //timeData_heart:[],
+
       altitudeValue:'unknown',
     };
   	},
@@ -76,6 +79,7 @@ var Workout = React.createClass({
         this.setState({minData : data.minData});
         this.setState({hourData : data.hourData});
         this.getLocationData(this.state.lastPosition.coords);
+        //this.getSpeedData(this.state.lastPosition.coords);
         });
 
 
@@ -103,7 +107,7 @@ var Workout = React.createClass({
 
  	},
 	componentWillMount: function() {
-    	speedData=[];
+    	elevationData=[];
       timeData=[];
       heartBeatData=[];
       timeData_heart=[];
@@ -115,13 +119,43 @@ var Workout = React.createClass({
   
   componentWillUnmount: function(){
       //Timermanager.resetTimer();
+      console.log("Removing subscriptions....")
       subscriptionTimer.remove();
       subscriptionBLE.remove();
   },
 
  	getLocationData: function(coordinates) {
     
-    var speed = JSON.stringify(coordinates,['altitude']);
+    var elevation = JSON.stringify(coordinates,['altitude']);
+    var timeValue ;
+    pointCounts = pointCounts +1;
+    elevation = (elevation +'');
+    elevation = elevation.split(":"); 
+    if(elevation)
+    {
+      var elevationInFloat = parseFloat(elevation[1]).toFixed(2);
+      if(elevationInFloat.toString() != 'NaN')
+      {
+        timeValue = pointCounts;
+        elevationInFloat = parseFloat(elevationInFloat*3.28).toFixed(2); //Converting meters to feet.
+        if(timeValue<10 || timeValue%10==0)
+        {
+          console.log("elevation value-->"+elevationInFloat);
+          elevationData.push(elevationInFloat.toString());
+          timeData.push(timeValue.toString());  
+        }
+      }
+      //console.log("Location data is called"+elevationInFloat);
+      this.setState({altitudeValue:elevationInFloat});
+      return;// elevationInFloat; 
+    }
+    else
+      return;// 0.000; 
+    },
+
+    getSpeedData: function(coordinates) {
+    
+    var speed = JSON.stringify(coordinates,['speed']);
     var timeValue ;
     pointCounts = pointCounts +1;
     speed = (speed +'');
@@ -132,20 +166,19 @@ var Workout = React.createClass({
       if(speedInFloat.toString() != 'NaN')
       {
         timeValue = pointCounts;
-        speedInFloat = parseFloat(speedInFloat*3.28).toFixed(2); //Converting meters to feet.
+        speedInFloat = parseFloat(speedInFloat).toFixed(2); 
         if(timeValue<10 || timeValue%10==0)
         {
-          console.log("time value-->"+timeValue);
+          console.log("speed value-->"+speedInFloat);
           speedData.push(speedInFloat.toString());
-          timeData.push(timeValue.toString());  
+          timeDataForSpeed.push(timeValue.toString());  
         }
       }
-      console.log("Location data is called"+speedInFloat);
-      this.setState({altitudeValue:speedInFloat});
-      return;// speedInFloat; 
+      //this.setState({altitudeValue:speedInFloat});
+      return;
     }
     else
-      return;// 0.000; 
+      return;
     },
 
  	saveData: function(key,value) {
@@ -157,7 +190,8 @@ var Workout = React.createClass({
  	onStopPressed: function(){
     this.props.navigator.replace({
             component: Summary,
-            passProps:{speed : speedData,timeData : timeData,
+            passProps:{elevationData : elevationData,timeData : timeData,speedData:speedData,
+              timeDataForSpeed:timeDataForSpeed,
               heartBeatData : heartBeatData,timeData_heart : timeData_heart},
           }
  			);

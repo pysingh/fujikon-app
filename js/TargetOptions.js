@@ -1,6 +1,8 @@
 'use strict';
 
 var React = require('react-native');
+var Dimensions = require('Dimensions');
+var {width, height} = Dimensions.get('window');
 
 var {  
   StyleSheet,
@@ -72,7 +74,8 @@ var TargetOptions = React.createClass({
     <View style={styles.container}>
       <PickerIOS
       selectedValue={this.state.currentOption}
-      onValueChange={this._optionChanged}>
+      onValueChange={this._optionChanged}
+      style={styles.pickerStyle}>
       {
         this.state.targetOptions.map((item)=> (
             <PickerIOS
@@ -83,11 +86,12 @@ var TargetOptions = React.createClass({
           ))
       }
       </PickerIOS>
+      </View>
+      <View style={styles.buttonContainer}>
       <TouchableHighlight onPress={(this.onSetPressed)} underlayColor="#EEEEEE" style={styles.button}>
             <Text style={styles.buttonText}>Set</Text>
             </TouchableHighlight>
-    </View>
-
+      </View>
     </View>
     );
 }
@@ -96,10 +100,18 @@ var TargetOptions = React.createClass({
 
 var styles = StyleSheet.create({
   container: {
-    padding: 30,
+    //padding: 30,
     marginTop: 5,
-    alignItems: "stretch",
+    alignItems: "center",
     justifyContent: 'center',
+  },
+  buttonContainer:{
+    alignItems:"stretch",
+    padding:30
+  },
+  pickerStyle:{
+    width:width,
+    //width:height,
   },
   subContainer:{
     flex :1,
@@ -118,6 +130,7 @@ var styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FCB130",
     borderColor: "#555555",
+    //alignItems:"stretch",
   },
   buttonText: {
     fontSize: 18,

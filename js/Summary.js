@@ -3,7 +3,8 @@
 var React = require('react-native');
 var DrawGraphs = require('./DrawGraph');
 var TargetOptions = require('./TargetOptions');
-
+var Dimensions = require('Dimensions');
+var {width, height} = Dimensions.get('window');
 
 var {  
   StyleSheet,
@@ -132,7 +133,7 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="speed(in m/s)" xData={this.props.timeData} yData={this.props.speed}/>
+              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="elevation(in ft)" xData={this.props.timeData} yData={this.props.elevationData}/>
           </ScrollView>
         </View>
         </ScrollView>
@@ -144,7 +145,7 @@ var Summary = React.createClass({
         onScroll={() => { console.log('onScroll!'); }}
         scrollEventThrottle={200}
         style={styles.scrollView}>
-      <View>
+      <View> 
           <View style={styles.graphContainer}>
             <Text style={styles.bigTitle}>Summary</Text>
             <Text style={styles.title}>Activity : {activity}</Text>
@@ -174,27 +175,25 @@ var Summary = React.createClass({
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 horizontal={true}
-                style={[styles.scrollView, styles.horizontalScrollView]}
+                style={styles.horizontalScrollView}
                 pagingEnabled={true}
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-            <View style={styles.latterHalf}>
-              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="speed(in m/s)" xData={x} yData={y}/>
-            </View>
-            </ScrollView>
+              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="speed(in m/s)" xData={this.props.timeDataForSpeed} yData={this.props.speedData}/>
+          </ScrollView>
         </View>
         </ScrollView>
       
     );
   else
     return(
-      <ScrollView
+     <ScrollView
         automaticallyAdjustContentInsets={false}
         onScroll={() => { console.log('onScroll!'); }}
         scrollEventThrottle={200}
         style={styles.scrollView}>
-      <View>
+      <View> 
           <View style={styles.graphContainer}>
             <Text style={styles.bigTitle}>Summary</Text>
             <Text style={styles.title}>Activity : {activity}</Text>
@@ -224,16 +223,13 @@ var Summary = React.createClass({
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 horizontal={true}
-                style={[styles.scrollView, styles.horizontalScrollView]}
+                style={styles.horizontalScrollView}
                 pagingEnabled={true}
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-            <View style={styles.latterHalf}>
-              
-              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="Heartbeat(bpm)" xData={this.props.timeData_heart} yData={this.props.heartBeatData}/>
-            </View>
-            </ScrollView>
+              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="HeartBeat(bpm)" xData={this.props.timeData_heart} yData={this.props.heartBeatData}/>
+          </ScrollView>
         </View>
         </ScrollView>
     );
@@ -262,7 +258,7 @@ var styles = StyleSheet.create({
     alignItems:"center",
   },
   pickerStyle : {
-    width:414,
+    width:width,
   },
   wholeScreen:{
     //backgroundColor: '#F5FCFF',
@@ -305,7 +301,7 @@ var styles = StyleSheet.create({
   latterHalf:{
     flex:1,
     // alignItems:'center',
-    width: 1000,
+    //width: 1000,
     backgroundColor: '#0000FF',
     //justifyContent:'center',
   },
