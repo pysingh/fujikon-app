@@ -22,6 +22,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		6E6C88901C244A17004A9285 /* Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6C888F1C244A17004A9285 /* Orientation.m */; };
 		6E9D8A571BEB97B10002E9DC /* libRNChart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E9D8A561BEB97A50002E9DC /* libRNChart.a */; };
 		6EF36FD71C16E167000C208B /* Timermanager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF36FD61C16E167000C208B /* Timermanager.m */; };
 		7D51FD361C1A9C4E004F791F /* SMBLEManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D51FD351C1A9C4E004F791F /* SMBLEManager.m */; };
@@ -135,6 +136,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Healthmonitor/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Healthmonitor/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		6E6C888E1C244A17004A9285 /* Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Orientation.h; sourceTree = "<group>"; };
+		6E6C888F1C244A17004A9285 /* Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Orientation.m; sourceTree = "<group>"; };
 		6E9D8A511BEB97A50002E9DC /* RNChart.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNChart.xcodeproj; path = "../node_modules/react-native-chart-nosensezzz/RNChart.xcodeproj"; sourceTree = "<group>"; };
 		6EF36FD51C16E167000C208B /* Timermanager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timermanager.h; path = Healthmonitor/Timermanager.h; sourceTree = "<group>"; };
 		6EF36FD61C16E167000C208B /* Timermanager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Timermanager.m; path = Healthmonitor/Timermanager.m; sourceTree = "<group>"; };
@@ -272,6 +275,16 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6E6C888D1C244A17004A9285 /* RCTOrientation */ = {
+			isa = PBXGroup;
+			children = (
+				6E6C888E1C244A17004A9285 /* Orientation.h */,
+				6E6C888F1C244A17004A9285 /* Orientation.m */,
+			);
+			name = RCTOrientation;
+			path = "../node_modules/react-native-orientation/RCTOrientation";
+			sourceTree = "<group>";
+		};
 		6E9D8A521BEB97A50002E9DC /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -317,6 +330,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				6E6C888D1C244A17004A9285 /* RCTOrientation */,
 				13B07FAE1A68108700A75B9A /* Healthmonitor */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* HealthmonitorTests */,
@@ -572,6 +586,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				6EF36FD71C16E167000C208B /* Timermanager.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				6E6C88901C244A17004A9285 /* Orientation.m in Sources */,
 				7D51FD361C1A9C4E004F791F /* SMBLEManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

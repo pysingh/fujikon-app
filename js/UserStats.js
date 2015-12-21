@@ -1,10 +1,12 @@
 'use strict';
 
 var React = require('react-native');
+var Orientation = require('react-native-orientation');
 var Geolocation = require('./Geolocation');
 var PreWorkout = require('./PreWorkout');
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
+
 
 exports.framework = 'React';
 exports.title = 'Geolocation';
@@ -26,7 +28,6 @@ var {
 
 var buttonDisabled = 0;
 var genderArray=['Male','Female'];
-var devWidth=320;
 var UserStats = React.createClass({
 
   
@@ -36,8 +37,9 @@ var UserStats = React.createClass({
       (error)=>{this.buttonDisabled=0;this.setState({buttonDisabled:'1'}); console.log("Geo Fail"+this.buttonDisabled)},
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000});
 
+    //Orientation.addOrientationListener(this._orientationDidChange);
+    Orientation.lockToPortrait(); 
     
-
     AsyncStorage.getItem("name").then((value) => {
       this.setState({"name": value});
     }).done();
@@ -122,14 +124,45 @@ var UserStats = React.createClass({
     //console.log("Target changed"+option);
     this.setState({currentGender: option});
   },
+  
+
+  // callPickerStyle: function(){
+  //   console.log(Orientation);
+  //   Orientation.getOrientation((err,orientation)=> {
+  //       console.log("Current Device Orientation: ", orientation);
+  //   if(orientation == 'LANDSCAPE')
+  //       {
+  //         return{
+  //           //flex:1,
+  //           alignItems:'stretch',
+  //           width:height,
+  //           borderWidth:1,
+  //           borderColor:'#F1F1F1',
+  //           backgroundColor:'#F1F1F1',
+  //         }
+  //       }
+  //   else
+  //       {
+  //         return{
+  //           //flex:1,
+  //           alignItems:'stretch',
+  //           width:width,
+  //           borderWidth:1,
+  //           borderColor:'#F1F1F1',
+  //           backgroundColor:'#F1F1F1',
+  //         }
+  //       }
+  //   });
+  // },
 
   _renderGenderOptions: function(){
     //console.log("calledAgain Gender"+this.state.isGenderOptionsVisible);
     //console.log(this.refs.sampleView.measure(sampleMeasurement()))
 
 
-    //this.refs.sampleView.measure(this.logLayout);
+  
     if (this.state.isGenderOptionsVisible) {
+            console.log("Gender options...");
             return (
                   <View style={styles.genderPickerStyle}>
                   <View>
@@ -171,18 +204,13 @@ var UserStats = React.createClass({
             isAgeVisible: !this.state.isAgeVisible,isGenderOptionsVisible:false
         });
   },
-
-  logLayout:function(ox, oy, width, height, px, py){
-      devWidth=width;
-      this.setState({deviceWidth:width});
-  },
   _renderDatePicker: function(){
     
     if(this.state.isAgeVisible){
       return(
       <View style={styles.genderPickerStyle}>
           <View>
-              <TouchableHighlight onPress={() => this.setState({isAgeVisible:false})} style={styles.pickerDoneStyle}>
+              <TouchableHighlight onPress={() => this.setState({isAgeVisible:false})} style={styles.pickerDoneStyle} underlayColor='#585858'>
                   <Text style={styles.doneText}>Done</Text>
               </TouchableHighlight>
           </View>
@@ -209,7 +237,7 @@ var UserStats = React.createClass({
   },
 
   render: function() {
-      // console.log("Render");
+       console.log("Width-->"+width);
     return (
       
       <ScrollView
@@ -240,7 +268,7 @@ var UserStats = React.createClass({
               returnKeyType='next'
               keyboardType='numeric'
               onChange={(event) => this.setState({height: event.nativeEvent.text})}
-              onFocus={()=>{this.refs.heightInput.focus()}}
+              onFocus={()=>{this.refs.heightInput.focus();this.setState({isAgeVisible:false,isGenderOptionsVisible:false})}}
               style={styles.formInput}/>
               </View>
            
@@ -251,9 +279,9 @@ var UserStats = React.createClass({
               placeholder="Weight(lbs)"
               keyboardType='numeric'
               onChange={(event) => this.setState({weight: event.nativeEvent.text})}
-              onFocus={()=>{this.refs.weightInput.focus()}}
+              onFocus={()=>{this.refs.weightInput.focus(); this.setState({isAgeVisible:false,isGenderOptionsVisible:false})}}
               style={styles.formInput}
-              />
+              /> 
               </View>
 
               <View style={styles.inputcontainer}>
@@ -299,19 +327,31 @@ var styles = StyleSheet.create({
     //padding:30,
     //flexDirection: "column",
     alignItems:'center',
-    justifyContent: 'center',
+    //justifyContent: 'flex-end',
     //backgroundColor: '#fff',
   },
-  pickerStyle:{
-    width:414,
-  },
+  // pickerStyle:{
+  //   width:414,
+  // },
   genderPickerStyle:{
-    flex:1,
+    //flex:1,
     alignItems:'stretch',
+    //Orientation.getOrientation((err,orientation)=> {
+      // if(orientation == 'LANDSCAPE')
+      // {
+      //   width:width,    
+      // }
+      // else{
+      //   width:height,
+      // }
     width:width,
+    marginRight:0,
+    marginLeft:0,
     borderWidth:1,
-    borderColor:'#FCB130',
-    backgroundColor:'#FCB130',
+    borderColor:'#F1F1F1',
+    backgroundColor:'#F1F1F1',
+    //justifyContent:'flex-end',
+    //alignSelf:'flex-end',
   },
   pickerDoneStyle:{
     height: 30,
@@ -339,7 +379,7 @@ var styles = StyleSheet.create({
     //marginBottom: 5,
     marginTop: 15,
     flex: 1,
-    fontSize: 18,
+    fontSize: 15,
     borderWidth: 1,
     borderColor: "#555555",
     borderRadius: 8,
@@ -416,14 +456,14 @@ var styles = StyleSheet.create({
     //marginRight: 5,
     //marginBottom: 5,
     //marginTop: 5,
-    fontSize: 18,
+    fontSize: 15,
     color: "#555555",
   },
   labelText:{
     //height: 40,
     //justifyContent:"center",
     //alignSelf:"center",
-    fontSize: 18,
+    fontSize: 15,
     //color: "#555555",
     //marginRight: 5,
     //marginBottom: 5,

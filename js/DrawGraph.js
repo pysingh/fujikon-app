@@ -5,6 +5,7 @@ var {width, height} = Dimensions.get('window');
 var dynamicGraphWidth=0;
 var dynamicContainerWidth=0;
 var isArrayZero=0;
+var yAxisData = [];
 
 var {
     StyleSheet, View, Component,Text,
@@ -64,6 +65,7 @@ class SimpleChart extends Component {
             justifyContent: 'center', 
             alignItems: 'center',
             width:dynamicContainerWidth,
+            marginTop : 10,
         }
     }
 
@@ -71,20 +73,21 @@ class SimpleChart extends Component {
     render() {
         xAxisArray : this.props.xData;
         yAxisArray : this.props.yData;
+        yAxisData = this.props.yData;
         
 
         this.applyMultiplyingFactor();
         for (i = 0; i < (this.props.yData).length; i++) { 
-                if((this.props.yData)[i]!== 0){
+                if(yAxisData[i]!= 0){
                     isArrayZero=1;
                 }
         }
 
          if((this.props.xData).length <= 3 || isArrayZero==0)
         return(
-            <View style={styles.instructionContainer}>
+           <View style={styles.instructionContainer}>
                 <Text style={styles.note}>No Data to show.</Text>
-             </View>
+            </View >
         );
         
         return (
@@ -133,9 +136,10 @@ var styles = StyleSheet.create({
         alignItems:'center',
     },
     instructionContainer:{
-        //alignSelf:'center',
+        alignItems:'center',
         //justifyContent:'center',
         padding: 150,
+        //padding: 50,
         //alignItems: "stretch",
     },
 });

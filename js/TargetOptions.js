@@ -101,13 +101,15 @@ var TargetOptions = React.createClass({
 var styles = StyleSheet.create({
   container: {
     //padding: 30,
-    marginTop: 5,
+    marginTop: 50,
     alignItems: "center",
     justifyContent: 'center',
   },
   buttonContainer:{
     alignItems:"stretch",
-    padding:30
+    marginLeft : 30,
+    marginRight : 30,
+    marginTop: 5,
   },
   pickerStyle:{
     width:width,

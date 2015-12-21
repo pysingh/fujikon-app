@@ -77,7 +77,6 @@ var Summary = React.createClass({
 
   },
 
-
   onWorkoutAgainPressed: function(){
     var PreWorkout = require('./PreWorkout');
 
@@ -98,16 +97,16 @@ var Summary = React.createClass({
         onScroll={() => { console.log('onScroll!'); }}
         scrollEventThrottle={200}
         style={styles.scrollView}>
-      <View> 
+      <View style={styles.container}> 
           <View style={styles.graphContainer}>
             <Text style={styles.bigTitle}>Summary</Text>
             <Text style={styles.title}>Activity : {activity}</Text>
             <Text style={styles.title}>Workout : {workout}</Text>
-              <View style={styles.buttonContainer}>
+          </View>
+          <View style={styles.buttonContainer}>
               <TouchableHighlight onPress={(this.onWorkoutAgainPressed)} style={styles.button}>
               <Text style={styles.buttonText}>Workout Again</Text>
               </TouchableHighlight>
-              </View>
           </View>
           <View style={styles.pickerOneStyle}>
           <PickerIOS
@@ -125,6 +124,7 @@ var Summary = React.createClass({
                 }
             </PickerIOS>
             </View>
+            <View ref="Graphview">
             <ScrollView
                 automaticallyAdjustContentInsets={false}
                 horizontal={true}
@@ -135,6 +135,7 @@ var Summary = React.createClass({
                 >
               <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="elevation(in ft)" xData={this.props.timeData} yData={this.props.elevationData}/>
           </ScrollView>
+          </View>
         </View>
         </ScrollView>
 		);
@@ -145,16 +146,16 @@ var Summary = React.createClass({
         onScroll={() => { console.log('onScroll!'); }}
         scrollEventThrottle={200}
         style={styles.scrollView}>
-      <View> 
+      <View style={styles.container}> 
           <View style={styles.graphContainer}>
             <Text style={styles.bigTitle}>Summary</Text>
             <Text style={styles.title}>Activity : {activity}</Text>
             <Text style={styles.title}>Workout : {workout}</Text>
-              <View style={styles.buttonContainer}>
+          </View>
+          <View style={styles.buttonContainer}>
               <TouchableHighlight onPress={(this.onWorkoutAgainPressed)} style={styles.button}>
               <Text style={styles.buttonText}>Workout Again</Text>
               </TouchableHighlight>
-              </View>
           </View>
           <View style={styles.pickerOneStyle}>
           <PickerIOS
@@ -193,16 +194,16 @@ var Summary = React.createClass({
         onScroll={() => { console.log('onScroll!'); }}
         scrollEventThrottle={200}
         style={styles.scrollView}>
-      <View> 
+      <View style={styles.container}> 
           <View style={styles.graphContainer}>
             <Text style={styles.bigTitle}>Summary</Text>
             <Text style={styles.title}>Activity : {activity}</Text>
             <Text style={styles.title}>Workout : {workout}</Text>
-              <View style={styles.buttonContainer}>
+          </View>
+          <View style={styles.buttonContainer}>
               <TouchableHighlight onPress={(this.onWorkoutAgainPressed)} style={styles.button}>
               <Text style={styles.buttonText}>Workout Again</Text>
               </TouchableHighlight>
-              </View>
           </View>
           <View style={styles.pickerOneStyle}>
           <PickerIOS
@@ -288,9 +289,9 @@ var styles = StyleSheet.create({
     marginTop:10,
   },
   container: {
-    flex: 1,
+    //flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    //alignItems: 'center',
 
     //backgroundColor: '#F5FCFF',
     

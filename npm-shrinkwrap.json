@@ -8253,6 +8253,11 @@
       "from": "https://registry.npmjs.org/react-native-chart-nosensezzz/-/react-native-chart-nosensezzz-0.0.1.tgz",
       "resolved": "https://registry.npmjs.org/react-native-chart-nosensezzz/-/react-native-chart-nosensezzz-0.0.1.tgz"
     },
+    "react-native-orientation": {
+      "version": "1.10.0",
+      "from": "react-native-orientation@*",
+      "resolved": "https://registry.npmjs.org/react-native-orientation/-/react-native-orientation-1.10.0.tgz"
+    },
     "react-timer-mixin": {
       "version": "0.13.3",
       "from": "react-timer-mixin@*",
