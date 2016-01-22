@@ -8253,6 +8253,11 @@
       "from": "https://registry.npmjs.org/react-native-chart-nosensezzz/-/react-native-chart-nosensezzz-0.0.1.tgz",
       "resolved": "https://registry.npmjs.org/react-native-chart-nosensezzz/-/react-native-chart-nosensezzz-0.0.1.tgz"
     },
+    "react-native-modalbox": {
+      "version": "1.2.8",
+      "from": "react-native-modalbox@latest",
+      "resolved": "https://registry.npmjs.org/react-native-modalbox/-/react-native-modalbox-1.2.8.tgz"
+    },
     "react-native-orientation": {
       "version": "1.10.0",
       "from": "react-native-orientation@*",

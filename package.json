@@ -8,6 +8,7 @@
   "dependencies": {
     "react-native": "^0.12.0",
     "react-native-chart-nosensezzz": "0.0.1",
+    "react-native-modalbox": "^1.2.8",
     "react-native-orientation": "^1.10.0",
     "react-timer-mixin": "^0.13.3"
   }

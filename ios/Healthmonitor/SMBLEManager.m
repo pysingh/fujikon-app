@@ -102,29 +102,37 @@ RCT_EXPORT_METHOD(stopScannig)
   //  if (RSSI.integerValue < -35) {
   //    return;
   //  }
-  int flag = 0;
+//  int flag = 0;
+//  
+//  for(CBPeripheral *perip in self.foundDeviceArray)
+//  {
+//    if([peripheral.identifier.UUIDString isEqualToString:perip.identifier.UUIDString])
+//    {
+//      flag = 1;
+//    }
+//  }
   
-  for(CBPeripheral *perip in self.foundDeviceArray)
-  {
-    if([peripheral.identifier.UUIDString isEqualToString:perip.identifier.UUIDString])
-    {
-      flag = 1;
-    }
-  }
-  
-  if(flag != 1 || !self.foundDeviceArray)
-  {
+//  if(flag != 1 || !self.foundDeviceArray)
+//  if( !self.foundDeviceArray)
+//  {
     if(!self.foundDeviceArray){
       self.foundDeviceArray = [NSMutableArray array];
       self.foundDeviceNameDict= [[NSMutableDictionary alloc] init];
     }
-    [self.foundDeviceArray addObject:peripheral]; // add peripheral to foundarray
-    [self.foundDeviceNameDict setValue:[NSString stringWithString:peripheral.identifier.UUIDString] forKey:peripheral.name];// add peripheral name to foundDictionary
-    
-    
-    [self.bridge.eventDispatcher sendAppEventWithName:@"availableDeviceList"
-                                                 body:@{@"devices": self.foundDeviceNameDict}];
-  }
+    if([self.foundDeviceArray containsObject:peripheral.name])
+    {
+      
+    }
+    else{
+      [self.foundDeviceArray addObject:peripheral.name]; // add peripheral to foundarray
+      [self.foundDeviceNameDict setValue:[NSString stringWithString:peripheral.identifier.UUIDString] forKey:peripheral.name];// add peripheral name to foundDictionary
+      
+      
+      [self.bridge.eventDispatcher sendAppEventWithName:@"availableDeviceList"
+                                                   body:@{@"devices": self.foundDeviceArray}];
+    }
+  
+  
   
   //NSLog(@"Discovered %@ at %@", peripheral.name, RSSI);
   //  NSLog(@"Found device dictionary %@", self.foundDeviceNameDict);
