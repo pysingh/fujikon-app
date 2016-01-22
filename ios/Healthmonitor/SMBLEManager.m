@@ -21,6 +21,10 @@ static NSString *serviceUUID;
 @property (strong, nonatomic) NSMutableData         *data;
 @property (strong, nonatomic) NSArray               *servicesArray;
 @property (strong, nonatomic) NSArray               *characteristicArray;
+@property (strong, nonatomic) NSMutableArray        *foundDeviceArray;
+@property (strong, nonatomic) NSMutableDictionary   *foundDeviceNameDict;
+@property (strong, nonatomic) NSString              *connectionStatus;
+
 
 @end
 
@@ -43,7 +47,7 @@ RCT_EXPORT_METHOD(initParameters:(NSString *)service :(NSString *)characteristic
   _data = [[NSMutableData alloc] init];
   _servicesArray = [[NSArray alloc] initWithObjects:[CBUUID UUIDWithString:serviceUUID], nil];
   _characteristicArray = [[NSArray alloc] initWithObjects:[CBUUID UUIDWithString:characteristicUUID], nil];
-
+  
 }
 RCT_EXPORT_METHOD(stopScannig)
 {
@@ -63,7 +67,7 @@ RCT_EXPORT_METHOD(stopScannig)
                                           otherButtonTitles:nil];
     [alert show];
     return;
-    }
+  }
   // Start scanning
   [self scan];
   
@@ -90,26 +94,48 @@ RCT_EXPORT_METHOD(stopScannig)
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI
 {
   // Reject any where the value is above reasonable range
-  if (RSSI.integerValue > -15) {
-    return;
-  }
+  //  if (RSSI.integerValue > -15) {
+  //    return;
+  //  }
   
   // Reject if the signal strength is too low to be close enough (Close is around -22dB)
-  if (RSSI.integerValue < -35) {
-    return;
+  //  if (RSSI.integerValue < -35) {
+  //    return;
+  //  }
+  int flag = 0;
+  
+  for(CBPeripheral *perip in self.foundDeviceArray)
+  {
+    if([peripheral.identifier.UUIDString isEqualToString:perip.identifier.UUIDString])
+    {
+      flag = 1;
+    }
   }
   
-  NSLog(@"Discovered %@ at %@", peripheral.name, RSSI);
+  if(flag != 1 || !self.foundDeviceArray)
+  {
+    if(!self.foundDeviceArray){
+      self.foundDeviceArray = [NSMutableArray array];
+      self.foundDeviceNameDict= [[NSMutableDictionary alloc] init];
+    }
+    [self.foundDeviceArray addObject:peripheral]; // add peripheral to foundarray
+    [self.foundDeviceNameDict setValue:[NSString stringWithString:peripheral.identifier.UUIDString] forKey:peripheral.name];// add peripheral name to foundDictionary
+    
+    
+    [self.bridge.eventDispatcher sendAppEventWithName:@"availableDeviceList"
+                                                 body:@{@"devices": self.foundDeviceNameDict}];
+  }
+  
+  //NSLog(@"Discovered %@ at %@", peripheral.name, RSSI);
+  //  NSLog(@"Found device dictionary %@", self.foundDeviceNameDict);
   
   // Ok, it's in range - have we already seen it?
   if (self.discoveredPeripheral != peripheral) {
-    
     // Save a local copy of the peripheral, so CoreBluetooth doesn't get rid of it
     self.discoveredPeripheral = peripheral;
-    
     // And connect
-    NSLog(@"Connecting to peripheral %@", peripheral);
-    [self.centralManager connectPeripheral:peripheral options:nil];
+    //    [self.centralManager connectPeripheral:peripheral options:nil];
+    //   NSLog(@"Connecting to peripheral %@", peripheral);
   }
 }
 
@@ -121,7 +147,7 @@ RCT_EXPORT_METHOD(stopScannig)
 }
 
 /** We've connected to the peripheral, now we need to discover the services and characteristics to find the 'transfer' characteristic.
-*/
+ */
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
 {
   NSLog(@"Peripheral Connected");
@@ -217,7 +243,7 @@ RCT_EXPORT_METHOD(stopScannig)
   
   // Otherwise, just add the data on to what we already have
   [self.data appendData:characteristic.value];
-    
+  
   // Log it
   [self getHeartBPMData:characteristic error:error];
   NSLog(@"Received: %@", stringFromData);
@@ -271,7 +297,7 @@ RCT_EXPORT_METHOD(stopScannig)
 {
   // Don't do anything if we're not connected
   if (self.discoveredPeripheral.state != CBPeripheralStateConnected) {
-          return;
+    return;
   }
   
   // See if we are subscribed to a characteristic on the peripheral
@@ -321,8 +347,8 @@ RCT_EXPORT_METHOD(stopScannig)
     [self.bridge.eventDispatcher sendAppEventWithName:@"receivedBLEData"
                                                  body:@{@"value": dataValue}];
     
-//    [self.bridge.eventDispatcher sendDeviceEventWithName:@"receivedBLEData"
-//                                                body:@{@"name": @"Vishal"}];
+    //    [self.bridge.eventDispatcher sendDeviceEventWithName:@"receivedBLEData"
+    //                                                body:@{@"name": @"Vishal"}];
     //callback(@[[NSNull null], [NSNumber numberWithInt:bpm]]);
   }
   return;

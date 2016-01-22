@@ -81,7 +81,10 @@ var Workout = React.createClass({
         this.getLocationData(this.state.lastPosition.coords);
         //this.getSpeedData(this.state.lastPosition.coords);
         });
-
+  
+  subscriptionBLE = NativeAppEventEmitter.addListener("availableDeviceList", (data) => {
+    console.log("Available device list from React : ",data.devices);
+        });
 
 		AsyncStorage.getItem("targetWorkoutOption").then((value) => {
       	console.log("Target value.."+value);

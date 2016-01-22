@@ -39,6 +39,7 @@ var ListViewSimpleExample = React.createClass({
       dataSource: ds.cloneWithRows(['row1','row2']),
       dataSourceForActivity: ds.cloneWithRows(['row1','row2','row3']),
       selectedActivity:"Running",
+      connectionState:"Not Connected",
     };
 
 
@@ -96,6 +97,20 @@ getOptions: function(){
   },
 
   onStartPressed: function(){
+    // var Workout = require('./Workout');
+    // SMBLEManager.initParameters("180D","2A37");
+    
+
+    this.props.navigator.replace({
+      component: Workout,
+      componentConfig : {
+        title : "My New Title"
+      },
+    });  
+
+  },
+
+  onConnectPressed: function(){
     var Workout = require('./Workout');
     SMBLEManager.initParameters("180D","2A37");
     
@@ -142,16 +157,33 @@ getOptions: function(){
       count=0;
     return (
       <View style ={styles.screenContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.titleText}>Bluetooth Connection</Text>
+          </View>
+
+          <View style={styles.connectionContainer}>
+            <Text style={styles.statusTitle}>Status : {this.state.connectionState} </Text>
+          </View>
+
+          <View style={styles.connectionButtonContainer}>
+             <TouchableHighlight onPress={(this.onConnectPressed)} underlayColor="#EEEEEE" style={styles.connectButton}>  
+             <Text style={styles.connectButtonText}>Connect</Text>
+             </TouchableHighlight> 
+          </View>
+
+          <View style={styles.titleContainer}>
+              <Text style={styles.titleText}>Choose From</Text>
+          </View>
           <View style = {styles.container}>
-          <TouchableHighlight onPress={(this.onTabPressed.bind(this,count))} underlayColor="#EEEEEE">
-            <View style={styles.container}>
-              <View style={styles.rightContainer}>
-              <Text style={styles.title}>{listOptions[count++]}</Text>
-              <Text style={styles.year}>{this.state.selectedActivity}</Text>
-              </View>
-              <View style={styles.separator} />
-            </View>
-          </TouchableHighlight>
+              <TouchableHighlight onPress={(this.onTabPressed.bind(this,count))} underlayColor="#EEEEEE">
+                <View style={styles.container}>
+                  <View style={styles.rightContainer}>
+                  <Text style={styles.title}>{listOptions[count++]}</Text>
+                  <Text style={styles.year}>{this.state.selectedActivity}</Text>
+                  </View>
+                  <View style={styles.separator} />
+                </View>
+              </TouchableHighlight>
           <TouchableHighlight onPress={(this.onTabPressed.bind(this,count))} underlayColor="#EEEEEE">
             <View style={styles.container}>
               <View style={styles.rightContainer}>
@@ -167,6 +199,7 @@ getOptions: function(){
       <Text style={styles.buttonText}>Start</Text>
       </TouchableHighlight>
       </View>
+
       </View>
       );
 
@@ -209,6 +242,11 @@ var styles = StyleSheet.create({
       year: {
         textAlign: 'center',
       },
+      statusTitle: {
+        fontSize: 15,
+        marginBottom: 6,
+        textAlign: 'center',
+      },
       button: {
         height: 40,
         flex: 1,
@@ -221,6 +259,13 @@ var styles = StyleSheet.create({
     marginLeft: 15,
     justifyContent: "center",
   },
+  titleContainer :{
+    height:40,
+    alignSelf:'stretch',
+    alignItems:'flex-start',
+    backgroundColor:'#F1F1F1',
+    marginTop:10,
+  },
   buttonText: {
     fontSize: 18,
     color: "#ffffff",
@@ -232,5 +277,44 @@ var styles = StyleSheet.create({
     marginRight:50,
     marginLeft:50,
   },
+  connectionContainer: {
+        flex: 1,
+        //flexDirection: 'row',
+        marginLeft:15,
+        marginTop:10,
+        alignItems: 'flex-start',
+        //justifyContent: 'center',        //backgroundColor: '#F5FCFF',
+      },
+  connectButtonText: {
+    fontSize: 15,
+    color: "#ffffff",
+    alignSelf: "center",
+
+  },
+  connectButton: {
+        height: 34,
+        flex: 1,
+        backgroundColor: "#FCB130",
+        borderColor: "#555555",
+    //borderWidth: 1,
+    borderRadius: 8,
+     marginRight: 15,
+     marginBottom:15,
+     marginLeft: 15,
+    width:100,
+    justifyContent: "center",
+  },
+  connectionButtonContainer:{
+    flex: 1,
+    justifyContent:"flex-end",
+    alignItems:"flex-end",
+  },
+  titleText:{
+    fontSize:18,
+    marginRight:15,
+    // marginBottom:5,
+    marginLeft: 15,
+    marginTop:10,
+  }
 });
 module.exports = ListViewSimpleExample;
