@@ -7,6 +7,8 @@ var Modal   = require('react-native-modalbox');
 var ActivityOptions = require('./ActivityOptionListView');
 var WorkoutOptions = require('./WorkoutOptionsListView');
 
+var Workout = require('./Workout');
+
 
 var count = 0;
 var listOptions = ['Activity','Workout'];
@@ -14,6 +16,8 @@ var activityName = "Running";
 var workoutName = "Just Track Me";
 var subTitle=[activityName,workoutName];
 var deviceList = [];
+
+// var connectionState = "Not connected";
 
 
 var {
@@ -25,6 +29,7 @@ var {
   Text,
   View,
   NativeAppEventEmitter,
+  ActivityIndicatorIOS,
 } = React;
   
 
@@ -39,31 +44,35 @@ var ListViewSimpleExample = React.createClass({
 
   getInitialState: function() {
     //console.log("Initialization..");
-    
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
-      // dataSource: new ListView.DataSource({
-      //   rowHasChanged: (row1, row2) => row1 !== row2,
-      // }),
-
-       dataSource: ds.cloneWithRows(this.genRows()),
-      // dataSourceForActivity: ds.cloneWithRows(['row1','row2','row3']),
+      //dataSource: new ListView.DataSource({
+      //rowHasChanged: (row1, row2) => row1 !== row2,
+      //}),
+      dataSource: ds.cloneWithRows(this.genRows({})),
+      //dataSource: ds.cloneWithRows(this.genRows(deviceList)),
+      //dataSourceForActivity: ds.cloneWithRows(['row1','row2','row3']),
       selectedActivity:"Running",
-      connectionState:"Not Connected",
       isOpen: false,
       isDisabled: false,
       swipeToClose: true,
+      connectionState : 'Not Connected',
     };
 
 
   },
 
   genRows: function(){
+    console.log("Device list retrieving in rows : ",deviceList);
     var deviceArray = [];
-    for (var ii = 0; ii < deviceList.length; ii++) {
-      console.log("Device name "+deviceList[ii]);
-      var deviceName = deviceList[ii] ? deviceList[ii] : '';
-      deviceArray.push(deviceName);
+    for (var ii = 0; ii <=100; ii++) {
+      
+      if(deviceList[ii])
+      {
+        var deviceName = deviceList[ii] ? deviceList[ii] : null;
+      //console.log("Device name "+deviceList[ii]);
+        deviceArray.push(deviceName);  
+      }
     } 
     console.log("Device array from list view :",deviceArray);
     return deviceArray;
@@ -82,7 +91,10 @@ var ListViewSimpleExample = React.createClass({
 
 componentDidMount: function(){
   //console.log("Did Mounting...");
-
+  // AsyncStorage.getItem("connectionStatus").then((value) => {
+  //     //console.log("Async value "+value);
+  //     this.setState({"connectionStatus":connectionState});
+  //   }).done();
 },
 
 componentWillMount:function(){
@@ -96,7 +108,13 @@ componentWillMount:function(){
       workoutName=value;
       this.setState({"selectedWorkout": value});
     }).done();
+  
   //activityName = this.state.selectedActivity;
+  subscriptionBLE = NativeAppEventEmitter.addListener("connectionStatus", (data) => {
+    this.setState({connectionState:data.status});
+    // AsyncStorage.setItem("connectionStatus", data.status);
+  });
+
 },
 
 getOptions: function(){
@@ -127,6 +145,7 @@ getOptions: function(){
 
     this.props.navigator.replace({
       component: Workout,
+      passProps:{connectionStatus : this.state.connectionState},
       componentConfig : {
         title : "My New Title"
       },
@@ -139,12 +158,19 @@ getOptions: function(){
     SMBLEManager.initParameters("180D","2A37");
     subscriptionBLE = NativeAppEventEmitter.addListener("availableDeviceList", (data) => {
       console.log("Available device list from React : ",data.devices);
+
       deviceList = data.devices;
-      this.openModal3();      
+      console.log("Device list "+deviceList);
+          
 
+      var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+      this.setState({dataSource: ds.cloneWithRows(this.genRows({}))});
+
+       
     });
-
-    
+         
+    this.openModal3();
 
     // this.props.navigator.replace({
     //   component: Workout,
@@ -183,36 +209,53 @@ getOptions: function(){
 
   },
 
+
+renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
+    var style = styles.rowSeparator;
+    if (adjacentRowHighlighted) {
+        style = [style, styles.rowSeparatorHide];
+    }
+    // return (
+    //   <View key={"SEP_" + sectionID + "_" + rowID}  style={style}/>
+    // );
+    return(
+        <View style={styles.rowSeparator}>
+
+        </View>
+      );
+  },
+
   openModal3: function(id) {
     this.refs.modal3.open();
   },
 
-  renderRow: function(){
+  onDeviceTabPressed: function(rowID) {
+    console.log("Row Pressed" , rowID)
+   SMBLEManager.connectDevice(deviceList[rowID],rowID);
+
+  },
+
+
+  renderRow: function(rowData: string, sectionID: number, rowID: number){
+    console.log("Rendering row with : "+ rowID);
     return(
-        <View style={styles.modalList}>
-          <Text style={styles.year}>{deviceList}</Text>
-        </View>
+        <TouchableHighlight onPress={this.onDeviceTabPressed.bind(this, rowID)} underlayColor="#EEEEEE">
+          <View style={styles.modalList}>
+            <Text style={styles.deviceTab}>{deviceList[rowID]}</Text>
+          </View>
+        </TouchableHighlight>
       );
   },
 
   renderFooter: function() {
-    if (!this.hasMore() || !this.state.isLoadingTail) {
-      return <View style={styles.scrollSpinner} />;
-    }
-    if (Platform.OS === 'ios') {
       return <ActivityIndicatorIOS style={styles.scrollSpinner} />;
-    } else {
-      return (
-        <View  style={{alignItems: 'center'}}>
-          <ProgressBarAndroid styleAttr="Large"/>
-        </View>
-      );
-    }
   },
 
   render: function() {
     if(count!=0)
       count=0;
+    if(this.props.connectionStatus)
+      this.state.connectionState = this.props.connectionStatus;
     return (
       <View style ={styles.screenContainer}>
           <View style={styles.titleContainer}>
@@ -264,10 +307,10 @@ getOptions: function(){
             <Text style={styles.titleText}>Available Devices :</Text>
           </View>
           <ListView
-        ref="listview"
-        // renderSeparator={this.renderSeparator}
+        //ref="listview"
+         //renderSeparator={this.renderSeparator}
         dataSource={this.state.dataSource}
-        // renderFooter={this.renderFooter}
+       renderFooter={this.renderFooter}
         renderRow={this.renderRow}
         // onEndReached={this.onEndReached}
         automaticallyAdjustContentInsets={false}
@@ -312,11 +355,16 @@ var styles = StyleSheet.create({
       },
       modalList:{
         justifyContent:'center',
+        height:50,
       },
       title: {
         fontSize: 20,
         marginBottom: 6,
         textAlign: 'center',
+      },
+      deviceTab:{
+        textAlign:'center',
+        fontSize:18,
       },
       year: {
         textAlign: 'center',
@@ -332,77 +380,94 @@ var styles = StyleSheet.create({
         backgroundColor: "#FCB130",
         borderColor: "#555555",
     //borderWidth: 1,
-    borderRadius: 8,
-    marginTop: 10,
-    marginRight: 15,
-    marginLeft: 15,
-    justifyContent: "center",
-  },
-  titleContainer :{
-    height:40,
-    alignSelf:'stretch',
-    alignItems:'flex-start',
-    backgroundColor:'#F1F1F1',
-    marginTop:10,
-  },
-  buttonText: {
-    fontSize: 18,
-    color: "#ffffff",
-    alignSelf: "center"
-  },
-  separator: {
-    height: 1,
-    backgroundColor:"#7C7C7C",
-    marginRight:50,
-    marginLeft:50,
-  },
-  connectionContainer: {
-        //flex: 1,
-        //flexDirection: 'row',
-        marginLeft:15,
-        marginTop:10,
-        alignItems: 'flex-start',
-        //justifyContent: 'center',        //backgroundColor: '#F5FCFF',
+        borderRadius: 8,
+        marginTop: 10,
+        marginRight: 15,
+        marginLeft: 15,
+        justifyContent: "center",
       },
-  connectButtonText: {
-    fontSize: 15,
-    color: "#ffffff",
-    alignSelf: "center",
+      titleContainer :{
+        height:40,
+        alignSelf:'stretch',
+        alignItems:'flex-start',
+        backgroundColor:'#F1F1F1',
+        marginTop:10,
+      },
+      buttonText: {
+        fontSize: 18,
+        color: "#ffffff",
+        alignSelf: "center"
+      },
+      separator: {
+        height: 1,
+        backgroundColor:"#7C7C7C",
+        marginRight:50,
+        marginLeft:50,
+        //alignSelf :'flex-end',
+      },
+      lineSeperator : {
+        height:1,
+        flex:1,
+        backgroundColor:'black',
+      },
+      connectionContainer: {
+            //flex: 1,
+            //flexDirection: 'row',
+            marginLeft:15,
+            marginTop:10,
+            alignItems: 'flex-start',
+            //justifyContent: 'center',        //backgroundColor: '#F5FCFF',
+          },
+      connectButtonText: {
+        fontSize: 15,
+        color: "#ffffff",
+        alignSelf: "center",
 
-  },
-  connectButton: {
-        height: 34,
+      },
+      connectButton: {
+            height: 34,
+            //flex: 1,
+            backgroundColor: "#FCB130",
+            borderColor: "#555555",
+        //borderWidth: 1,
+        borderRadius: 8,
+         marginRight: 15,
+         marginBottom:15,
+         marginLeft: 15,
+        width:100,
+        justifyContent: "center",
+      },
+      connectionButtonContainer:{
         //flex: 1,
-        backgroundColor: "#FCB130",
-        borderColor: "#555555",
-    //borderWidth: 1,
-    borderRadius: 8,
-     marginRight: 15,
-     marginBottom:15,
-     marginLeft: 15,
-    width:100,
-    justifyContent: "center",
-  },
-  connectionButtonContainer:{
-    //flex: 1,
-    justifyContent:"flex-end",
-    alignItems:"flex-end",
-  },
-  titleText:{
-    fontSize:18,
-    marginRight:15,
-    // marginBottom:5,
-    marginLeft: 15,
-    marginTop:10,
-  },
-   modal: {
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  modal3: {
-    height: 300,
-    width: 300,
-  },
+        justifyContent:"flex-end",
+        alignItems:"flex-end",
+      },
+      titleText:{
+        fontSize:18,
+        marginRight:15,
+        // marginBottom:5,
+        marginLeft: 15,
+        marginTop:10,
+      },
+       modal: {
+        justifyContent: 'center',
+        alignItems: 'center'
+      },
+      modal3: {
+        height: 300,
+        width: 300,
+      },
+      rowSeparator: {
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        height: 1,
+        marginHorizontal: 10,
+      },
+      rowSeparatorHide: {
+        opacity: 0.0,
+      },
+      scrollSpinner:{
+        alignSelf:'center',
+      },
 
 });
 module.exports = ListViewSimpleExample;

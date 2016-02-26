@@ -21,7 +21,8 @@ static NSString *serviceUUID;
 @property (strong, nonatomic) NSMutableData         *data;
 @property (strong, nonatomic) NSArray               *servicesArray;
 @property (strong, nonatomic) NSArray               *characteristicArray;
-@property (strong, nonatomic) NSMutableArray        *foundDeviceArray;
+@property (strong, nonatomic) NSMutableArray        *foundDeviceNameArray;
+@property (strong, nonatomic) NSMutableArray        *foundDevicePeripheralArray;
 @property (strong, nonatomic) NSMutableDictionary   *foundDeviceNameDict;
 @property (strong, nonatomic) NSString              *connectionStatus;
 
@@ -55,6 +56,24 @@ RCT_EXPORT_METHOD(stopScannig)
   _centralManager=nil;
 }
 
+RCT_EXPORT_METHOD(connectDevice:(NSString *)deviceName :(NSString *)indexNumber)
+{
+  
+//  NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self.identifier.UUIDString == %@", deviceName];
+//  
+//  NSArray *resultArray = [self.foundDevicePeripheralArray filteredArrayUsingPredicate:predicate];
+  int index = [indexNumber intValue];
+  if (index < self.foundDevicePeripheralArray.count) {
+    [self.centralManager connectPeripheral:[self.foundDevicePeripheralArray objectAtIndex:index] options:nil];
+    
+    NSString *connectionString = [NSString stringWithFormat:@"Connected : %@",deviceName];
+    [self.bridge.eventDispatcher sendAppEventWithName:@"connectionStatus"
+                                                 body:@{@"status": connectionString}];
+  }
+  
+}
+
+
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
 {
   if (central.state != CBCentralManagerStatePoweredOn) {
@@ -79,12 +98,12 @@ RCT_EXPORT_METHOD(stopScannig)
   [self.centralManager scanForPeripheralsWithServices:_servicesArray options:@{ CBCentralManagerScanOptionAllowDuplicatesKey : @YES }];
   
   NSLog(@"Scanning started");
-  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"BLE Connection"
-                                                  message:@"Scanning..."
-                                                 delegate:nil
-                                        cancelButtonTitle:@"OK"
-                                        otherButtonTitles:nil];
-  [alert show];
+//  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"BLE Connection"
+//                                                  message:@"Scanning..."
+//                                                 delegate:nil
+//                                        cancelButtonTitle:@"OK"
+//                                        otherButtonTitles:nil];
+//  [alert show];
 }
 
 /** This callback comes whenever a peripheral that is advertising the TRANSFER_SERVICE_UUID is discovered.
@@ -102,38 +121,25 @@ RCT_EXPORT_METHOD(stopScannig)
   //  if (RSSI.integerValue < -35) {
   //    return;
   //  }
-//  int flag = 0;
-//  
-//  for(CBPeripheral *perip in self.foundDeviceArray)
-//  {
-//    if([peripheral.identifier.UUIDString isEqualToString:perip.identifier.UUIDString])
-//    {
-//      flag = 1;
-//    }
-//  }
-  
-//  if(flag != 1 || !self.foundDeviceArray)
-//  if( !self.foundDeviceArray)
-//  {
-    if(!self.foundDeviceArray){
-      self.foundDeviceArray = [NSMutableArray array];
+
+    if(!self.foundDeviceNameArray){
+      self.foundDeviceNameArray = [NSMutableArray array];
       self.foundDeviceNameDict= [[NSMutableDictionary alloc] init];
+      self.foundDevicePeripheralArray = [NSMutableArray new];
     }
-    if([self.foundDeviceArray containsObject:peripheral.name])
-    {
+
+      NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self.identifier.UUIDString == %@", peripheral.identifier.UUIDString];
       
-    }
-    else{
-      [self.foundDeviceArray addObject:peripheral.name]; // add peripheral to foundarray
-      [self.foundDeviceNameDict setValue:[NSString stringWithString:peripheral.identifier.UUIDString] forKey:peripheral.name];// add peripheral name to foundDictionary
-      
-      
-      [self.bridge.eventDispatcher sendAppEventWithName:@"availableDeviceList"
-                                                   body:@{@"devices": self.foundDeviceArray}];
-    }
+      NSArray *resultArray = [self.foundDevicePeripheralArray filteredArrayUsingPredicate:predicate];
   
-  
-  
+      if (resultArray.count == 0) {
+        [self.foundDeviceNameArray
+         addObject:peripheral.name]; // add peripheral to foundarray
+          [self.foundDevicePeripheralArray addObject:peripheral];
+        [self.bridge.eventDispatcher sendAppEventWithName:@"availableDeviceList"
+                                                     body:@{@"devices": self.foundDeviceNameArray}];
+      }
+
   //NSLog(@"Discovered %@ at %@", peripheral.name, RSSI);
   //  NSLog(@"Found device dictionary %@", self.foundDeviceNameDict);
   
@@ -152,6 +158,8 @@ RCT_EXPORT_METHOD(stopScannig)
 {
   NSLog(@"Failed to connect to %@. (%@)", peripheral, [error localizedDescription]);
   [self cleanup];
+  [self.bridge.eventDispatcher sendAppEventWithName:@"connectionStatus"
+                                               body:@{@"status": @"Not connected"}];
 }
 
 /** We've connected to the peripheral, now we need to discover the services and characteristics to find the 'transfer' characteristic.
@@ -247,6 +255,14 @@ RCT_EXPORT_METHOD(stopScannig)
     
     // and disconnect from the peripehral
     [self.centralManager cancelPeripheralConnection:peripheral];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection cancelled."
+                                                    message:@"Device disconnected."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+    [self.bridge.eventDispatcher sendAppEventWithName:@"connectionStatus"
+                                                 body:@{@"status": @"Not connected"}];
   }
   
   // Otherwise, just add the data on to what we already have
@@ -290,7 +306,14 @@ RCT_EXPORT_METHOD(stopScannig)
 {
   NSLog(@"Peripheral Disconnected");
   self.discoveredPeripheral = nil;
-  
+  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Lost"
+                                                  message:@"Device disconnected."
+                                                 delegate:nil
+                                        cancelButtonTitle:@"OK"
+                                        otherButtonTitles:nil];
+  [alert show];
+  [self.bridge.eventDispatcher sendAppEventWithName:@"connectionStatus"
+                                               body:@{@"status": @"Not connected"}];
   // We're disconnected, so start scanning again
   [self scan];
 }

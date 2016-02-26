@@ -82,9 +82,7 @@ var Workout = React.createClass({
         //this.getSpeedData(this.state.lastPosition.coords);
         });
   
-  subscriptionBLE = NativeAppEventEmitter.addListener("availableDeviceList", (data) => {
-    console.log("Available device list from React : ",data.devices);
-        });
+  
 
 		AsyncStorage.getItem("targetWorkoutOption").then((value) => {
       	console.log("Target value.."+value);
@@ -122,9 +120,14 @@ var Workout = React.createClass({
   
   componentWillUnmount: function(){
       //Timermanager.resetTimer();
+      // subscriptionBLE = NativeAppEventEmitter.addListener("connectionStatus", (data) => {
+      // this.props.connectionStatus = data.status;
+      //   });
+    //this.setState({connectionState:data.status});
       console.log("Removing subscriptions....")
       subscriptionTimer.remove();
       subscriptionBLE.remove();
+
   },
 
  	getLocationData: function(coordinates) {
@@ -195,7 +198,8 @@ var Workout = React.createClass({
             component: Summary,
             passProps:{elevationData : elevationData,timeData : timeData,speedData:speedData,
               timeDataForSpeed:timeDataForSpeed,
-              heartBeatData : heartBeatData,timeData_heart : timeData_heart},
+              heartBeatData : heartBeatData,timeData_heart : timeData_heart,
+              connectionStatus : this.props.connectionStatus},
           }
  			);
  	},

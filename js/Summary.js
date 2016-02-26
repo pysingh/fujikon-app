@@ -79,10 +79,10 @@ var Summary = React.createClass({
 
   onWorkoutAgainPressed: function(){
     var PreWorkout = require('./PreWorkout');
-
+    var state = this.props.connectionStatus;
     this.props.navigator.replace({
             component: PreWorkout,
-            
+            passProps: {connectionStatus : state},
           }
       );
   },
