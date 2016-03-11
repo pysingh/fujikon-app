@@ -66,9 +66,7 @@ RCT_EXPORT_METHOD(connectDevice:(NSString *)deviceName :(NSString *)indexNumber)
   if (index < self.foundDevicePeripheralArray.count) {
     [self.centralManager connectPeripheral:[self.foundDevicePeripheralArray objectAtIndex:index] options:nil];
     
-    NSString *connectionString = [NSString stringWithFormat:@"Connected : %@",deviceName];
-    [self.bridge.eventDispatcher sendAppEventWithName:@"connectionStatus"
-                                                 body:@{@"status": connectionString}];
+    
   }
   
 }
@@ -173,7 +171,9 @@ RCT_EXPORT_METHOD(connectDevice:(NSString *)deviceName :(NSString *)indexNumber)
                                         cancelButtonTitle:@"OK"
                                         otherButtonTitles:nil];
   [alert show];
-  
+  NSString *connectionString = [NSString stringWithFormat:@"Connected : %@",peripheral.name];
+  [self.bridge.eventDispatcher sendAppEventWithName:@"connectionStatus"
+                                               body:@{@"status": connectionString}];
   // Stop scanning
   [self.centralManager stopScan];
   NSLog(@"Scanning stopped");

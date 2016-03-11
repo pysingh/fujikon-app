@@ -112,6 +112,11 @@ componentWillMount:function(){
   //activityName = this.state.selectedActivity;
   subscriptionBLE = NativeAppEventEmitter.addListener("connectionStatus", (data) => {
     this.setState({connectionState:data.status});
+    // Close the modal
+    this.closeModal5();
+    console.log("Closing the modal");
+
+
     // AsyncStorage.setItem("connectionStatus", data.status);
   });
 
@@ -169,7 +174,7 @@ getOptions: function(){
 
        
     });
-         
+          
     this.openModal3();
 
     // this.props.navigator.replace({
@@ -227,6 +232,11 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
 
   openModal3: function(id) {
     this.refs.modal3.open();
+  },
+
+  closeModal5: function(id) {
+    // this.setState({isOpen: false});
+    this.refs.modal3.close();
   },
 
   onDeviceTabPressed: function(rowID) {

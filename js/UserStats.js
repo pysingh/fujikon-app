@@ -237,7 +237,6 @@ var UserStats = React.createClass({
   },
 
   render: function() {
-       console.log("Width-->"+width);
     return (
       
       <ScrollView
