@@ -24,6 +24,7 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		6E6C88901C244A17004A9285 /* Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E6C888F1C244A17004A9285 /* Orientation.m */; };
 		6E9D8A571BEB97B10002E9DC /* libRNChart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E9D8A561BEB97A50002E9DC /* libRNChart.a */; };
+		6EF0C4411C92FC7F008AB56D /* Digital.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EF0C4401C92FC7F008AB56D /* Digital.ttf */; };
 		6EF36FD71C16E167000C208B /* Timermanager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF36FD61C16E167000C208B /* Timermanager.m */; };
 		7D51FD361C1A9C4E004F791F /* SMBLEManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D51FD351C1A9C4E004F791F /* SMBLEManager.m */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -139,6 +140,7 @@
 		6E6C888E1C244A17004A9285 /* Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Orientation.h; sourceTree = "<group>"; };
 		6E6C888F1C244A17004A9285 /* Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Orientation.m; sourceTree = "<group>"; };
 		6E9D8A511BEB97A50002E9DC /* RNChart.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNChart.xcodeproj; path = "../node_modules/react-native-chart-nosensezzz/RNChart.xcodeproj"; sourceTree = "<group>"; };
+		6EF0C4401C92FC7F008AB56D /* Digital.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Digital.ttf; sourceTree = "<group>"; };
 		6EF36FD51C16E167000C208B /* Timermanager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timermanager.h; path = Healthmonitor/Timermanager.h; sourceTree = "<group>"; };
 		6EF36FD61C16E167000C208B /* Timermanager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Timermanager.m; path = Healthmonitor/Timermanager.m; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -293,6 +295,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		6EF0C43F1C92FC7F008AB56D /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				6EF0C4401C92FC7F008AB56D /* Digital.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,6 +340,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				6EF0C43F1C92FC7F008AB56D /* Fonts */,
 				6E6C888D1C244A17004A9285 /* RCTOrientation */,
 				13B07FAE1A68108700A75B9A /* Healthmonitor */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -563,6 +574,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				008F07F31AC5B25A0029DE68 /* main.jsbundle in Resources */,
+				6EF0C4411C92FC7F008AB56D /* Digital.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
@@ -630,7 +642,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a1a48112-541a-4a9e-81cd-8800d690ab3d";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Healthmonitor.app/Healthmonitor";
 			};
 			name = Debug;
@@ -648,7 +659,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a1a48112-541a-4a9e-81cd-8800d690ab3d";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Healthmonitor.app/Healthmonitor";
 			};
 			name = Release;

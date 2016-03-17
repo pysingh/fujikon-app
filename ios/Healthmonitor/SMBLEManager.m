@@ -68,7 +68,7 @@ RCT_EXPORT_METHOD(connectDevice:(NSString *)deviceName :(NSString *)indexNumber)
     
     
   }
-  
+    
 }
 
 
@@ -160,8 +160,7 @@ RCT_EXPORT_METHOD(connectDevice:(NSString *)deviceName :(NSString *)indexNumber)
                                                body:@{@"status": @"Not connected"}];
 }
 
-/** We've connected to the peripheral, now we need to discover the services and characteristics to find the 'transfer' characteristic.
- */
+/** We've connected to the peripheral, now we need to discover the services and characteristics to find the 'transfer' characteristic.*/
 - (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral
 {
   NSLog(@"Peripheral Connected");

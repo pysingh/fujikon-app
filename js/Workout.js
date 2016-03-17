@@ -213,13 +213,17 @@ var Workout = React.createClass({
 		return(
 			<View style={styles.wholeScreen}>
           <View style={styles.container}>
-          <Text style={styles.title}>Time: {this.state.hourData}:{this.state.minData}:{this.state.secData}</Text>
-          <Text>------------------------------</Text>
-          <Text style={styles.title}>Target : {this.state.targetWorkoutOption}</Text>
-          <Text>------------------------------</Text>
-          <Text style={styles.title}>HeartBeat : {this.state.BLEData}</Text>
-
-          
+          <Text style={styles.timeFont}>TIME: {this.state.hourData}:{this.state.minData}:{this.state.secData}</Text>
+          </View>
+          <View style={styles.seperator}>
+          </View>
+          <View style={styles.container}>
+          <Text style={styles.timeFont}>TARGET : {this.state.targetWorkoutOption}</Text>
+          </View>
+          <View style={styles.seperator}>
+          </View>
+          <View style={styles.container}>
+          <Text style={styles.timeFont}>HEARTBEAT : {this.state.BLEData}</Text>
           </View>
           <TouchableHighlight onPress={(this.onStopPressed)} underlayColor="#EEEEEE" style={styles.button}>
           <Text style={styles.buttonText}>Stop</Text>
@@ -241,6 +245,11 @@ var styles = StyleSheet.create({
   title: {
     fontWeight: '500',
     fontSize : 18,
+  },
+  seperator: {
+    height: 1,
+    flexDirection:'row',
+    backgroundColor : 'black'
   },
   wholeScreen:{
     //backgroundColor: '#F5FCFF',
@@ -264,7 +273,7 @@ var styles = StyleSheet.create({
     marginTop:10,
   },
   container: {
-    flex: 1,
+    flex: 0.2,
     justifyContent: 'center',
     alignItems: 'center',
 
@@ -310,6 +319,11 @@ var styles = StyleSheet.create({
     color: "#7C7C7C",
     fontSize:18,
     alignSelf:"center",
+  },
+  timeFont:{
+    fontFamily: 'Trebuchet MS',
+    fontSize: 30,
+    color:'gray'
   },
 });
 
