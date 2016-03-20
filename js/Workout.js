@@ -43,8 +43,11 @@ var Workout = React.createClass({
       initialSpeed : 'unknown',
       //hearBeatData:[],
       //timeData_heart:[],
-
+      BLEData : '0',
       altitudeValue:'unknown',
+      secData : '0',
+      minData : '0',
+      hourData : '0',
     };
   	},
 
@@ -116,6 +119,13 @@ var Workout = React.createClass({
       heartBeatDatacount=0;
       Timermanager.resetTimer();
       navigator.geolocation.clearWatch(this.watchID);
+
+      subscriptionBLE = NativeAppEventEmitter.addListener("connectionStatus", (data) => {
+    
+    console.log("Connection status has been changed...");
+    this.setState({connectionState:data.status});
+    // AsyncStorage.setItem("connectionStatus", data.status);
+  });
  	},
   
   componentWillUnmount: function(){
@@ -187,19 +197,19 @@ var Workout = React.createClass({
       return;
     },
 
- 	saveData: function(key,value) {
-    //console.log(key+" :storing :"+value);
-    AsyncStorage.setItem(key, value);
-    this.setState({key : value});
-  },
+ 	// saveData: function(key,value) {
+  //   //console.log(key+" :storing :"+value);
+  //   AsyncStorage.setItem(key, value);
+  //   this.setState({key : value});
+  // },
 
  	onStopPressed: function(){
     this.props.navigator.replace({
             component: Summary,
             passProps:{elevationData : elevationData,timeData : timeData,speedData:speedData,
               timeDataForSpeed:timeDataForSpeed,
-              heartBeatData : heartBeatData,timeData_heart : timeData_heart,
-              connectionStatus : this.props.connectionStatus},
+              heartBeatData : heartBeatData,timeData_heart : timeData_heart},
+              // connectionStatus : this.props.connectionStatus},
           }
  			);
  	},

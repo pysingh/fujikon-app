@@ -16,12 +16,14 @@ var {
   PickerIOS,
   AsyncStorage,
   ScrollView,
+  NativeAppEventEmitter,
 } = React;
 
 var target = "Time";
 var activity,workout;
 var x=[];
 var y=[];
+var subscriptionBLE;
 //var speedData = [];
 
 
@@ -55,6 +57,13 @@ var Summary = React.createClass({
     }).done();
 	},
 
+  componentWillMount : function(){
+    subscriptionBLE = NativeAppEventEmitter.addListener("connectionStatus", (data) => {
+        console.log("Connection status has been changed...");
+        this.setState({connectionState:data.status});
+    // AsyncStorage.setItem("connectionStatus", data.status);
+  });
+  },
    _optionChanged: function(option){
     //console.log("Target changed"+option);
     this.setState({currentOption: option});
@@ -82,7 +91,7 @@ var Summary = React.createClass({
     var state = this.props.connectionStatus;
     this.props.navigator.replace({
             component: PreWorkout,
-            passProps: {connectionStatus : state},
+            // passProps: {connectionStatus : state},
           }
       );
   },

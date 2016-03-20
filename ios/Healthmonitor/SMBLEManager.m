@@ -119,7 +119,7 @@ RCT_EXPORT_METHOD(connectDevice:(NSString *)deviceName :(NSString *)indexNumber)
   //  if (RSSI.integerValue < -35) {
   //    return;
   //  }
-
+  
     if(!self.foundDeviceNameArray){
       self.foundDeviceNameArray = [NSMutableArray array];
       self.foundDeviceNameDict= [[NSMutableDictionary alloc] init];

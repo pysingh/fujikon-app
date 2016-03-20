@@ -16,6 +16,7 @@ var activityName = "Running";
 var workoutName = "Just Track Me";
 var subTitle=[activityName,workoutName];
 var deviceList = [];
+var started = 0;
 
 // var connectionState = "Not connected";
 
@@ -56,7 +57,7 @@ var ListViewSimpleExample = React.createClass({
       isOpen: false,
       isDisabled: false,
       swipeToClose: true,
-      connectionState : 'Not Connected',
+      connectionState : 'Not connected',
     };
 
 
@@ -89,13 +90,11 @@ var ListViewSimpleExample = React.createClass({
 },
 
 
-componentDidMount: function(){
-  //console.log("Did Mounting...");
+   //console.log("Did Mounting...");
   // AsyncStorage.getItem("connectionStatus").then((value) => {
   //     //console.log("Async value "+value);
   //     this.setState({"connectionStatus":connectionState});
   //   }).done();
-},
 
 componentWillMount:function(){
   AsyncStorage.getItem("selectedActivity").then((value) => {
@@ -111,12 +110,9 @@ componentWillMount:function(){
   
   //activityName = this.state.selectedActivity;
   subscriptionBLE = NativeAppEventEmitter.addListener("connectionStatus", (data) => {
+    
+    console.log("Connection status has been changed...");
     this.setState({connectionState:data.status});
-    // Close the modal
-    this.closeModal5();
-    console.log("Closing the modal");
-
-
     // AsyncStorage.setItem("connectionStatus", data.status);
   });
 
@@ -150,7 +146,7 @@ getOptions: function(){
 
     this.props.navigator.replace({
       component: Workout,
-      passProps:{connectionStatus : this.state.connectionState},
+      //passProps:{connectionStatus : this.state.connectionState},
       componentConfig : {
         title : "My New Title"
       },
@@ -160,7 +156,12 @@ getOptions: function(){
 
   onConnectPressed: function(){
     var Workout = require('./Workout');
-    SMBLEManager.initParameters("180D","2A37");
+    
+    if(started != 1)
+    {
+      SMBLEManager.initParameters("180D","2A37");  
+      started = 1;
+    }
     subscriptionBLE = NativeAppEventEmitter.addListener("availableDeviceList", (data) => {
       console.log("Available device list from React : ",data.devices);
 
@@ -242,6 +243,7 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
   onDeviceTabPressed: function(rowID) {
     console.log("Row Pressed" , rowID)
    SMBLEManager.connectDevice(deviceList[rowID],rowID);
+   this.closeModal5();
 
   },
 
@@ -264,8 +266,8 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
   render: function() {
     if(count!=0)
       count=0;
-    if(this.props.connectionStatus)
-      this.state.connectionState = this.props.connectionStatus;
+    // if(this.props.connectionStatus)
+    //   this.state.connectionState = this.props.connectionStatus;
     return (
       <View style ={styles.screenContainer}>
           <View style={styles.titleContainer}>
