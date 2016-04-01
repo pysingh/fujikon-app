@@ -9,13 +9,58 @@ var {
   AppRegistry,
   StyleSheet,
   Text,
+  Navigator,
+  TouchableOpacity,
   View,
 } = React;
+var PreWorkout = require('./js/PreWorkout');
+var WorkoutPage = require('./js/Workout');
+var WorkoutOptionsListView = require('./js/WorkoutOptionsListView');
+var ActivityOptionListView = require('./js/ActivityOptionListView');
+var TargetOptions = require('./js/TargetOptions');
+
+var NavigationBarRouteMapper = {
+  LeftButton: function(route, navigator, index, navState) {
+    if (route.index == 1 || route.index == 3) {      
+    } 
+    else {
+      var backButtonText = '< Back';
+      if (route.index == 1) {
+        backButtonText = "< Login";
+      }
+      return ( 
+        <View style={styles.BackButtonBGStyle}>
+        <TouchableOpacity 
+            style = {{marginTop: 0}} 
+            onPress = {() => {
+              if (index == 1 || index == 3) {
+                
+              } else {
+                navigator.pop();
+              }
+            }}> 
+        </TouchableOpacity> 
+        </View>
+      );
+    }
+  },
+
+  RightButton: function(route, navigator, index, navState) {
+    return null;
+  },
+
+  Title: function(route, navigator, index, navState) {
+    return ( 
+      <Text style={{marginTop:10}}> {route.name} </Text>
+    );
+  },
+}
+
 
 var Healthmonitor = React.createClass({
   render: function() {
     return (
-      <View style={styles.container}>
+      /*<View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>
@@ -25,9 +70,78 @@ var Healthmonitor = React.createClass({
         <Text style={styles.instructions}>
           Shake or press menu button for dev menu
         </Text>
-      </View>
-    );
-  }
+      </View>*/
+        <Navigator
+          initialRoute={{id: 'PreWorkout', name: 'PreWorkout'}}
+          renderScene={this.renderScene.bind(this)}
+          configureScene={(route) => {
+            if (route.sceneConfig) {
+              return route.sceneConfig;
+            }
+            return Navigator.SceneConfigs.FloatFromRight;
+          }}
+          navigationBar={
+          <Navigator.NavigationBar
+            routeMapper={NavigationBarRouteMapper}
+            style={styles.navBar}/>
+           }  
+           />
+      );
+    },
+    renderScene(route, navigator) {
+        var routeId = route.id;
+        console.log("route")
+        console.log(route)
+        if (routeId === 'PreWorkout') {
+          return (
+            <PreWorkout 
+              navigator={navigator} />
+          );
+        }
+        if (routeId === 'WorkoutPage') {
+          return (
+            <WorkoutPage
+              navigator={navigator}
+              BLEConnectionModule = {route.BLEConnectionModule} />
+          );
+        }
+        if (routeId === 'WorkoutOptionsListView') {
+          return (
+            <WorkoutOptionsListView
+              navigator={navigator}
+              obj = {route.passProps.obj}
+               />
+          );
+        }
+        if (routeId === 'ActivityOptionListView') {
+          return (
+            <ActivityOptionListView
+              navigator={navigator}
+              obj = {route.passProps.obj}
+               />
+          );
+        }
+        if (routeId === 'TargetOptions') {
+          return (
+            <TargetOptions
+              navigator={navigator}
+               />
+          );
+        }
+        
+        return this.noRoute(navigator);
+    },
+    noRoute(navigator) {
+      return (
+        <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'center'}}>
+          <TouchableOpacity style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+              onPress={() => navigator.pop()}>
+            <Text style={{color: 'red', fontWeight: 'bold'}}>Route not found</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }  
+
 });
 
 var styles = StyleSheet.create({
@@ -46,6 +160,10 @@ var styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+  navBar:{
+    marginTop: 0, 
+    width:0, 
   },
 });
 
