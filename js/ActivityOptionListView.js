@@ -63,7 +63,6 @@ onTabPressed: function(rowID){
     // this.props.obj.setState({initialValue:"Walking"});
 
     // console.log(this.props.obj.state.intialValue);
-    //console.log(this.props.obj);
     this.props.obj.refreshActivityData(activityOptions[rowID]);
 
     this.props.navigator.pop();

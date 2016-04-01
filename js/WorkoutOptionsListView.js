@@ -8,6 +8,7 @@ var {
   StyleSheet,
   Text,
   AsyncStorage,
+  Platform,
   View,
 } = React;
 
@@ -38,10 +39,18 @@ saveData: function(key,value) {
 onTabPressed: function(rowID){
     console.log("Tab pressed..");
     this.saveData("selectedWorkout",workoutOptions[rowID]);
+    if(Platform.os == 'ios'){
     if(rowID==1)
       this.props.navigator.push({
         component : TargetOptions,
         });
+    }else{
+      if(rowID==1)
+      this.props.navigator.push({
+        id: 'TargetOptions',
+        name: 'TargetOptions'     
+        });
+    }
     this.props.obj.refreshWorkoutData(workoutOptions[rowID]);
     this.props.navigator.pop();
 

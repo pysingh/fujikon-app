@@ -4,6 +4,8 @@ var React = require('react-native');
 var { Timermanager } = require('NativeModules');
 var Summary = require('./Summary');
 var PreWorkout = require('./PreWorkout');
+var Subscribable = require('Subscribable');
+var AndroidGeolocationModule = require('react-native').NativeModules.AndroidGeolocation;
 
 
 var {  
@@ -15,7 +17,9 @@ var {
   TouchableHighlight,
   PickerIOS,
   AsyncStorage,
+  Platform,
   AlertIOS,
+  DeviceEventEmitter,
   NativeAppEventEmitter,
 } = React;
 
@@ -34,7 +38,7 @@ var timeData_heart = [];
 
 var Workout = React.createClass({
 
-	watchID: (null: ?number),
+  watchID: (null: ?number),
 
 	getInitialState: function() {
     return {
@@ -52,8 +56,8 @@ var Workout = React.createClass({
   	},
 
 	componentDidMount: function() {
-
-  subscriptionBLE = NativeAppEventEmitter.addListener("receivedBLEData", (data) => { 
+if(Platform.os == 'ios'){
+        subscriptionBLE = NativeAppEventEmitter.addListener("receivedBLEData", (data) => { 
         
         navigator.geolocation.getCurrentPosition(
         (initialPosition) => this.setState({initialPosition}),
@@ -61,7 +65,8 @@ var Workout = React.createClass({
         alert(error.message)},
         {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
         );
-      this.watchID = navigator.geolocation.watchPosition((lastPosition) => {
+    
+        this.watchID = navigator.geolocation.watchPosition((lastPosition) => {
         this.setState({lastPosition});
         });
 
@@ -72,8 +77,34 @@ var Workout = React.createClass({
         console.log("HeartBeat-->"+data.value+" Time-->"+heartBeatDatacount);
         this.setState({BLEData : data.value});
         });
-  console.log("Timer starting...");
-  Timermanager.startTimer();
+        console.log("Timer starting...");
+        Timermanager.startTimer();
+  }else
+        {
+          AndroidGeolocationModule.getCurrentLocation(
+          (msg) => {
+            console.log(altitude);
+            /*console.log(JSON.parse(msg));*/
+            /*console.log(altitude);*/
+            /*console.log("location trackng  " + msg);*/
+          },
+          (x) => {
+            console.log("location trackng error" + x);
+          }
+        );
+      /* navigator.geolocation.getCurrentPosition(
+      (position) => {
+        var initialPosition = JSON.stringify(position);
+        this.setState({initialPosition});
+      },
+      (error) => alert(error.message),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+    this.watchID = navigator.geolocation.watchPosition((position) => {
+      var lastPosition = JSON.stringify(position);
+      this.setState({lastPosition});
+    });*/ 
+    } 
 
   subscriptionTimer = NativeAppEventEmitter.addListener("timerData", (data) => { 
         
@@ -98,7 +129,7 @@ var Workout = React.createClass({
       	target = value;
       	this.setState({"pointCounts": value});
     	}).done();
-
+if(Platform.os == 'ios'){
     	navigator.geolocation.getCurrentPosition(
       	(initialPosition) => this.setState({initialPosition}),
       	(error) => { 
@@ -108,16 +139,22 @@ var Workout = React.createClass({
     	this.watchID = navigator.geolocation.watchPosition((lastPosition) => {
       	this.setState({lastPosition});
     });
+}
 
  	},
+  mixins: [Subscribable.Mixin],
 	componentWillMount: function() {
+    this.addListenerOn(DeviceEventEmitter,
+                       'heart_rate',
+                       this.onHeartRateDataAvailable);
     	elevationData=[];
       timeData=[];
       heartBeatData=[];
       timeData_heart=[];
       pointCounts=0;
       heartBeatDatacount=0;
-      Timermanager.resetTimer();
+      if(Platform.os == 'ios'){
+      Timermanager.resetTimer();}
       navigator.geolocation.clearWatch(this.watchID);
 
       subscriptionBLE = NativeAppEventEmitter.addListener("connectionStatus", (data) => {
@@ -139,7 +176,10 @@ var Workout = React.createClass({
       subscriptionBLE.remove();
 
   },
-
+  onHeartRateDataAvailable:function(data: Event) {
+    console.log(data)
+    /*this.props.BLEConnectionModule.showToast();*/
+  },
  	getLocationData: function(coordinates) {
     
     var elevation = JSON.stringify(coordinates,['altitude']);

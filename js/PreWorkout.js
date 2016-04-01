@@ -2,13 +2,13 @@
 
 var React = require('react-native');
 var { SMBLEManager } = require('NativeModules');
+var BLEConnectionModule = require('react-native').NativeModules.BLEConnectionModule;
 var Modal   = require('react-native-modalbox');
 
 var ActivityOptions = require('./ActivityOptionListView');
 var WorkoutOptions = require('./WorkoutOptionsListView');
 
 var Workout = require('./Workout');
-
 
 var count = 0;
 var listOptions = ['Activity','Workout'];
@@ -17,6 +17,11 @@ var workoutName = "Just Track Me";
 var subTitle=[activityName,workoutName];
 var deviceList = [];
 var started = 0;
+var ProgressBar = require('ProgressBarAndroid');
+var Subscribable = require('Subscribable');
+/*import { DeviceEventEmitter } from 'react-native';*/
+
+
 
 // var connectionState = "Not connected";
 
@@ -29,20 +34,23 @@ var {
   AsyncStorage,
   Text,
   View,
+  DeviceEventEmitter,
   NativeAppEventEmitter,
+  Platform,
   ActivityIndicatorIOS,
 } = React;
   
 
+var platform = Platform.os;
 var subscriptionBLE;
-
+var androidDeviceList = new Set();
 var ListViewSimpleExample = React.createClass({
-
+  
   statics: {
     title: '<ListView> - Simple',
     description: 'Performant, scrollable list of data.'
   },
-
+  
   getInitialState: function() {
     //console.log("Initialization..");
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -58,6 +66,7 @@ var ListViewSimpleExample = React.createClass({
       isDisabled: false,
       swipeToClose: true,
       connectionState : 'Not connected',
+      
     };
 
 
@@ -80,7 +89,6 @@ var ListViewSimpleExample = React.createClass({
   },
 
   refreshActivityData: function(data) {
-  // console.log(this.state);
     this.setState({selectedActivity:data});
 
   },
@@ -95,8 +103,17 @@ var ListViewSimpleExample = React.createClass({
   //     //console.log("Async value "+value);
   //     this.setState({"connectionStatus":connectionState});
   //   }).done();
-
+  mixins: [Subscribable.Mixin],
 componentWillMount:function(){
+   this.addListenerOn(DeviceEventEmitter,
+                       'device_params',
+                       this.onDeviceFoundAndroid);
+   this.addListenerOn(DeviceEventEmitter,
+                       'connection_status_change',
+                       this.onConnectionStatusChange);
+   this.addListenerOn(DeviceEventEmitter,
+                       'device_connection_status_change',
+                       this.onDeviceConnectionStatusChange);
   AsyncStorage.getItem("selectedActivity").then((value) => {
       //console.log("Async value "+value);
       activityName = value;
@@ -115,9 +132,28 @@ componentWillMount:function(){
     this.setState({connectionState:data.status});
     // AsyncStorage.setItem("connectionStatus", data.status);
   });
-
 },
+onDeviceConnectionStatusChange:function(deviceConnectionStatus: Event) {
+    this.setState({deviceConnectionStatus:deviceConnectionStatus});
+  },
+onConnectionStatusChange:function(e: Event) {
+   // this.setState({connectionState:data.status});
+  },
 
+ onDeviceFoundAndroid:function(e: Event) {
+   /* this.keyboardWillOpenTo = e;
+    this.props.onKeyboardWillShow && this.props.onKeyboardWillShow(e);*/
+    var myDevice = JSON.parse(e);
+    androidDeviceList.add(myDevice.name);
+    deviceList = []
+      androidDeviceList.forEach(value => deviceList.push(value));
+    // for(var key in androidDeviceList){deviceList.push(androidDeviceList[key])}
+    console.log(deviceList)
+    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.setState({dataSource: ds.cloneWithRows(this.genRows())});
+    // this.deviceList = deviceList;
+    //console.log(deviceList)
+  },
 getOptions: function(){
 
     //activityName = this.state.selectedActivity;
@@ -143,7 +179,7 @@ getOptions: function(){
     // var Workout = require('./Workout');
     // SMBLEManager.initParameters("180D","2A37");
     
-
+if(platform == 'ios'){
     this.props.navigator.replace({
       component: Workout,
       //passProps:{connectionStatus : this.state.connectionState},
@@ -151,30 +187,51 @@ getOptions: function(){
         title : "My New Title"
       },
     });  
+  }else{
+/*BLEConnectionModule.discoverServices((status) => {
+          // onServicesDiscovered
+
+          
+      },(onServicesDiscovered) => {
+          // onDataAvailable
+          
+          
+      });*/
+    this.props.navigator.push({
+      id: 'WorkoutPage',
+      BLEConnectionModule:BLEConnectionModule
+    });
+       
+  }
 
   },
 
   onConnectPressed: function(){
     var Workout = require('./Workout');
-    
-    if(started != 1)
-    {
-      SMBLEManager.initParameters("180D","2A37");  
-      started = 1;
-    }
-    subscriptionBLE = NativeAppEventEmitter.addListener("availableDeviceList", (data) => {
+    if(platform === 'ios'){
+      if(started != 1)
+        {
+          SMBLEManager.initParameters("180D","2A37");  
+          started = 1;
+        }
+      subscriptionBLE = NativeAppEventEmitter.addListener("availableDeviceList", (data) => {
       console.log("Available device list from React : ",data.devices);
-
       deviceList = data.devices;
       console.log("Device list "+deviceList);
-          
+            
 
-      var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-      this.setState({dataSource: ds.cloneWithRows(this.genRows({}))});
+        this.setState({dataSource: ds.cloneWithRows(this.genRows({}))});
 
-       
-    });
+         
+      }); 
+    }else{
+          deviceList = [];
+          var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}); 
+          this.setState({dataSource: ds.cloneWithRows(this.genRows())});
+          BLEConnectionModule.startScan();
+    }
           
     this.openModal3();
 
@@ -188,31 +245,46 @@ getOptions: function(){
   },
 
   onTabPressed: function(rowID){
-    console.log("Tab pressed...."+rowID);
-    if(rowID==0)
-    {
-      this.props.navigator.push({
-        component: ActivityOptions,
-        backButtonTitle: 'Back',
-        passProps : {obj: this},
-        componentConfig : {
-          title : "My New Title"
-        },
-      });
+    /*console.log("Tab pressed...."+rowID);*/
+    if(platform == 'ios'){
+      if(rowID==0)
+      {
+        this.props.navigator.push({
+          component: ActivityOptions,
+          backButtonTitle: 'Back',
+          passProps : {obj: this},
+          componentConfig : {
+            title : "My New Title"
+          },
+        });
+      }
+      else
+      {
+        this.props.navigator.push({
+          component: WorkoutOptions,
+          backButtonTitle: 'Back',
+          passProps : {obj: this}, 
+          componentConfig : {
+            title : "My New Title"
+          },
+        });
+      }
+    }else{
+      if(rowID==0)
+      {
+        this.props.navigator.push({
+        id: 'ActivityOptionListView',
+        name: 'workout',  
+        passProps : {obj: this} 
+        });
+      }else{
+        this.props.navigator.push({
+        id: 'WorkoutOptionsListView',
+        name: 'Activity',
+        passProps : {obj: this}     
+        });
+      }
     }
-    else
-    {
-      this.props.navigator.push({
-        component: WorkoutOptions,
-        backButtonTitle: 'Back',
-        passProps : {obj: this}, 
-        componentConfig : {
-          title : "My New Title"
-        },
-      });
-    }
-
-
   },
 
 
@@ -242,7 +314,15 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
 
   onDeviceTabPressed: function(rowID) {
     console.log("Row Pressed" , rowID)
-   SMBLEManager.connectDevice(deviceList[rowID],rowID);
+    if(platform == 'ios'){
+      SMBLEManager.connectDevice(deviceList[rowID],rowID);
+    }
+    else{
+      //stopping device scan  
+      BLEConnectionModule.stopScan();  
+      // android native connect method with connect_success and error callbacks.
+      BLEConnectionModule.connect(deviceList[rowID]);
+    }
    this.closeModal5();
 
   },
@@ -251,7 +331,7 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
   renderRow: function(rowData: string, sectionID: number, rowID: number){
     console.log("Rendering row with : "+ rowID);
     return(
-        <TouchableHighlight onPress={this.onDeviceTabPressed.bind(this, rowID)} underlayColor="#EEEEEE">
+        <TouchableHighlight onPress={this.onDeviceTabPressed.bind(this,rowID)} underlayColor="#EEEEEE">
           <View style={styles.modalList}>
             <Text style={styles.deviceTab}>{deviceList[rowID]}</Text>
           </View>
@@ -260,7 +340,12 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
   },
 
   renderFooter: function() {
+    if(Platform.os == 'ios'){
       return <ActivityIndicatorIOS style={styles.scrollSpinner} />;
+    }
+      else{
+    return <ProgressBar progress={true} style={styles.scrollSpinner}/>;
+      }
   },
 
   render: function() {
