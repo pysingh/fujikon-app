@@ -83,10 +83,8 @@ if(Platform.os == 'ios'){
         {
           AndroidGeolocationModule.getCurrentLocation(
           (msg) => {
-            console.log(altitude);
-            /*console.log(JSON.parse(msg));*/
-            /*console.log(altitude);*/
-            /*console.log("location trackng  " + msg);*/
+            console.log(msg);
+
           },
           (x) => {
             console.log("location trackng error" + x);
@@ -244,6 +242,7 @@ if(Platform.os == 'ios'){
   // },
 
  	onStopPressed: function(){
+    if(Platform.os == 'ios'){
     this.props.navigator.replace({
             component: Summary,
             passProps:{elevationData : elevationData,timeData : timeData,speedData:speedData,
@@ -252,7 +251,24 @@ if(Platform.os == 'ios'){
               // connectionStatus : this.props.connectionStatus},
           }
  			);
- 	},
+    }else{
+      /*
+      elevationData = [1,2,2,2,2,2,2,2];
+      timeData =  [1,2,2,2,2,2,2,2];
+      this.props.navigator.push({
+      id: 'Summary',
+      elevationData : elevationData,
+      timeData : timeData,
+      speedData:speedData,
+      timeDataForSpeed:timeDataForSpeed,
+      heartBeatData : heartBeatData,
+      timeData_heart : timeData_heart
+    });*/
+    this.props.navigator.push({
+      id: 'Test'
+    });
+    
+ 	}},
 
 	
 	render: function(){

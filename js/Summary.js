@@ -98,7 +98,11 @@ var Summary = React.createClass({
 
 	render: function(){
     //console.log("Speed data -->",this.props.speed,"Time data -->",this.props.timeData);
-		var graphValue = this.state.graphValue;
+		var xData = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16'];
+    var yData = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16'];
+
+
+    var graphValue = this.state.graphValue;
     if(graphValue==0)
     return(
 			<ScrollView
@@ -142,7 +146,7 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="elevation(in ft)" xData={this.props.timeData} yData={this.props.elevationData}/>
+              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="elevation(in ft)" xData={xData} yData={xData}/>
           </ScrollView>
           </View>
         </View>
@@ -190,7 +194,6 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="speed(in m/s)" xData={this.props.timeDataForSpeed} yData={this.props.speedData}/>
           </ScrollView>
         </View>
         </ScrollView>
@@ -238,7 +241,6 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="HeartBeat(bpm)" xData={this.props.timeData_heart} yData={this.props.heartBeatData}/>
           </ScrollView>
         </View>
         </ScrollView>

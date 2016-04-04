@@ -17,6 +17,8 @@ var PreWorkout = require('./js/PreWorkout');
 var WorkoutPage = require('./js/Workout');
 var WorkoutOptionsListView = require('./js/WorkoutOptionsListView');
 var ActivityOptionListView = require('./js/ActivityOptionListView');
+var Summary = require('./js/Summary');
+var Test = require('./js/Test');
 var TargetOptions = require('./js/TargetOptions');
 
 var NavigationBarRouteMapper = {
@@ -128,7 +130,20 @@ var Healthmonitor = React.createClass({
                />
           );
         }
-        
+        if (routeId === 'Summary') {
+          return (
+            <Summary
+              navigator={navigator}
+               />
+          );
+        }
+        if (routeId === 'Test') {
+          return (
+            <Test
+              navigator={navigator}
+               />
+          );
+        }
         return this.noRoute(navigator);
     },
     noRoute(navigator) {
