@@ -25,7 +25,7 @@ var x=[];
 var y=[];
 var subscriptionBLE;
 //var speedData = [];
-
+var KenBurnsView = require('./CustomView');
 
 var Summary = React.createClass({
 
@@ -142,7 +142,7 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="elevation(in ft)" xData={this.props.timeData} yData={this.props.elevationData}/>
+        <KenBurnsView source='{"x_cordinates":[1,2,3],"y_coordinates":[1,2,3]}' style={{width:600, height: 300}}/>
           </ScrollView>
           </View>
         </View>
@@ -190,7 +190,7 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="speed(in m/s)" xData={this.props.timeDataForSpeed} yData={this.props.speedData}/>
+        <KenBurnsView source='{"x_cordinates":[1,2,3],"y_coordinates":[1,2,3]}' style={{width:600, height: 300}}/>
           </ScrollView>
         </View>
         </ScrollView>
@@ -238,7 +238,7 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-              <DrawGraphs {...this.props} xAxisName="time(in secs)" yAxisName="HeartBeat(bpm)" xData={this.props.timeData_heart} yData={this.props.heartBeatData}/>
+        <KenBurnsView source='{"x_cordinates":[1,2,3],"y_coordinates":[1,2,3]}' style={{width:600, height: 300}}/>
           </ScrollView>
         </View>
         </ScrollView>

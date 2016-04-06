@@ -18,6 +18,8 @@ var WorkoutPage = require('./js/Workout');
 var WorkoutOptionsListView = require('./js/WorkoutOptionsListView');
 var ActivityOptionListView = require('./js/ActivityOptionListView');
 var TargetOptions = require('./js/TargetOptions');
+var Summary = require('./js/Summary');
+
 
 var NavigationBarRouteMapper = {
   LeftButton: function(route, navigator, index, navState) {
@@ -109,26 +111,28 @@ var Healthmonitor = React.createClass({
           return (
             <WorkoutOptionsListView
               navigator={navigator}
-              obj = {route.passProps.obj}
-               />
+              obj = {route.passProps.obj} />
           );
         }
         if (routeId === 'ActivityOptionListView') {
           return (
             <ActivityOptionListView
               navigator={navigator}
-              obj = {route.passProps.obj}
-               />
+              obj = {route.passProps.obj} />
           );
         }
         if (routeId === 'TargetOptions') {
           return (
             <TargetOptions
-              navigator={navigator}
-               />
+              navigator={navigator} />
           );
         }
-        
+        if (routeId === 'Summary') {
+          return (
+            <Summary
+              navigator={navigator} />
+          );
+        }
         return this.noRoute(navigator);
     },
     noRoute(navigator) {
