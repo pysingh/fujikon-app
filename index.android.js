@@ -92,8 +92,6 @@ var Healthmonitor = React.createClass({
     },
     renderScene(route, navigator) {
         var routeId = route.id;
-        console.log("route")
-        console.log(route)
         if (routeId === 'PreWorkout') {
           return (
             <PreWorkout 
@@ -130,7 +128,8 @@ var Healthmonitor = React.createClass({
         if (routeId === 'Summary') {
           return (
             <Summary
-              navigator={navigator} />
+              navigator={navigator}
+              obj = {route.passProps} />
           );
         }
         return this.noRoute(navigator);

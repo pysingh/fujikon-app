@@ -133,8 +133,8 @@ componentWillMount:function(){
     // AsyncStorage.setItem("connectionStatus", data.status);
   });
 },
-onDeviceConnectionStatusChange:function(deviceConnectionStatus: Event) {
-    this.setState({deviceConnectionStatus:deviceConnectionStatus});
+onDeviceConnectionStatusChange:function(msg: Event) {
+    this.setState({connectionState:msg});
   },
 onConnectionStatusChange:function(e: Event) {
    // this.setState({connectionState:data.status});

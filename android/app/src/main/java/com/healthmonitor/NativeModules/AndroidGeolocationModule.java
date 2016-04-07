@@ -55,11 +55,6 @@ public class AndroidGeolocationModule extends ReactContextBaseJavaModule
         String errorMessage = "Location could not be retrieved";
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
-            // If a location is returned, will invoke success callback with the locatation using a Javascript object
-            /*coords.putDouble("latitude", mLastLocation.getLatitude());
-            coords.putDouble("longitude", mLastLocation.getLongitude());
-            location.putMap("coords", coords);*/
-            /*success.invoke(location);*/
             int altitude = (int) mLastLocation.getAltitude();
             Log.e("altitude", "" + mLastLocation.getAltitude());
             success.invoke(altitude);

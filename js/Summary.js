@@ -14,6 +14,7 @@ var {
   AsyncStorage,
   TouchableHighlight,
   PickerIOS,
+  Platform,
   AsyncStorage,
   ScrollView,
   NativeAppEventEmitter,
@@ -89,16 +90,24 @@ var Summary = React.createClass({
   onWorkoutAgainPressed: function(){
     var PreWorkout = require('./PreWorkout');
     var state = this.props.connectionStatus;
-    this.props.navigator.replace({
-            component: PreWorkout,
-            // passProps: {connectionStatus : state},
-          }
-      );
+    if(Platform.os == 'ios'){
+      this.props.navigator.replace({
+              component: PreWorkout,
+              // passProps: {connectionStatus : state},
+            }
+        );
+    }else{
+      this.props.navigator.push({
+      id: 'PreWorkout'
+    });
+    }
   },
 
 	render: function(){
     //console.log("Speed data -->",this.props.speed,"Time data -->",this.props.timeData);
 		var graphValue = this.state.graphValue;
+    var graphDataAndroid = this.props.obj;
+    graphDataAndroid = JSON.stringify(graphDataAndroid);
     if(graphValue==0)
     return(
 			<ScrollView
@@ -142,7 +151,7 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-        <KenBurnsView source='{"x_cordinates":[1,2,3],"y_coordinates":[1,2,3]}' style={{width:600, height: 300}}/>
+        <KenBurnsView source={graphDataAndroid} style={{width:600, height: 300}}/>
           </ScrollView>
           </View>
         </View>
@@ -190,7 +199,7 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-        <KenBurnsView source='{"x_cordinates":[1,2,3],"y_coordinates":[1,2,3]}' style={{width:600, height: 300}}/>
+        <KenBurnsView source={graphDataAndroid} style={{width:600, height: 300}}/>
           </ScrollView>
         </View>
         </ScrollView>
@@ -238,7 +247,7 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-        <KenBurnsView source='{"x_cordinates":[1,2,3],"y_coordinates":[1,2,3]}' style={{width:600, height: 300}}/>
+        <KenBurnsView source={graphDataAndroid} style={{width:600, height: 300}}/>
           </ScrollView>
         </View>
         </ScrollView>

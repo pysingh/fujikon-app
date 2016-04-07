@@ -6,6 +6,7 @@ var Summary = require('./Summary');
 var PreWorkout = require('./PreWorkout');
 var Subscribable = require('Subscribable');
 var AndroidGeolocationModule = require('react-native').NativeModules.AndroidGeolocation;
+var TimerManagerAndroid = require('react-native').NativeModules.TimerModule;
 
 
 var {  
@@ -81,15 +82,18 @@ if(Platform.os == 'ios'){
         Timermanager.startTimer();
   }else
         {
+          console.log("starting timer js");
+          TimerManagerAndroid.startTimer();
           AndroidGeolocationModule.getCurrentLocation(
-          (msg) => {
+          (altitude) => {
+            
             // console.log(altitude);
             /*console.log(JSON.parse(msg));*/
             /*console.log(altitude);*/
             /*console.log("location trackng  " + msg);*/
           },
           (x) => {
-            console.log("location trackng error" + x);
+            console.log("location trackng error: " + x);
           }
         );
       /* navigator.geolocation.getCurrentPosition(
@@ -129,17 +133,17 @@ if(Platform.os == 'ios'){
       	target = value;
       	this.setState({"pointCounts": value});
     	}).done();
-if(Platform.os == 'ios'){
-    	navigator.geolocation.getCurrentPosition(
-      	(initialPosition) => this.setState({initialPosition}),
-      	(error) => { 
-        alert(error.message)},
-      	{enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-      	);
-    	this.watchID = navigator.geolocation.watchPosition((lastPosition) => {
-      	this.setState({lastPosition});
-    });
-}
+      if(Platform.os == 'ios'){
+      	navigator.geolocation.getCurrentPosition(
+        	(initialPosition) => this.setState({initialPosition}),
+        	(error) => { 
+          alert(error.message)},
+        	{enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+        	);
+      	this.watchID = navigator.geolocation.watchPosition((lastPosition) => {
+        	this.setState({lastPosition});
+      });
+    }
 
  	},
   mixins: [Subscribable.Mixin],
@@ -147,6 +151,9 @@ if(Platform.os == 'ios'){
     this.addListenerOn(DeviceEventEmitter,
                        'heart_rate',
                        this.onHeartRateDataAvailable);
+    this.addListenerOn(DeviceEventEmitter,
+                       'time',
+                       this.onClockTick);
     	elevationData=[];
       timeData=[];
       heartBeatData=[];
@@ -178,7 +185,32 @@ if(Platform.os == 'ios'){
   },
   onHeartRateDataAvailable:function(data: Event) {
     console.log(data)
+    heartBeatData.push(data);
+        heartBeatDatacount = heartBeatDatacount +1;
+        timeData_heart.push(heartBeatDatacount.toString());
+        this.setState({BLEData : data});
+
     /*this.props.BLEConnectionModule.showToast();*/
+  },
+  onClockTick:function(data: Event) {
+    console.log("on clock tick");
+    console.log(data);
+    var time = secondsToTime(parseInt(data));
+    console.log("TimerData:", time.s," : ",time.h," : ",time.m);
+        this.setState({secData : time.s});
+        this.setState({minData : time.m});
+        this.setState({hourData : time.h});
+        timeData.push(data.toString());
+        AndroidGeolocationModule.getCurrentLocation(
+          (altitude) => {
+            elevationData.push(altitude.toString());
+          },
+          (x) => {
+            console.log("location trackng error" + x);
+          }
+        );
+
+        // this.getLocationData(this.state.lastPosition.coords);
   },
  	getLocationData: function(coordinates) {
     
@@ -254,13 +286,16 @@ if(Platform.os == 'ios'){
           }
  			);
     }else{
+      TimerManagerAndroid.resetTimer();
        this.props.navigator.push({
-      id: 'Summary'
+      id: 'Summary',
+      passProps:{elevationData : elevationData,timeData : timeData,speedData:speedData,
+              timeDataForSpeed:timeDataForSpeed,
+              heartBeatData : heartBeatData,timeData_heart : timeData_heart}
     }); 
     }
  	},
 
-	
 	render: function(){
 		//console.log("Reaching...");
 		//console.log("SpeedData->"+speedData+" TimeData"+timeData+" pointCounts"+pointCounts);
@@ -292,6 +327,26 @@ if(Platform.os == 'ios'){
 
 
 });
+
+function secondsToTime(secs)
+{
+  secs = Math.round(secs);
+  var hours = Math.floor(secs / (60 * 60));
+
+  var divisor_for_minutes = secs % (60 * 60);
+  var minutes = Math.floor(divisor_for_minutes / 60);
+
+  var divisor_for_seconds = divisor_for_minutes % 60;
+  var seconds = Math.ceil(divisor_for_seconds);
+
+  var obj = {
+      "h": hours,
+      "m": minutes,
+      "s": seconds
+  };
+  //console.log(obj.h + obj.m + obj.s);
+  return obj;
+}
 
 var styles = StyleSheet.create({
   bigTitle:{

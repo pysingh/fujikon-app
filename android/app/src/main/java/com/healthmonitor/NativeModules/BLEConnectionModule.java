@@ -73,7 +73,11 @@ public class BLEConnectionModule extends ReactContextBaseJavaModule {
             sendEvent(reactContext, "connection_status_change", null, "Error in connection");
         }
     }
-
+    @ReactMethod
+    public void disConnect() {
+        mBluetoothGatt.disconnect();
+                /*mBluetoothGatt = bluetoothDevice.connectGatt(mContext, false, bluetoothGattCallback);*/
+    }
     private BluetoothDevice getDeviceFromAddress(String name) {
         for (int count = 0; count < bleArrayList.size(); count++) {
             if (name.equalsIgnoreCase(bleArrayList.get(count).getName())) {
@@ -174,7 +178,7 @@ public class BLEConnectionModule extends ReactContextBaseJavaModule {
                     ((MainActivity) mContext).runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            CommonUtilities.showToast("Device connected and Now attempting to start service discovery:", mContext);
+                            CommonUtilities.showToast("Device disconnected ", mContext);
                             sendEvent(reactContext, "device_connection_status_change", null, "device_disconnected");
                         }
                     });

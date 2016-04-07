@@ -20,7 +20,10 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Utils;
 
 import com.github.mikephil.charting.data.Entry;
+import com.google.gson.Gson;
+import com.healthmonitor.DeviceDetailModel;
 import com.healthmonitor.R;
+import com.healthmonitor.Utils.GraphdataModel;
 
 import java.util.ArrayList;
 
@@ -44,9 +47,11 @@ public class CustomView extends SimpleViewManager<LineChart> {
 
     @ReactProp(name = "source")
     public void setSource(LineChart mChart, String source) {
+        Gson gson = new Gson();
+        GraphdataModel graphdataModel = gson.fromJson(source,GraphdataModel.class);
         try {
             Log.e("chart", source);
-            mChart.setBackground(ctx.getResources().getDrawable(R.drawable.ic_launcher));
+            //mChart.setBackground(ctx.getResources().getDrawable(R.drawable.ic_launcher));
             mChart.setDrawGridBackground(false);
 
             // no description text
@@ -116,7 +121,7 @@ public class CustomView extends SimpleViewManager<LineChart> {
             //mChart.getViewPortHandler().setMaximumScaleX(2f);
 
             // add data
-            setData(45, 100,mChart);
+            setData(graphdataModel.getTimeData().length, 100,mChart);
 
 //        mChart.setVisibleXRange(20);
 //        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
