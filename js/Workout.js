@@ -33,6 +33,7 @@ var speedData = [];
 var timeDataForSpeed = [];
 var pointCounts = 0;
 var subscriptionBLE,subscriptionTimer;
+var BLEListener, TimerListener;
 var heartBeatDatacount=0;
 var heartBeatData = [];
 var timeData_heart = [];
@@ -148,10 +149,10 @@ if(Platform.os == 'ios'){
  	},
   mixins: [Subscribable.Mixin],
 	componentWillMount: function() {
-    this.addListenerOn(DeviceEventEmitter,
+    BLEListener = this.addListenerOn(DeviceEventEmitter,
                        'heart_rate',
                        this.onHeartRateDataAvailable);
-    this.addListenerOn(DeviceEventEmitter,
+    TimerListener = this.addListenerOn(DeviceEventEmitter,
                        'time',
                        this.onClockTick);
     	elevationData=[];
@@ -181,6 +182,8 @@ if(Platform.os == 'ios'){
       console.log("Removing subscriptions....")
       subscriptionTimer.remove();
       subscriptionBLE.remove();
+      BLEListener.remove();
+      TimerListener.remove();
 
   },
   onHeartRateDataAvailable:function(data: Event) {
@@ -286,8 +289,10 @@ if(Platform.os == 'ios'){
           }
  			);
     }else{
+      heartBeatData = [60,70,80,70,67,50,60,70,80,70,67,50,60];
+      timeData = [1,2,3,4,5,6,7,8,9,10,11,12,13];
       TimerManagerAndroid.resetTimer();
-       this.props.navigator.push({
+       this.props.navigator.replace({
       id: 'Summary',
       passProps:{elevationData : elevationData,timeData : timeData,speedData:speedData,
               timeDataForSpeed:timeDataForSpeed,

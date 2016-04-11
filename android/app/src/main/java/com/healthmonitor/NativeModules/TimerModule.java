@@ -37,6 +37,7 @@ public class TimerModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void resetTimer() {
+        seconds = 0;
         if (timer != null)  {
             timer.cancel();
         }
@@ -54,6 +55,7 @@ public class TimerModule extends ReactContextBaseJavaModule {
                // timerCallBack.invoke(seconds);
                 Log.e("seconds native module", seconds+"");
                 sendEvent(reactContext,"time",null,""+seconds);
+
             }
         }, Constants.TIME_INTERVAL, Constants.TIME_INTERVAL);
     }

@@ -304,21 +304,28 @@ public class BLEConnectionModule extends ReactContextBaseJavaModule {
             ((MainActivity) mContext).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    int initialsize = bleArrayList.size();
                     addDevice(device);
-                    if (bleArrayList != null && bleArrayList.size() > 0) {
-                        /*WritableMap params = Arguments.createMap();
-                        params.putString(Constants.DEVICE, jsonString);*/
+                    if (bleArrayList.size()>initialsize) {
                         Gson gson = new Gson();
                         final String jsonString = gson.toJson(getDeviceModel(device));
                         sendEvent(reactContext, "device_params", null, jsonString);
-                        final Handler handler = new Handler();
+                    }
+                    if (bleArrayList != null && bleArrayList.size() > 0) {
+                        /*WritableMap params = Arguments.createMap();
+                        params.putString(Constants.DEVICE, jsonString);*/
+
+                        /*Gson gson = new Gson();
+                        final String jsonString = gson.toJson(getDeviceModel(device));
+                        sendEvent(reactContext, "device_params", null, jsonString);*/
+                        /*final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 stopScan();
 
                             }
-                        }, 10000);
+                        }, 10000);*/
                         /*if (onScanComplete != null && jsonString != null) {
 
                             final Handler handler = new Handler();

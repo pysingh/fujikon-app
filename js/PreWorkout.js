@@ -281,7 +281,7 @@ if(platform == 'ios'){
         this.props.navigator.push({
         id: 'WorkoutOptionsListView',
         name: 'Activity',
-        passProps : {obj: this}     
+        passProps: {obj: this}     
         });
       }
     }

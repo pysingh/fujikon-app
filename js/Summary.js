@@ -151,7 +151,7 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-        <KenBurnsView source={graphDataAndroid} style={{width:600, height: 300}}/>
+        <KenBurnsView source={graphDataAndroid} style={{width, height:200 }}/>
           </ScrollView>
           </View>
         </View>
@@ -199,7 +199,7 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-        <KenBurnsView source={graphDataAndroid} style={{width:600, height: 300}}/>
+        <KenBurnsView source={graphDataAndroid} style={{width, height }}/>
           </ScrollView>
         </View>
         </ScrollView>
@@ -247,7 +247,7 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-        <KenBurnsView source={graphDataAndroid} style={{width:600, height: 300}}/>
+        <KenBurnsView source={graphDataAndroid} style={{width, height }}/>
           </ScrollView>
         </View>
         </ScrollView>

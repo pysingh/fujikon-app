@@ -19,6 +19,7 @@ var WorkoutOptionsListView = require('./js/WorkoutOptionsListView');
 var ActivityOptionListView = require('./js/ActivityOptionListView');
 var TargetOptions = require('./js/TargetOptions');
 var Summary = require('./js/Summary');
+var TargetOptionsAndroid = require('./js/TargetOptionsAndroid');
 
 
 var NavigationBarRouteMapper = {
@@ -53,7 +54,8 @@ var NavigationBarRouteMapper = {
 
   Title: function(route, navigator, index, navState) {
     return ( 
-      <Text style={{marginTop:10}}> {route.name} </Text>
+      <Text style={{
+    backgroundColor: '#F5FCFF'}}> {route.name} </Text>
     );
   },
 }
@@ -85,6 +87,7 @@ var Healthmonitor = React.createClass({
           navigationBar={
           <Navigator.NavigationBar
             routeMapper={NavigationBarRouteMapper}
+            navIcon={require('image!ic_launcher')}
             style={styles.navBar}/>
            }  
            />
@@ -132,6 +135,13 @@ var Healthmonitor = React.createClass({
               obj = {route.passProps} />
           );
         }
+        if (routeId === 'TargetOptionsAndroid') {
+          return (
+            <TargetOptionsAndroid
+              navigator={navigator}
+              obj = {route.passProps.obj} />
+          );
+        }
         return this.noRoute(navigator);
     },
     noRoute(navigator) {
@@ -165,8 +175,8 @@ var styles = StyleSheet.create({
     marginBottom: 5,
   },
   navBar:{
-    marginTop: 0, 
-    width:0, 
+    width:500,
+    height:76
   },
 });
 

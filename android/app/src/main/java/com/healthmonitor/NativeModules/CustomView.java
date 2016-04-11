@@ -56,7 +56,7 @@ public class CustomView extends SimpleViewManager<LineChart> {
 
             // no description text
             mChart.setDescription("");
-            mChart.setNoDataTextDescription("You need to provide data for the chart.");
+            mChart.setNoDataTextDescription("No data avialable");
 
             // enable touch gestures
             mChart.setTouchEnabled(true);
@@ -106,8 +106,8 @@ public class CustomView extends SimpleViewManager<LineChart> {
             leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
             leftAxis.addLimitLine(ll1);
             leftAxis.addLimitLine(ll2);
-            leftAxis.setAxisMaxValue(220f);
-            leftAxis.setAxisMinValue(-50f);
+            leftAxis.setAxisMaxValue(100f);
+            leftAxis.setAxisMinValue(0);
             //leftAxis.setYOffset(20f);
             leftAxis.enableGridDashedLine(10f, 10f, 0f);
             leftAxis.setDrawZeroLine(false);
@@ -121,7 +121,7 @@ public class CustomView extends SimpleViewManager<LineChart> {
             //mChart.getViewPortHandler().setMaximumScaleX(2f);
 
             // add data
-            setData(graphdataModel.getTimeData().length, 100,mChart);
+            setData(graphdataModel.getTimeData(),graphdataModel.getHeartBeatData(),mChart);
 
 //        mChart.setVisibleXRange(20);
 //        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
@@ -145,26 +145,26 @@ public class CustomView extends SimpleViewManager<LineChart> {
             Log.e("KenBurnsView", "setSource", ex);
         }
     }
-    private void setData(int count, float range, LineChart mChart) {
+    private void setData(int[] xAxisCoord, int[] yAxisCoord, LineChart mChart) {
 
         ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            xVals.add((i) + "");
+        for (int i = 0; i < xAxisCoord.length; i++) {
+            xVals.add(xAxisCoord[i] +"");
         }
 
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
-        for (int i = 0; i < count; i++) {
-
-            float mult = (range + 1);
+        for (int i = 0; i < yAxisCoord.length; i++) {
+            /*float mult = (range + 1);
             float val = (float) (Math.random() * mult) + 3;// + (float)
             // ((mult *
             // 0.1) / 10);
-            yVals.add(new Entry(val, i));
+            yVals.add(new Entry(val, i));*/
+            yVals.add(new Entry(yAxisCoord[i], i));
         }
 
         // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals, "DataSet 1");
+        LineDataSet set1 = new LineDataSet(yVals, "Heart rate");
         // set1.setFillAlpha(110);
         // set1.setFillColor(Color.RED);
 
@@ -181,8 +181,8 @@ public class CustomView extends SimpleViewManager<LineChart> {
 
         if(Utils.getSDKInt() >= 18) {
             // fill drawable only supported on api level 18 and above
-            Drawable drawable = ContextCompat.getDrawable(ctx, R.drawable.ic_launcher);
-            set1.setFillDrawable(drawable);
+            /*Drawable drawable = ContextCompat.getDrawable(ctx, R.drawable.ic_launcher);*/
+            /*set1.setFillDrawable(drawable);*/
         } else {
             set1.setFillColor(Color.BLACK);
         }

@@ -13,7 +13,7 @@ var {
 } = React;
 
 var workoutCount = 0;
-var workoutOptions = ['Just Track Me','Set Target','Target Pace'];
+var targetOptions = ['Time','Distance','Calories'];
 var WorkoutOptionsListView = React.createClass({
 
 getInitialState: function() {
@@ -25,9 +25,9 @@ getInitialState: function() {
   };
 },
 componentDidMount: function() {
-    AsyncStorage.getItem("selectedWorkout").then((value) => {
+    AsyncStorage.getItem("targetWorkoutOption").then((value) => {
       console.log("Async value "+value);
-      this.setState({"selectedWorkout": value});
+      this.setState({"targetWorkoutOption": value});
     }).done();
 },
 
@@ -36,31 +36,38 @@ saveData: function(key,value) {
     this.setState({key : value});
 },
 
-onTabPressed: function(rowID){
-    console.log("Tab pressed..");
-    this.saveData("selectedWorkout",workoutOptions[rowID]);
-    if(Platform.os == 'ios'){
-    if(rowID==1)
-      this.props.navigator.push({
-        component : TargetOptions,
-        });
-    this.props.obj.refreshWorkoutData(workoutOptions[rowID]);
-    this.props.navigator.pop();
-    }else{
-      if(rowID==1){
-        this.props.navigator.push({
-        id: 'TargetOptionsAndroid',
-        name: 'TargetOptions',
-        passProps: {obj: this}     
-        });
-    }else{
-        this.props.obj.refreshWorkoutData(workoutOptions[rowID]);
-        this.props.navigator.pop();
+onTabPressed: function(option){
+    // console.log("Tab pressed..");
+    // this.saveData("selectedWorkout",workoutOptions[rowID]);
+    // if(Platform.os == 'ios'){
+    // if(rowID==1)
+    //   this.props.navigator.push({
+    //     component : TargetOptions,
+    //     });
+    // }else{
+    //   if(rowID==1)
+    //   this.props.navigator.push({
+    //     id: 'TargetOptions',
+    //     name: 'TargetOptions'     
+    //     });
+    // }
+    // this.props.obj.refreshWorkoutData(workoutOptions[rowID]);
+    // this.props.navigator.pop();
+    if(option==0){
+      this.saveData("targetWorkoutOption","Time");
+      
     }
+    else if(option==1){
+      this.saveData("targetWorkoutOption","Distance");
     }
+    else{
+      this.saveData("targetWorkoutOption","Calories");
+    }
+    //this.props.obj.refreshWorkoutData(targetOptions[option]);
+    console.log(this.props);
+    this.props.navigator.popToTop();
 
 },
-
 getOptions: function(){
     
     console.log("Options rendering....");    
@@ -70,7 +77,7 @@ getOptions: function(){
       
       <View style={styles.rightContainer}>
       <View style={styles.separator} />
-      <Text style={styles.title}>{workoutOptions[workoutCount++]}</Text>
+      <Text style={styles.title}>{targetOptions[workoutCount++]}</Text>
       
       
       
