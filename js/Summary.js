@@ -5,6 +5,7 @@ var DrawGraphs = require('./DrawGraph');
 var TargetOptions = require('./TargetOptions');
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
+import RadioButton from './RadioButton';
 
 var {  
   StyleSheet,
@@ -121,7 +122,7 @@ var Summary = React.createClass({
                 }
             </PickerIOS>
     }else{
-      
+
     }
   },
 
@@ -187,6 +188,14 @@ var Summary = React.createClass({
           </View>
           <View style={styles.pickerOneStyle}>
           {this.pickerView()}
+          <RadioButtonGroup ref="Group1" primary={primary} name="group1" onSelect={(value) => {
+                           this.setState({group1Selected: value});
+                       }}>
+    <RadioButton value="1" label="RadioButton On" checked={true}/>
+    <RadioButton value="2" label="RadioButton Off"/>
+    <RadioButton value="3" label="RadioButton Off Disabled" disabled={true}/>
+    <RadioButton value="4" disabled={true}/>
+</RadioButtonGroup>
             </View>
             <ScrollView
                 automaticallyAdjustContentInsets={false}
