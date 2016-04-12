@@ -19,4 +19,5 @@ public class Constants {
     public static final String ACTION_GATT_SERVICES_FAILED = "com.example.bluetooth.le.ACTION_GATT_SERVICES_FAILED";
     public static final long TIME_INTERVAL = 1000;
     public static final String DEVICE = "device";
+    public static final String EMPTY_STRING = "";
 }

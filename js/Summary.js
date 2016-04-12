@@ -10,6 +10,7 @@ var {
   StyleSheet,
   Text,
   TextInput,
+  ListView,
   View,
   AsyncStorage,
   TouchableHighlight,
@@ -103,6 +104,27 @@ var Summary = React.createClass({
     }
   },
 
+  pickerView: function(){
+    if(Platform.os == 'ios'){
+      <PickerIOS
+                style={styles.pickerStyle}
+                selectedValue={this.state.currentOption}
+                onValueChange={this._optionChanged}>
+                {
+                  this.state.targetOptions.map((item)=> (
+                      <PickerIOS
+                        key={'_'+item.id}
+                        value={item.id}
+                        label={item.value}
+                        style={styles.item}/>
+                    ))
+                }
+            </PickerIOS>
+    }else{
+      
+    }
+  },
+
 	render: function(){
     //console.log("Speed data -->",this.props.speed,"Time data -->",this.props.timeData);
 		var graphValue = this.state.graphValue;
@@ -113,6 +135,7 @@ var Summary = React.createClass({
 			<ScrollView
         automaticallyAdjustContentInsets={false}
         onScroll={() => { console.log('onScroll!'); }}
+        con
         scrollEventThrottle={200}
         style={styles.scrollView}>
       <View style={styles.container}> 
@@ -127,20 +150,7 @@ var Summary = React.createClass({
               </TouchableHighlight>
           </View>
           <View style={styles.pickerOneStyle}>
-          <PickerIOS
-                style={styles.pickerStyle}
-                selectedValue={this.state.currentOption}
-                onValueChange={this._optionChanged}>
-                {
-                  this.state.targetOptions.map((item)=> (
-                      <PickerIOS
-                        key={'_'+item.id}
-                        value={item.id}
-                        label={item.value}
-                        style={styles.item}/>
-                    ))
-                }
-            </PickerIOS>
+          {this.pickerView()}
             </View>
             <View ref="Graphview">
             <ScrollView
@@ -176,20 +186,7 @@ var Summary = React.createClass({
               </TouchableHighlight>
           </View>
           <View style={styles.pickerOneStyle}>
-          <PickerIOS
-                style={styles.pickerStyle}
-                selectedValue={this.state.currentOption}
-                onValueChange={this._optionChanged}>
-                {
-                  this.state.targetOptions.map((item)=> (
-                      <PickerIOS
-                        key={'_'+item.id}
-                        value={item.id}
-                        label={item.value}
-                        style={styles.item}/>
-                    ))
-                }
-            </PickerIOS>
+          {this.pickerView()}
             </View>
             <ScrollView
                 automaticallyAdjustContentInsets={false}
@@ -224,20 +221,7 @@ var Summary = React.createClass({
               </TouchableHighlight>
           </View>
           <View style={styles.pickerOneStyle}>
-          <PickerIOS
-                style={styles.pickerStyle}
-                selectedValue={this.state.currentOption}
-                onValueChange={this._optionChanged}>
-                {
-                  this.state.targetOptions.map((item)=> (
-                      <PickerIOS
-                        key={'_'+item.id}
-                        value={item.id}
-                        label={item.value}
-                        style={styles.item}/>
-                    ))
-                }
-            </PickerIOS>
+            {this.pickerView()}
             </View>
             <ScrollView
                 automaticallyAdjustContentInsets={false}

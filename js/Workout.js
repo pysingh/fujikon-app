@@ -5,7 +5,7 @@ var { Timermanager } = require('NativeModules');
 var Summary = require('./Summary');
 var PreWorkout = require('./PreWorkout');
 var Subscribable = require('Subscribable');
-var AndroidGeolocationModule = require('react-native').NativeModules.AndroidGeolocation;
+// var AndroidGeolocationModule = require('react-native').NativeModules.AndroidGeolocation;
 var TimerManagerAndroid = require('react-native').NativeModules.TimerModule;
 
 
@@ -85,18 +85,15 @@ if(Platform.os == 'ios'){
         {
           console.log("starting timer js");
           TimerManagerAndroid.startTimer();
-          AndroidGeolocationModule.getCurrentLocation(
-          (altitude) => {
-            
-            // console.log(altitude);
-            /*console.log(JSON.parse(msg));*/
-            /*console.log(altitude);*/
-            /*console.log("location trackng  " + msg);*/
-          },
-          (x) => {
-            console.log("location trackng error: " + x);
-          }
-        );
+        //   AndroidGeolocationModule.getCurrentLocation(
+        //   (altitude) => {
+        //     console.log("altitude");
+        //     console.log(altitude);
+        //   },
+        //   (x) => {
+        //     console.log("location trackng error: " + x);
+        //   }
+        // );
       /* navigator.geolocation.getCurrentPosition(
       (position) => {
         var initialPosition = JSON.stringify(position);
@@ -194,22 +191,27 @@ if(Platform.os == 'ios'){
     /*this.props.BLEConnectionModule.showToast();*/
   },
   onClockTick:function(data: Event) {
-    console.log("on clock tick");
-    console.log(data);
-    var time = secondsToTime(parseInt(data));
-    console.log("TimerData:", time.s," : ",time.h," : ",time.m);
+    // console.log(data);
+    var object = JSON.parse(data);
+    var time = secondsToTime(parseInt(object.seconds));
+    // console.log("TimerData:", time.s," : ",time.h," : ",time.m);
         this.setState({secData : time.s});
         this.setState({minData : time.m});
         this.setState({hourData : time.h});
-        timeData.push(data.toString());
-        AndroidGeolocationModule.getCurrentLocation(
-          (altitude) => {
-            elevationData.push(altitude.toString());
-          },
-          (x) => {
-            console.log("location trackng error" + x);
-          }
-        );
+        timeData.push(object.seconds.toString());
+        elevationData.push(object.altitude.toString());
+        speedData.push(object.speed.toString());
+        this.setState({altitudeValue:object.altitude.toString()});
+        // AndroidGeolocationModule.getCurrentLocation(
+        //   (altitude) => {
+        //     console.log("altitude");
+        //     console.log(altitude);
+        //     elevationData.push(altitude.toString());
+        //   },
+        //   (x) => {
+        //     console.log("location trackng error" + x);
+        //   }
+        // );
 
         // this.getLocationData(this.state.lastPosition.coords);
   },

@@ -20,6 +20,9 @@ import com.facebook.react.bridge.ReactMethod;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.gson.Gson;
+import com.healthmonitor.Utils.Constants;
+import com.healthmonitor.Utils.LocationSpeedModel;
 
 public class AndroidGeolocationModule extends ReactContextBaseJavaModule
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -28,6 +31,7 @@ public class AndroidGeolocationModule extends ReactContextBaseJavaModule
     protected Location mLastLocation;
 
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private LocationSpeedModel locationSpeedModel;
 
     @Override
     public String getName() {
@@ -37,6 +41,7 @@ public class AndroidGeolocationModule extends ReactContextBaseJavaModule
     public AndroidGeolocationModule(ReactApplicationContext reactContext) {
         super(reactContext);
         buildGoogleApiClient();
+        locationSpeedModel = new LocationSpeedModel();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -48,20 +53,24 @@ public class AndroidGeolocationModule extends ReactContextBaseJavaModule
         mGoogleApiClient.connect();
     }
 
-    @ReactMethod
-    public void getCurrentLocation(Callback success, Callback error) {
-        WritableMap location = Arguments.createMap();
-        WritableMap coords = Arguments.createMap();
-        String errorMessage = "Location could not be retrieved";
+    public LocationSpeedModel getCurrentLocation() {
+//        WritableMap location = Arguments.createMap();
+//        WritableMap coords = Arguments.createMap();
+//        String errorMessage = "Location could not be retrieved";
+//        locationSpeedModel = new LocationSpeedModel();
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
-            int altitude = (int) mLastLocation.getAltitude();
-            Log.e("altitude", "" + mLastLocation.getAltitude());
-            success.invoke(altitude);
-        } else {
-            // Else, the error callback is invoked with an error message
-            error.invoke(errorMessage);
+//            int altitude = (int) mLastLocation.getAltitude();
+//            int speed = (int) mLastLocation.getSpeed();
+            locationSpeedModel.setAltitude((int) mLastLocation.getAltitude());
+            locationSpeedModel.setAltitude((int) mLastLocation.getSpeed());
+            /*Log.e("altitude", "" + mLastLocation.getAltitude());*/
+            //success.invoke(altitude, speed);
         }
+        // Else, the error callback is invoked with an error message
+        //error.invoke(errorMessage);
+
+        return locationSpeedModel;
     }
 
     @Override
