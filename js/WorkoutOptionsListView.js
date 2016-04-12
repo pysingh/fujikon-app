@@ -36,8 +36,7 @@ saveData: function(key,value) {
     this.setState({key : value});
 },
 
-onTabPressed: function(rowID){
-    console.log("Tab pressed..");
+onTabPressed: function(rowID){    console.log("Tab pressed..");
     this.saveData("selectedWorkout",workoutOptions[rowID]);
     if(Platform.os == 'ios'){
     if(rowID==1)
@@ -51,10 +50,10 @@ onTabPressed: function(rowID){
         this.props.navigator.push({
         id: 'TargetOptionsAndroid',
         name: 'TargetOptions',
-        passProps: {obj: this}     
+        passProps: {obj: this.props.obj}     
         });
     }else{
-        this.props.obj.refreshWorkoutData(workoutOptions[rowID]);
+        this.props.obj(workoutOptions[rowID]);
         this.props.navigator.pop();
     }
     }

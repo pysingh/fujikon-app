@@ -145,6 +145,7 @@ var Healthmonitor = React.createClass({
         return this.noRoute(navigator);
     },
     noRoute(navigator) {
+
       return (
         <View style={{flex: 1, alignItems: 'stretch', justifyContent: 'center'}}>
           <TouchableOpacity style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}

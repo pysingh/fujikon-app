@@ -63,8 +63,9 @@ onTabPressed: function(option){
     else{
       this.saveData("targetWorkoutOption","Calories");
     }
-    //this.props.obj.refreshWorkoutData(targetOptions[option]);
-    console.log(this.props);
+   // console.log(this.props);
+    this.props.obj(targetOptions[option]);
+    // this.props.obj.refreshWorkoutData("test");
     this.props.navigator.popToTop();
 
 },

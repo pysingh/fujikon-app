@@ -182,8 +182,6 @@ if(Platform.os == 'ios'){
       console.log("Removing subscriptions....")
       subscriptionTimer.remove();
       subscriptionBLE.remove();
-      BLEListener.remove();
-      TimerListener.remove();
 
   },
   onHeartRateDataAvailable:function(data: Event) {
