@@ -20,6 +20,8 @@ var ActivityOptionListView = require('./js/ActivityOptionListView');
 var TargetOptions = require('./js/TargetOptions');
 var Summary = require('./js/Summary');
 var TargetOptionsAndroid = require('./js/TargetOptionsAndroid');
+var UserStats = require('./js/UserStats');
+
 
 
 var NavigationBarRouteMapper = {
@@ -76,7 +78,7 @@ var Healthmonitor = React.createClass({
         </Text>
       </View>*/
         <Navigator
-          initialRoute={{id: 'PreWorkout', name: 'PreWorkout'}}
+          initialRoute={{id: 'UserStats', name: 'UserStats'}}
           renderScene={this.renderScene.bind(this)}
           configureScene={(route) => {
             if (route.sceneConfig) {
@@ -140,6 +142,12 @@ var Healthmonitor = React.createClass({
             <TargetOptionsAndroid
               navigator={navigator}
               obj = {route.passProps.obj} />
+          );
+        }
+        if (routeId === 'UserStats') {
+          return (
+            <UserStats
+              navigator={navigator} />
           );
         }
         return this.noRoute(navigator);

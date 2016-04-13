@@ -5,14 +5,17 @@ var DrawGraphs = require('./DrawGraph');
 var TargetOptions = require('./TargetOptions');
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
-import RadioButton from './RadioButton';
-
+//var RadioButton  = require('react-native-material-design');
+// import Button = require('react-native-material-design');
+import { Subheader, RadioButtonGroup, COLOR, PRIMARY_COLORS } from 'react-native-material-design';
+ const theme = '000000';
 var {  
   StyleSheet,
   Text,
   TextInput,
   ListView,
   View,
+  Component,
   AsyncStorage,
   TouchableHighlight,
   PickerIOS,
@@ -29,6 +32,7 @@ var y=[];
 var subscriptionBLE;
 //var speedData = [];
 var KenBurnsView = require('./CustomView');
+var graphDataAndroid;
 
 var Summary = React.createClass({
 
@@ -41,6 +45,8 @@ var Summary = React.createClass({
   },
 
   componentDidMount : function(){
+    graphDataAndroid = this.props.obj;
+    graphDataAndroid = JSON.stringify(graphDataAndroid);
 	 AsyncStorage.getItem("targetWorkoutOption").then((value) => {
         //console.log("Target value.."+value);
         target = value;
@@ -122,21 +128,38 @@ var Summary = React.createClass({
                 }
             </PickerIOS>
     }else{
+      
+return(
+    <View>
+      <RadioButtonGroup onSelect={(value) => {
 
+    // value = value+1;
+    this.setState({graphValue:{value}});
+                       }}
+       
+       primary={PRIMARY_COLORS[4]}
+        items={[{
+            value: 1, label: 'Elevation'
+        }, {
+            value: 2, label: 'Speed'
+        },{
+            value: 3, label: 'HeartBeat'
+        }]}/>
+    </View>
+    );
     }
   },
 
 	render: function(){
+    console.log("inside render");
     //console.log("Speed data -->",this.props.speed,"Time data -->",this.props.timeData);
 		var graphValue = this.state.graphValue;
-    var graphDataAndroid = this.props.obj;
-    graphDataAndroid = JSON.stringify(graphDataAndroid);
     if(graphValue==0)
     return(
 			<ScrollView
         automaticallyAdjustContentInsets={false}
         onScroll={() => { console.log('onScroll!'); }}
-        con
+        
         scrollEventThrottle={200}
         style={styles.scrollView}>
       <View style={styles.container}> 
@@ -162,7 +185,7 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-        <KenBurnsView source={graphDataAndroid} style={{width, height:200 }}/>
+        <KenBurnsView source={graphDataAndroid} style={{width, height:100 }}/>
           </ScrollView>
           </View>
         </View>
@@ -188,14 +211,7 @@ var Summary = React.createClass({
           </View>
           <View style={styles.pickerOneStyle}>
           {this.pickerView()}
-          <RadioButtonGroup ref="Group1" primary={primary} name="group1" onSelect={(value) => {
-                           this.setState({group1Selected: value});
-                       }}>
-    <RadioButton value="1" label="RadioButton On" checked={true}/>
-    <RadioButton value="2" label="RadioButton Off"/>
-    <RadioButton value="3" label="RadioButton Off Disabled" disabled={true}/>
-    <RadioButton value="4" disabled={true}/>
-</RadioButtonGroup>
+          
             </View>
             <ScrollView
                 automaticallyAdjustContentInsets={false}
@@ -205,7 +221,7 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-        <KenBurnsView source={graphDataAndroid} style={{width, height }}/>
+        <KenBurnsView source={graphDataAndroid} style={{width, height:200 }}/>
           </ScrollView>
         </View>
         </ScrollView>
@@ -231,6 +247,9 @@ var Summary = React.createClass({
           </View>
           <View style={styles.pickerOneStyle}>
             {this.pickerView()}
+            
+              
+          
             </View>
             <ScrollView
                 automaticallyAdjustContentInsets={false}
@@ -240,7 +259,7 @@ var Summary = React.createClass({
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-        <KenBurnsView source={graphDataAndroid} style={{width, height }}/>
+        <KenBurnsView source={graphDataAndroid} style={{width, height:300 }}/>
           </ScrollView>
         </View>
         </ScrollView>

@@ -6,6 +6,7 @@ var Geolocation = require('./Geolocation');
 var PreWorkout = require('./PreWorkout');
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
+import PickerAndroid from 'react-native-picker-android';
 
 
 exports.framework = 'React';
@@ -23,15 +24,18 @@ var {
   ScrollView,
   Modal,
   SwitchIOS,
+  Platform,
   DatePickerIOS,
 } = React;
 
 var buttonDisabled = 0;
 var genderArray=['Male','Female'];
+let PickerItem = PickerAndroid.Item;
 var UserStats = React.createClass({
 
   
   componentDidMount: function() {
+    if(Platform.os == 'ios'){
     navigator.geolocation.getCurrentPosition(
       (success)=>{this.buttonDisabled=0;this.setState({buttonDisabled:'0'}); console.log("Geo Success")},
       (error)=>{this.buttonDisabled=0;this.setState({buttonDisabled:'1'}); console.log("Geo Fail"+this.buttonDisabled)},
@@ -39,7 +43,7 @@ var UserStats = React.createClass({
 
     //Orientation.addOrientationListener(this._orientationDidChange);
     Orientation.lockToPortrait(); 
-    
+    }
     AsyncStorage.getItem("name").then((value) => {
       this.setState({"name": value});
     }).done();
@@ -96,6 +100,7 @@ var UserStats = React.createClass({
   },
 
   onSubmitPressed: function(){
+    if(Platform.os == 'ios'){
     if(this.buttonDisabled === 0)
     {
       this.props.navigator.replace({
@@ -108,6 +113,10 @@ var UserStats = React.createClass({
             "Enable your location services",
             "The app needs location services to proceed.",
           );
+    }}else{
+      this.props.navigator.push({
+      id: 'PreWorkout'
+    });
     }
     
   },
@@ -184,7 +193,17 @@ var UserStats = React.createClass({
                         ))
                     }
                 </PickerIOS>
-                
+                 <PickerAndroid
+                    selectedValue={this.state.carMake}
+                    onValueChange={(carMake) => this.setState({carMake, modelIndex: 0})}>
+                    {Object.keys(CAR_MAKES_AND_MODELS).map((carMake) => (
+                        <PickerItem
+                            key={carMake}
+                            value={carMake}
+                            label={CAR_MAKES_AND_MODELS[carMake].name}
+                        />
+                    ))}
+                </PickerAndroid>
                 </View>
 
                 

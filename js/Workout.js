@@ -296,7 +296,7 @@ if(Platform.os == 'ios'){
       id: 'Summary',
       passProps:{elevationData : elevationData,timeData : timeData,speedData:speedData,
               timeDataForSpeed:timeDataForSpeed,
-              heartBeatData : heartBeatData,timeData_heart : timeData_heart}
+              heartBeatData : heartBeatData,timeData_heart : timeData_heart, graph_type:1}
     }); 
     }
  	},

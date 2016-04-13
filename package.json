@@ -6,11 +6,14 @@
     "start": "node_modules/react-native/packager/packager.sh"
   },
   "dependencies": {
+    "mrn": "^0.1.7",
     "react-native": "^0.16.0",
     "react-native-chart-nosensezzz": "0.0.1",
     "react-native-material-design": "^0.3.3",
     "react-native-modalbox": "^1.2.8",
     "react-native-orientation": "^1.10.0",
+    "react-native-picker-android": "^0.3.8",
+    "react-native-vector-icons": "^0.8.5",
     "react-timer-mixin": "^0.13.3",
     "rn-geolocation": "0.0.6"
   }

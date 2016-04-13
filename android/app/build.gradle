@@ -31,4 +31,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:8.1.0'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
     compile 'com.facebook.react:react-native:0.16.+'
+    compile project(':react-native-vector-icons')
 }
