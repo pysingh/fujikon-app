@@ -25,12 +25,14 @@ var {
   Modal,
   SwitchIOS,
   Platform,
+  TouchableOpacity,
+  NativeModules,
   DatePickerIOS,
 } = React;
 
 var buttonDisabled = 0;
 var genderArray=['Male','Female'];
-let PickerItem = PickerAndroid.Item;
+var PickerItem = PickerAndroid.Item;
 var UserStats = React.createClass({
 
   
@@ -122,11 +124,12 @@ var UserStats = React.createClass({
   },
 
   toggleGender: function () {
+    console.log("on gender change");
        // console.log("Toggling...");
         this.setState({
             isGenderOptionsVisible :!this.state.isGenderOptionsVisible,isAgeVisible:false
             
-        });        
+        });   
   },
 
   _optionChanged: function(option){
@@ -163,7 +166,38 @@ var UserStats = React.createClass({
   //       }
   //   });
   // },
-
+  pickerView: function(){
+    if(Platform.os == 'ios'){
+        retuen(
+            <PickerIOS
+                selectedValue={this.state.currentGender}
+                onValueChange={this._optionChanged}
+                style={styles.pickerStyle}>
+                {
+                  this.state.genderOptions.map((item)=> (
+                      <PickerIOS
+                        key={'_'+item.id}
+                        value={item.id}
+                        label={item.value}
+                        style={styles.item}/>
+                    ))
+                }
+            </PickerIOS>
+          );
+    }else{
+      return(
+        <PickerAndroid
+            selectedValue={this.state.currentGender}
+            onValueChange={this._optionChanged}>
+            {genderArray.map((gender) => (
+                <PickerItem
+                    key={gender}
+                    value={gender}
+                    label={gender}/>
+            ))}
+        </PickerAndroid>);
+    }
+  },
   _renderGenderOptions: function(){
     //console.log("calledAgain Gender"+this.state.isGenderOptionsVisible);
     //console.log(this.refs.sampleView.measure(sampleMeasurement()))
@@ -179,34 +213,8 @@ var UserStats = React.createClass({
                       <Text style={styles.doneText}>Done</Text>
                     </TouchableHighlight>
                   </View>
-                  <PickerIOS
-                    selectedValue={this.state.currentGender}
-                    onValueChange={this._optionChanged}
-                    style={styles.pickerStyle}>
-                    {
-                      this.state.genderOptions.map((item)=> (
-                          <PickerIOS
-                            key={'_'+item.id}
-                            value={item.id}
-                            label={item.value}
-                            style={styles.item}/>
-                        ))
-                    }
-                </PickerIOS>
-                 <PickerAndroid
-                    selectedValue={this.state.carMake}
-                    onValueChange={(carMake) => this.setState({carMake, modelIndex: 0})}>
-                    {Object.keys(CAR_MAKES_AND_MODELS).map((carMake) => (
-                        <PickerItem
-                            key={carMake}
-                            value={carMake}
-                            label={CAR_MAKES_AND_MODELS[carMake].name}
-                        />
-                    ))}
-                </PickerAndroid>
+                  {this.pickerView()}
                 </View>
-
-                
             );
         } else {
             return;
@@ -254,10 +262,24 @@ var UserStats = React.createClass({
   _scrollToInput :function(){
    this.refs.myScrollView.scrollTo(150);
   },
+  onDateDataAvailable :function(){
+    if(Platform.os == 'ios'){
+   () => this.toggleDate()
+    }else{
+  this._handleClick()
+    }
+  },
+ _handleClick: function () {
 
+       NativeModules.DateAndroid.showDatepicker(function() {}, function(x, y, z) {
+
+        this.setState({date: (new Date(x,y,z))});
+      }.bind(this));
+
+    },
   render: function() {
+      console.log("inside render");
     return (
-      
       <ScrollView
         automaticallyAdjustContentInsets={false}
         onScroll={() => { console.log('onScroll!'); }}
@@ -306,12 +328,13 @@ var UserStats = React.createClass({
                   <Text style={styles.btnText}>DOB :</Text>
                   <TouchableHighlight
                     style={styles.btn}
-                    onPress={() => this.toggleDate()}
+                    onPress={this.onDateDataAvailable}
                     underlayColor='#dddddd'>
                     <Text style={styles.labelText}>{this.state.date.toLocaleDateString()}</Text>
                   </TouchableHighlight>
               </View>
-      
+       <View style={styles.container}>
+            </View>
               <TouchableHighlight onPress={(this.onSubmitPressed)} underlayColor="#EEEEEE" style={styles.button}>
               <Text style={styles.buttonText}>Submit</Text>
               </TouchableHighlight>
@@ -330,6 +353,11 @@ var UserStats = React.createClass({
 });
 
 var styles = StyleSheet.create({
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    margin: 5,
+  },
   container: {
     padding: 30,
     marginTop: 65,

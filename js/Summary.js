@@ -133,8 +133,9 @@ return(
     <View>
       <RadioButtonGroup onSelect={(value) => {
 
-    // value = value+1;
-    this.setState({graphValue:{value}});
+    value = value-1;
+    console.log(value);
+    this.setState({graphValue:value});
                        }}
        
        primary={PRIMARY_COLORS[4]}
@@ -185,7 +186,8 @@ return(
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
-        <KenBurnsView source={graphDataAndroid} style={{width, height:100 }}/>
+                {console.log("first")}
+        <KenBurnsView source={graphDataAndroid } style={{width, height:100 }}/>
           </ScrollView>
           </View>
         </View>
@@ -221,6 +223,7 @@ return(
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
+                {console.log("second")}
         <KenBurnsView source={graphDataAndroid} style={{width, height:200 }}/>
           </ScrollView>
         </View>
@@ -259,6 +262,7 @@ return(
                 showsHorizontalScrollIndicator={true}
                 scrollEventThrottle={500}
                 >
+                {console.log("third")}
         <KenBurnsView source={graphDataAndroid} style={{width, height:300 }}/>
           </ScrollView>
         </View>

@@ -3347,6 +3347,11 @@
       "from": "https://registry.npmjs.org/react-native-chart-nosensezzz/-/react-native-chart-nosensezzz-0.0.1.tgz",
       "resolved": "https://registry.npmjs.org/react-native-chart-nosensezzz/-/react-native-chart-nosensezzz-0.0.1.tgz"
     },
+    "react-native-date": {
+      "version": "1.0.3",
+      "from": "react-native-date@latest",
+      "resolved": "https://registry.npmjs.org/react-native-date/-/react-native-date-1.0.3.tgz"
+    },
     "react-native-material-design": {
       "version": "0.3.3",
       "from": "react-native-material-design@latest",

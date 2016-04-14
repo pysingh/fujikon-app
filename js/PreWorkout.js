@@ -344,7 +344,7 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
       return <ActivityIndicatorIOS style={styles.scrollSpinner} />;
     }
       else{
-    return <ProgressBar progress={true} style={styles.scrollSpinner}/>;
+    return ;
       }
   },
 

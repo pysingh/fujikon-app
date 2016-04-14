@@ -9,6 +9,7 @@
     "mrn": "^0.1.7",
     "react-native": "^0.16.0",
     "react-native-chart-nosensezzz": "0.0.1",
+    "react-native-date": "^1.0.3",
     "react-native-material-design": "^0.3.3",
     "react-native-modalbox": "^1.2.8",
     "react-native-orientation": "^1.10.0",

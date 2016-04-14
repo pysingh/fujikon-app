@@ -14,6 +14,8 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.oblador.vectoricons.VectorIconsPackage;
 
+import me.nucleartux.date.ReactDatePackage;
+
 public class MainActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
 
     private ReactInstanceManager mReactInstanceManager;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements DefaultHardwareBa
                 .addPackage(new MainReactPackage())
                 .addPackage(new ReactPackages(this))
                 .addPackage(new VectorIconsPackage())
+                .addPackage(new ReactDatePackage(this))
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();

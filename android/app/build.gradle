@@ -32,4 +32,5 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.4'
     compile 'com.facebook.react:react-native:0.16.+'
     compile project(':react-native-vector-icons')
+    compile project(':reactdate')
 }
