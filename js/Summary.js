@@ -8,7 +8,7 @@ var {width, height} = Dimensions.get('window');
 //var RadioButton  = require('react-native-material-design');
 // import Button = require('react-native-material-design');
 import { Subheader, RadioButtonGroup, COLOR, PRIMARY_COLORS } from 'react-native-material-design';
- const theme = '000000';
+const theme = '000000';
 var {  
   StyleSheet,
   Text,
@@ -46,7 +46,6 @@ var Summary = React.createClass({
 
   componentDidMount : function(){
     graphDataAndroid = this.props.obj;
-    graphDataAndroid = JSON.stringify(graphDataAndroid);
 	 AsyncStorage.getItem("targetWorkoutOption").then((value) => {
         //console.log("Target value.."+value);
         target = value;
@@ -134,7 +133,7 @@ return(
       <RadioButtonGroup onSelect={(value) => {
 
     value = value-1;
-    console.log(value);
+    graphDataAndroid.graph_type = value;
     this.setState({graphValue:value});
                        }}
        
@@ -152,9 +151,9 @@ return(
   },
 
 	render: function(){
-    console.log("inside render");
     //console.log("Speed data -->",this.props.speed,"Time data -->",this.props.timeData);
 		var graphValue = this.state.graphValue;
+    var data = JSON.stringify(graphDataAndroid);
     if(graphValue==0)
     return(
 			<ScrollView
@@ -187,7 +186,7 @@ return(
                 scrollEventThrottle={500}
                 >
                 {console.log("first")}
-        <KenBurnsView source={graphDataAndroid } style={{width, height:100 }}/>
+        <KenBurnsView source={data} style={{width, height:100 }}/>
           </ScrollView>
           </View>
         </View>
@@ -224,7 +223,7 @@ return(
                 scrollEventThrottle={500}
                 >
                 {console.log("second")}
-        <KenBurnsView source={graphDataAndroid} style={{width, height:200 }}/>
+        <KenBurnsView source={data} style={{width, height:100 }}/>
           </ScrollView>
         </View>
         </ScrollView>
@@ -263,7 +262,7 @@ return(
                 scrollEventThrottle={500}
                 >
                 {console.log("third")}
-        <KenBurnsView source={graphDataAndroid} style={{width, height:300 }}/>
+        <KenBurnsView source={data} style={{width, height:100 }}/>
           </ScrollView>
         </View>
         </ScrollView>

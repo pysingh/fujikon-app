@@ -21,7 +21,7 @@ var TargetOptions = require('./js/TargetOptions');
 var Summary = require('./js/Summary');
 var TargetOptionsAndroid = require('./js/TargetOptionsAndroid');
 var UserStats = require('./js/UserStats');
-
+import YANavigator from 'react-native-ya-navigator';
 
 
 var NavigationBarRouteMapper = {

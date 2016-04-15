@@ -201,6 +201,7 @@ if(Platform.os == 'ios'){
         timeData.push(object.seconds.toString());
         elevationData.push(object.altitude.toString());
         speedData.push(object.speed.toString());
+        timeDataForSpeed.push
         this.setState({altitudeValue:object.altitude.toString()});
         // AndroidGeolocationModule.getCurrentLocation(
         //   (altitude) => {
@@ -289,8 +290,9 @@ if(Platform.os == 'ios'){
           }
  			);
     }else{
-      heartBeatData = [60,70,80,70,67,50,60,70,80,70,67,50,60];
-      timeData = [1,2,3,4,5,6,7,8,9,10,11,12,13];
+      // heartBeatData = [60,70,80,70,67,50,60,70,80,70,67,50,60];
+      // timeData = [1,2,3,4,5,6,7,8,9,10,11,12,13];
+
       TimerManagerAndroid.resetTimer();
        this.props.navigator.replace({
       id: 'Summary',

@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.google.gson.Gson;
 import com.healthmonitor.DeviceDetailModel;
 import com.healthmonitor.R;
+import com.healthmonitor.Utils.Constants;
 import com.healthmonitor.Utils.GraphdataModel;
 
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class CustomView extends SimpleViewManager<LineChart> {
 
             // no description text
             mChart.setDescription("");
-            mChart.setNoDataTextDescription("No data avialable");
+            mChart.setNoDataTextDescription("No data available");
 
             // enable touch gestures
             mChart.setTouchEnabled(true);
@@ -121,7 +122,19 @@ public class CustomView extends SimpleViewManager<LineChart> {
             //mChart.getViewPortHandler().setMaximumScaleX(2f);
 
             // add data
-            setData(graphdataModel.getTimeData(),graphdataModel.getHeartBeatData(),mChart);
+            if(graphdataModel != null){
+                switch (graphdataModel.getGraph_type()){
+                    case Constants.GRAPH_TYPE_ELEVATION:
+                        setData(graphdataModel.getTimeData(),graphdataModel.getElevationData(),mChart);
+                        break;
+                    case Constants.GRAPH_TYPE_HEART_RATE:
+                        setData(graphdataModel.getTimeData_heart(),graphdataModel.getHeartBeatData(),mChart);
+                        break;
+                    case Constants.GRAPH_TYPE_SPEED:
+                        setData(graphdataModel.getTimeDataForSpeed(),graphdataModel.getSpeedData(),mChart);
+                        break;
+                }
+            }
 
 //        mChart.setVisibleXRange(20);
 //        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
@@ -148,8 +161,12 @@ public class CustomView extends SimpleViewManager<LineChart> {
     private void setData(int[] xAxisCoord, int[] yAxisCoord, LineChart mChart) {
 
         ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < xAxisCoord.length; i++) {
-            xVals.add(xAxisCoord[i] +"");
+//        for (int i = 0; i < xAxisCoord.length; i++) {
+//            xVals.add(xAxisCoord[i] +"");
+//        }
+        for(int count=0;count<yAxisCoord.length;count++){
+            Log.e("y point",yAxisCoord[count]+"");
+            xVals.add(yAxisCoord[count] + "");
         }
 
         ArrayList<Entry> yVals = new ArrayList<Entry>();
@@ -164,7 +181,7 @@ public class CustomView extends SimpleViewManager<LineChart> {
         }
 
         // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals, "Heart rate");
+        LineDataSet set1 = new LineDataSet(yVals, "time");
         // set1.setFillAlpha(110);
         // set1.setFillColor(Color.RED);
 

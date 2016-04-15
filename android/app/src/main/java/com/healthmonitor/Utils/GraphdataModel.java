@@ -10,6 +10,15 @@ public class GraphdataModel {
     int[] timeDataForSpeed;
     int[] heartBeatData;
     int[] timeData_heart;
+    int graph_type;
+
+    public int getGraph_type() {
+        return graph_type;
+    }
+
+    public void setGraph_type(int graph_type) {
+        this.graph_type = graph_type;
+    }
 
     public int[] getElevationData() {
         return elevationData;

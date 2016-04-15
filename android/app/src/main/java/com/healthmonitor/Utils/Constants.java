@@ -20,4 +20,7 @@ public class Constants {
     public static final long TIME_INTERVAL = 1000;
     public static final String DEVICE = "device";
     public static final String EMPTY_STRING = "";
+    public static final int GRAPH_TYPE_SPEED = 1;
+    public static final int GRAPH_TYPE_ELEVATION = 0;
+    public static final int GRAPH_TYPE_HEART_RATE = 2;
 }

@@ -2707,6 +2707,16 @@
       "from": "lodash._basecopy@>=3.0.0 <4.0.0",
       "resolved": "https://registry.npmjs.org/lodash._basecopy/-/lodash._basecopy-3.0.1.tgz"
     },
+    "lodash._basedifference": {
+      "version": "4.4.1",
+      "from": "lodash._basedifference@>=4.4.0 <4.5.0",
+      "resolved": "https://registry.npmjs.org/lodash._basedifference/-/lodash._basedifference-4.4.1.tgz"
+    },
+    "lodash._baseflatten": {
+      "version": "4.2.0",
+      "from": "lodash._baseflatten@>=4.2.0 <4.3.0",
+      "resolved": "https://registry.npmjs.org/lodash._baseflatten/-/lodash._baseflatten-4.2.0.tgz"
+    },
     "lodash._basetostring": {
       "version": "3.0.1",
       "from": "lodash._basetostring@>=3.0.0 <4.0.0",
@@ -2747,6 +2757,11 @@
       "from": "lodash._root@>=3.0.0 <4.0.0",
       "resolved": "https://registry.npmjs.org/lodash._root/-/lodash._root-3.0.1.tgz"
     },
+    "lodash._setcache": {
+      "version": "4.1.3",
+      "from": "lodash._setcache@>=4.1.0 <4.2.0",
+      "resolved": "https://registry.npmjs.org/lodash._setcache/-/lodash._setcache-4.1.3.tgz"
+    },
     "lodash._stack": {
       "version": "4.1.3",
       "from": "lodash._stack@>=4.1.0 <4.2.0",
@@ -2783,6 +2798,21 @@
       "version": "3.1.2",
       "from": "lodash.keys@>=3.0.0 <4.0.0",
       "resolved": "https://registry.npmjs.org/lodash.keys/-/lodash.keys-3.1.2.tgz"
+    },
+    "lodash.keysin": {
+      "version": "4.1.3",
+      "from": "lodash.keysin@>=4.0.0 <5.0.0",
+      "resolved": "https://registry.npmjs.org/lodash.keysin/-/lodash.keysin-4.1.3.tgz"
+    },
+    "lodash.omit": {
+      "version": "4.2.1",
+      "from": "lodash.omit@>=4.1.0 <5.0.0",
+      "resolved": "https://registry.npmjs.org/lodash.omit/-/lodash.omit-4.2.1.tgz"
+    },
+    "lodash.rest": {
+      "version": "4.0.2",
+      "from": "lodash.rest@>=4.0.0 <5.0.0",
+      "resolved": "https://registry.npmjs.org/lodash.rest/-/lodash.rest-4.0.2.tgz"
     },
     "lodash.restparam": {
       "version": "3.6.1",
@@ -3393,6 +3423,11 @@
       "version": "0.8.5",
       "from": "react-native-vector-icons@0.8.5",
       "resolved": "https://registry.npmjs.org/react-native-vector-icons/-/react-native-vector-icons-0.8.5.tgz"
+    },
+    "react-native-ya-navigator": {
+      "version": "0.4.3",
+      "from": "react-native-ya-navigator@latest",
+      "resolved": "https://registry.npmjs.org/react-native-ya-navigator/-/react-native-ya-navigator-0.4.3.tgz"
     },
     "react-timer-mixin": {
       "version": "0.13.3",
