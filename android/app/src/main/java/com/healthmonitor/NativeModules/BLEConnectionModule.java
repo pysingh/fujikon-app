@@ -166,7 +166,7 @@ public class BLEConnectionModule extends ReactContextBaseJavaModule {
                         @Override
                         public void run() {
                             CommonUtilities.showToast("Device connected and Now attempting to start service discovery:", mContext);
-                            sendEvent(reactContext, "device_connection_status_change", null, "device_connected");
+                            sendEvent(reactContext, "device_connection_status_change", null, "Device Connected");
                         }
                     });
 
@@ -179,7 +179,7 @@ public class BLEConnectionModule extends ReactContextBaseJavaModule {
                         @Override
                         public void run() {
                             CommonUtilities.showToast("Device disconnected ", mContext);
-                            sendEvent(reactContext, "device_connection_status_change", null, "device_disconnected");
+                            sendEvent(reactContext, "device_connection_status_change", null, "Device Disconnected");
                         }
                     });
                 }

@@ -15,6 +15,7 @@ exports.title = 'Geolocation';
 var {  
   StyleSheet,
   Text,
+  Image,
   TextInput,
   View,
   AsyncStorage,
@@ -25,6 +26,7 @@ var {
   Modal,
   SwitchIOS,
   Platform,
+  Navigator,
   TouchableOpacity,
   NativeModules,
   DatePickerIOS,
@@ -279,6 +281,87 @@ var UserStats = React.createClass({
     },
   render: function() {
       console.log("inside render");
+      if(Platform.os == 'ios'){
+<ScrollView
+        automaticallyAdjustContentInsets={false}
+        onScroll={() => { console.log('onScroll!'); }}
+        scrollEventThrottle={200}
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={true}
+        //scrollable={false}
+        keyboardShouldPersistTaps={false} >
+      <View ref="sampleView">
+            <View style={styles.container}>
+               <View style={styles.inputcontainer}>
+                  <Text style={styles.btnText}>Gender :</Text>
+                  <TouchableHighlight
+                    style={styles.btn}
+                    onPress={() => this.toggleGender()}
+                    underlayColor='#dddddd'>
+                    <Text style={styles.labelText}>{genderArray[this.state.currentGender]}</Text>
+                  </TouchableHighlight>
+              </View>
+              <View style={styles.inputcontainer}>
+              
+                  <Text style={styles.btnText}>Height :</Text>
+                  <TextInput
+                ref="heightInput"
+              placeholder="Height(cms)"
+              returnKeyType='next'
+              keyboardType='numeric'
+              onChange={(event) => this.setState({height: event.nativeEvent.text})}
+              onFocus={()=>{this.refs.heightInput.focus();this.setState({isAgeVisible:false,isGenderOptionsVisible:false})}}
+              style={styles.formInput}/>
+              </View>
+           
+              <View style={styles.inputcontainer}>
+                  <Text style={styles.btnText}>Weight :</Text>
+                  <TextInput
+                  ref="weightInput"
+              placeholder="Weight(lbs)"
+              keyboardType='numeric'
+              onChange={(event) => this.setState({weight: event.nativeEvent.text})}
+              onFocus={()=>{this.refs.weightInput.focus(); this.setState({isAgeVisible:false,isGenderOptionsVisible:false})}}
+              style={styles.formInput}
+              /> 
+              </View>
+
+              <View style={styles.inputcontainer}>
+                  <Text style={styles.btnText}>DOB :</Text>
+                  <TouchableHighlight
+                    style={styles.btn}
+                    onPress={this.onDateDataAvailable}
+                    underlayColor='#dddddd'>
+                    <Text style={styles.labelText}>{this.state.date.toLocaleDateString()}</Text>
+                  </TouchableHighlight>
+              </View>
+       <View style={styles.container}>
+            </View>
+              <TouchableHighlight onPress={(this.onSubmitPressed)} underlayColor="#EEEEEE" style={styles.button}>
+              <Text style={styles.buttonText}>Submit</Text>
+              </TouchableHighlight>
+               <Text style={styles.instructionFont}>Please enable location services in-order to use the app.</Text>
+            </View>
+            <View style={styles.restContainer} removeClippedSubviews={true}>
+             {this._renderGenderOptions()}
+             {this._renderDatePicker()}
+            </View>
+            
+      </View>
+
+      </ScrollView>
+      }else{
+    return (
+      <Navigator
+          renderScene={this.renderScene.bind(this)}
+          navigationBar={
+            <Navigator.NavigationBar style={{backgroundColor: '#FCB130', alignItems: 'center'}}
+                routeMapper={NavigationBarRouteMapper} />
+          } />
+      
+      );}
+  },
+  renderScene: function(route, navigator) {
     return (
       <ScrollView
         automaticallyAdjustContentInsets={false}
@@ -346,17 +429,47 @@ var UserStats = React.createClass({
             </View>
             
       </View>
+
       </ScrollView>
-      
+    );
+  },
+  gotoNext: function() {
+    this.props.navigator.push({
+      id: 'PreWorkout',
+      name: 'Test',
+    });
+  }
+});
+var NavigationBarRouteMapper = {
+  LeftButton(route, navigator, index, navState) {
+       return (
+        <Image
+          source={{uri: 'http://facebook.github.io/react/img/logo_og.png'}}
+          style={styles.base}/>
       );
   },
-});
-
+  RightButton(route, navigator, index, navState) {
+    return null;
+  },
+  Title(route, navigator, index, navState) {
+    return (
+      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
+        <Text style={{color: 'white', margin: 10, fontSize: 16}}>
+          User stats
+        </Text>
+      </TouchableOpacity>
+    );
+  }
+};
 var styles = StyleSheet.create({
   instructions: {
     textAlign: 'center',
     color: '#333333',
     margin: 5,
+  }, 
+  base: {
+    width: 35,
+    height: 35,
   },
   container: {
     padding: 30,

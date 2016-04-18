@@ -186,7 +186,7 @@ return(
                 scrollEventThrottle={500}
                 >
                 {console.log("first")}
-        <KenBurnsView source={data} style={{width, height:100 }}/>
+        <KenBurnsView source={data} style={{width, height:150 }}/>
           </ScrollView>
           </View>
         </View>
@@ -223,7 +223,7 @@ return(
                 scrollEventThrottle={500}
                 >
                 {console.log("second")}
-        <KenBurnsView source={data} style={{width, height:100 }}/>
+        <KenBurnsView source={data} style={{width, height:150 }}/>
           </ScrollView>
         </View>
         </ScrollView>
@@ -262,7 +262,7 @@ return(
                 scrollEventThrottle={500}
                 >
                 {console.log("third")}
-        <KenBurnsView source={data} style={{width, height:100 }}/>
+        <KenBurnsView source={data} style={{width, height:150 }}/>
           </ScrollView>
         </View>
         </ScrollView>

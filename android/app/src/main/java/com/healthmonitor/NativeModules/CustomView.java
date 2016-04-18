@@ -105,9 +105,9 @@ public class CustomView extends SimpleViewManager<LineChart> {
 
             YAxis leftAxis = mChart.getAxisLeft();
             leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-            leftAxis.addLimitLine(ll1);
+            //leftAxis.addLimitLine(ll1);
             leftAxis.addLimitLine(ll2);
-            leftAxis.setAxisMaxValue(100f);
+            leftAxis.setAxisMaxValue(200f);
             leftAxis.setAxisMinValue(0);
             //leftAxis.setYOffset(20f);
             leftAxis.enableGridDashedLine(10f, 10f, 0f);

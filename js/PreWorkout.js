@@ -33,15 +33,18 @@ var {
   StyleSheet,
   AsyncStorage,
   Text,
+  Image,
+  Navigator,
   View,
   DeviceEventEmitter,
   NativeAppEventEmitter,
   Platform,
+  TouchableOpacity,
   ActivityIndicatorIOS,
 } = React;
   
 
-var platform = Platform.os;
+var platform = Platform.OS;
 var subscriptionBLE;
 var androidDeviceList = new Set();
 var ListViewSimpleExample = React.createClass({
@@ -207,7 +210,9 @@ if(platform == 'ios'){
   },
 
   onConnectPressed: function(){
+
     var Workout = require('./Workout');
+
     if(platform === 'ios'){
       if(started != 1)
         {
@@ -304,7 +309,10 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
   },
 
   openModal3: function(id) {
-    this.refs.modal3.open();
+    // console.log('this.refs ', this.myTextInput);
+
+    // this.refs.modal3.open();
+    this.myTextInput.open();
   },
 
   closeModal5: function(id) {
@@ -347,14 +355,30 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
     return ;
       }
   },
-
   render: function() {
     if(count!=0)
       count=0;
     // if(this.props.connectionStatus)
     //   this.state.connectionState = this.props.connectionStatus;
-    return (
-      <View style ={styles.screenContainer}>
+    if(Platform.OS == 'ios'){
+      return (
+       this.renderScene()
+      );
+    }else{
+      return(
+      <Navigator
+          ref = "NavBar"
+          renderScene={this.renderScene.bind(this)}
+          navigationBar={
+            <Navigator.NavigationBar style={{backgroundColor: '#FCB130', alignItems: 'center'}}
+                routeMapper={NavigationBarRouteMapper} />
+          } />);
+    }
+},
+renderScene: function(route, navigator) {
+
+  return(
+    <View style ={styles.screenContainer}>
           <View style={styles.titleContainer}>
             <Text style={styles.titleText}>Bluetooth Connection</Text>
           </View>
@@ -364,7 +388,7 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
           </View>
 
           <View style={styles.connectionButtonContainer}>
-             <TouchableHighlight onPress={(this.onConnectPressed)} underlayColor="#EEEEEE" style={styles.connectButton}>  
+             <TouchableHighlight onPress={this.onConnectPressed.bind(this)} underlayColor="#EEEEEE" style={styles.connectButton}>  
              <Text style={styles.connectButtonText}>Connect</Text>
              </TouchableHighlight> 
           </View>
@@ -399,7 +423,7 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
       </TouchableHighlight>
       </View>
 
-      <Modal style={[styles.modal, styles.modal3]} position={"center"} ref={"modal3"}>
+      <Modal ref={(ref) => this.myTextInput = ref} style={[styles.modal, styles.modal3]} position={"center"} >
           <View style={styles.titleContainer}>
             <Text style={styles.titleText}>Available Devices :</Text>
           </View>
@@ -416,17 +440,41 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
         showsVerticalScrollIndicator={false}/>
         </Modal>
       </View>
-      );
-
-},
+  );
+}
 
 });
+var NavigationBarRouteMapper = {
+  LeftButton(route, navigator, index, navState) {
+       return (
+        <Image
+          source={{uri: 'http://facebook.github.io/react/img/logo_og.png'}}
+          style={styles.base}/>
+      );
+  },
+  RightButton(route, navigator, index, navState) {
+    return null;
+  },
+  Title(route, navigator, index, navState) {
+    return (
+      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
+        <Text style={{color: 'white', margin: 10, fontSize: 16}}>
+          Pre Workout
+        </Text>
+      </TouchableOpacity>
+    );
+  }
+};
 
 var styles = StyleSheet.create({
   listView: {
     paddingTop: 30,
         //backgroundColor: '#F5FCFF',
         height:200,
+      },
+      base: {
+width: 35,
+height: 35,
       },
       screenContainer:{
         paddingTop:50,

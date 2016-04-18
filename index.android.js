@@ -10,6 +10,7 @@ var {
   StyleSheet,
   Text,
   Navigator,
+  BackAndroid,
   TouchableOpacity,
   View,
 } = React;
@@ -21,62 +22,12 @@ var TargetOptions = require('./js/TargetOptions');
 var Summary = require('./js/Summary');
 var TargetOptionsAndroid = require('./js/TargetOptionsAndroid');
 var UserStats = require('./js/UserStats');
-import YANavigator from 'react-native-ya-navigator';
 
-
-var NavigationBarRouteMapper = {
-  LeftButton: function(route, navigator, index, navState) {
-    if (route.index == 1 || route.index == 3) {      
-    } 
-    else {
-      var backButtonText = '< Back';
-      if (route.index == 1) {
-        backButtonText = "< Login";
-      }
-      return ( 
-        <View style={styles.BackButtonBGStyle}>
-        <TouchableOpacity 
-            style = {{marginTop: 0}} 
-            onPress = {() => {
-              if (index == 1 || index == 3) {
-                
-              } else {
-                navigator.pop();
-              }
-            }}> 
-        </TouchableOpacity> 
-        </View>
-      );
-    }
-  },
-
-  RightButton: function(route, navigator, index, navState) {
-    return null;
-  },
-
-  Title: function(route, navigator, index, navState) {
-    return ( 
-      <Text style={{
-    backgroundColor: '#F5FCFF'}}> {route.name} </Text>
-    );
-  },
-}
 
 
 var Healthmonitor = React.createClass({
   render: function() {
     return (
-      /*<View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Shake or press menu button for dev menu
-        </Text>
-      </View>*/
         <Navigator
           initialRoute={{id: 'UserStats', name: 'UserStats'}}
           renderScene={this.renderScene.bind(this)}
@@ -85,14 +36,7 @@ var Healthmonitor = React.createClass({
               return route.sceneConfig;
             }
             return Navigator.SceneConfigs.FloatFromRight;
-          }}
-          navigationBar={
-          <Navigator.NavigationBar
-            routeMapper={NavigationBarRouteMapper}
-            navIcon={require('image!ic_launcher')}
-            style={styles.navBar}/>
-           }  
-           />
+          }} />
       );
     },
     renderScene(route, navigator) {
