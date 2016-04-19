@@ -85,7 +85,7 @@ var UserStats = React.createClass({
       weight :'',
       age :'',
       genderOptions :[{id:0,value:'Male'},{id:1,value:'Female'}],
-      currentGender : 0,
+      currentGender : Platform.os == 'iOS' ? 0 : 'Male',
       genderModalVisible: 'false',
       animated: true,
       transparent: true,
@@ -128,7 +128,6 @@ var UserStats = React.createClass({
   },
 
   toggleGender: function () {
-    console.log("on gender change");
        // console.log("Toggling...");
         this.setState({
             isGenderOptionsVisible :!this.state.isGenderOptionsVisible,isAgeVisible:false
@@ -137,7 +136,7 @@ var UserStats = React.createClass({
   },
 
   _optionChanged: function(option){
-    //console.log("Target changed"+option);
+    console.log("Target changed"+option);
     this.setState({currentGender: option});
   },
   
@@ -307,23 +306,23 @@ var UserStats = React.createClass({
               
                   <Text style={styles.btnText}>Height :</Text>
                   <TextInput
-                ref="heightInput"
+                ref={(ref) => this.heightInput = ref}
               placeholder="Height(cms)"
               returnKeyType='next'
               keyboardType='numeric'
               onChange={(event) => this.setState({height: event.nativeEvent.text})}
-              onFocus={()=>{this.refs.heightInput.focus();this.setState({isAgeVisible:false,isGenderOptionsVisible:false})}}
+              onFocus={()=>{this.heightInput.focus();this.setState({isAgeVisible:false,isGenderOptionsVisible:false})}}
               style={styles.formInput}/>
               </View>
            
               <View style={styles.inputcontainer}>
                   <Text style={styles.btnText}>Weight :</Text>
                   <TextInput
-                  ref="weightInput"
+                  ref={(ref) => this.weightInput = ref}
               placeholder="Weight(lbs)"
               keyboardType='numeric'
               onChange={(event) => this.setState({weight: event.nativeEvent.text})}
-              onFocus={()=>{this.refs.weightInput.focus(); this.setState({isAgeVisible:false,isGenderOptionsVisible:false})}}
+              onFocus={()=>{this.weightInput.focus(); this.setState({isAgeVisible:false,isGenderOptionsVisible:false})}}
               style={styles.formInput}
               /> 
               </View>
@@ -367,7 +366,6 @@ var UserStats = React.createClass({
     return (
       <ScrollView
         automaticallyAdjustContentInsets={false}
-        onScroll={() => { console.log('onScroll!'); }}
         scrollEventThrottle={200}
         style={styles.scrollView}
         showsVerticalScrollIndicator={true}
@@ -381,30 +379,30 @@ var UserStats = React.createClass({
                     style={styles.btn}
                     onPress={() => this.toggleGender()}
                     underlayColor='#dddddd'>
-                    <Text style={styles.labelText}>{genderArray[this.state.currentGender]}</Text>
+                    <Text style={styles.labelText}>{this.state.currentGender}</Text>
                   </TouchableHighlight>
               </View>
               <View style={styles.inputcontainer}>
               
                   <Text style={styles.btnText}>Height :</Text>
                   <TextInput
-                ref="heightInput"
+                  ref={(ref) => this.heightInput = ref}
               placeholder="Height(cms)"
               returnKeyType='next'
               keyboardType='numeric'
               onChange={(event) => this.setState({height: event.nativeEvent.text})}
-              onFocus={()=>{this.refs.heightInput.focus();this.setState({isAgeVisible:false,isGenderOptionsVisible:false})}}
+              onFocus={()=>{this.heightInput.focus();this.setState({isAgeVisible:false,isGenderOptionsVisible:false})}}
               style={styles.formInput}/>
               </View>
            
               <View style={styles.inputcontainer}>
                   <Text style={styles.btnText}>Weight :</Text>
                   <TextInput
-                  ref="weightInput"
+                  ref={(ref) => this.weightInput = ref}
               placeholder="Weight(lbs)"
               keyboardType='numeric'
               onChange={(event) => this.setState({weight: event.nativeEvent.text})}
-              onFocus={()=>{this.refs.weightInput.focus(); this.setState({isAgeVisible:false,isGenderOptionsVisible:false})}}
+              onFocus={()=>{this.weightInput.focus(); this.setState({isAgeVisible:false,isGenderOptionsVisible:false})}}
               style={styles.formInput}
               /> 
               </View>
@@ -427,9 +425,7 @@ var UserStats = React.createClass({
             </View>
             <View style={styles.restContainer} removeClippedSubviews={true}>
              {this._renderGenderOptions()}
-             {this._renderDatePicker()}
             </View>
-            
       </View>
 
       </ScrollView>
@@ -442,7 +438,6 @@ var UserStats = React.createClass({
     });
   },
   _onPressButton: function(){
-    console.log("test");
     this.props.navigator.pop()
   },
 });

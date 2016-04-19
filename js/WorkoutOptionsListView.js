@@ -117,7 +117,7 @@ var NavigationBarRouteMapper = {
      return (
         <TouchableOpacity onPress={() => navigator.parentNavigator.pop()} style={{flex: 1, justifyContent: 'center'}}> 
         <Image
-          source={{uri: 'http://facebook.github.io/react/img/logo_og.png'}}
+          source={require('./arrow_left.png')}
           style={styles.base}/>
         </TouchableOpacity>    
       );
@@ -137,7 +137,7 @@ var NavigationBarRouteMapper = {
 };
 var styles = StyleSheet.create({
 	listView: {
-        paddingTop: 30,
+        paddingTop: 45,
         //backgroundColor: '#F5FCFF',
         height:100,
     },

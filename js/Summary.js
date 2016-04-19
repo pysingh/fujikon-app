@@ -8,6 +8,7 @@ var {width, height} = Dimensions.get('window');
 //var RadioButton  = require('react-native-material-design');
 // import Button = require('react-native-material-design');
 import { Subheader, RadioButtonGroup, COLOR, PRIMARY_COLORS } from 'react-native-material-design';
+import Radio, {RadioButton} from 'react-native-simple-radio-button'
 const theme = '000000';
 var {  
   StyleSheet,
@@ -36,7 +37,11 @@ var subscriptionBLE;
 //var speedData = [];
 var KenBurnsView = require('./CustomView');
 var graphDataAndroid;
-
+var radio_props = [
+  {label: '  Elevation', value: 1 },
+  {label: '  Speed', value: 2 },
+  {label: '  HeartBeat', value: 3}
+];
 var Summary = React.createClass({
 
 	getInitialState: function() {
@@ -131,23 +136,36 @@ var Summary = React.createClass({
             </PickerIOS>
     }else{
       
-return(
-    <View>
-      <RadioButtonGroup onSelect={(value) => {
+// return(
+//     <View>
+//       <RadioButtonGroup onSelect={(value) => {
 
-    value = value-1;
-    graphDataAndroid.graph_type = value;
-    this.setState({graphValue:value});
-                       }}
+//     value = value-1;
+//     graphDataAndroid.graph_type = value;
+//     this.setState({graphValue:value});
+//                        }}
        
-       primary={PRIMARY_COLORS[4]}
-        items={[{
-            value: 1, label: 'Elevation'
-        }, {
-            value: 2, label: 'Speed'
-        },{
-            value: 3, label: 'HeartBeat'
-        }]}/>
+//        primary={PRIMARY_COLORS[4]}
+//         items={[{
+//             value: 1, label: 'Elevation'
+//         }, {
+//             value: 2, label: 'Speed'
+//         },{
+//             value: 3, label: 'HeartBeat'
+//         }]}/>
+//     </View>
+//     );
+return(
+    <View style={{marginTop: 30, marginBottom: 30}}>
+      <Radio
+          radio_props={radio_props}
+          initial={0}
+          formHorizontal={true}
+          buttonColor={'#FCB130'}
+          onPress={(value) => {
+            value = value-1;
+            graphDataAndroid.graph_type = value;
+            this.setState({graphValue:value})}}/>
     </View>
     );
     }
@@ -168,7 +186,8 @@ return(
           navigationBar={
             <Navigator.NavigationBar style={{backgroundColor: '#FCB130', alignItems: 'center'}}
                 routeMapper={NavigationBarRouteMapper} />
-          } />);
+          } />
+          );
     }
     
 
@@ -176,6 +195,10 @@ return(
   renderScene: function(){
     var graphValue = this.state.graphValue;
     var data = JSON.stringify(graphDataAndroid);
+
+console.log("============>--------");
+console.log(graphValue);
+
     if(graphValue==0)
     return(
       <ScrollView
@@ -208,7 +231,7 @@ return(
                 scrollEventThrottle={500}
                 >
                 {console.log("first")}
-        <KenBurnsView source={data} style={{width, height:150 }}/>
+        <KenBurnsView source={data} style={{width, height:250 }}/>
           </ScrollView>
           </View>
         </View>
@@ -245,7 +268,7 @@ return(
                 scrollEventThrottle={500}
                 >
                 {console.log("second")}
-        <KenBurnsView source={data} style={{width, height:150 }}/>
+        <KenBurnsView source={data} style={{width, height:250 }}/>
           </ScrollView>
         </View>
         </ScrollView>
@@ -284,7 +307,7 @@ return(
                 scrollEventThrottle={500}
                 >
                 {console.log("third")}
-        <KenBurnsView source={data} style={{width, height:150 }}/>
+        <KenBurnsView source={data} style={{width, height:250 }}/>
           </ScrollView>
         </View>
         </ScrollView>
@@ -298,7 +321,7 @@ var NavigationBarRouteMapper = {
      return (
         <TouchableOpacity onPress={() => navigator.parentNavigator.pop()} style={{flex: 1, justifyContent: 'center'}}> 
         <Image
-          source={{uri: 'http://facebook.github.io/react/img/logo_og.png'}}
+          source={require('./arrow_left.png')}
           style={styles.base}/>
         </TouchableOpacity>    
       );
