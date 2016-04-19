@@ -22,9 +22,22 @@ var TargetOptions = require('./js/TargetOptions');
 var Summary = require('./js/Summary');
 var TargetOptionsAndroid = require('./js/TargetOptionsAndroid');
 var UserStats = require('./js/UserStats');
+var globalNavigator ;
+var globalNavigatorId;
 
 
+BackAndroid.addEventListener('hardwareBackPress', function() {
+    //console.log(this.props.test);
+  // console.log(this);
+  //console.log(this.props.route);
+  if(globalNavigatorId == 'UserStats'){
 
+  }else{
+    globalNavigator.pop()
+    return true;
+  }
+  return false;
+});
 var Healthmonitor = React.createClass({
   render: function() {
     return (
@@ -40,7 +53,9 @@ var Healthmonitor = React.createClass({
       );
     },
     renderScene(route, navigator) {
+       globalNavigator = navigator;
         var routeId = route.id;
+        globalNavigatorId = routeId;
         if (routeId === 'PreWorkout') {
           return (
             <PreWorkout 
@@ -91,7 +106,8 @@ var Healthmonitor = React.createClass({
         if (routeId === 'UserStats') {
           return (
             <UserStats
-              navigator={navigator} />
+              navigator={navigator}
+              test = 'lastpoint' />
           );
         }
         return this.noRoute(navigator);

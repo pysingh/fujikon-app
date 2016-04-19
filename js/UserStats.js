@@ -28,6 +28,7 @@ var {
   Platform,
   Navigator,
   TouchableOpacity,
+  BackAndroid,
   NativeModules,
   DatePickerIOS,
 } = React;
@@ -118,6 +119,7 @@ var UserStats = React.createClass({
             "The app needs location services to proceed.",
           );
     }}else{
+      AsyncStorage.setItem("deviceConnectionStatus", "Not Connected");
       this.props.navigator.push({
       id: 'PreWorkout'
     });
@@ -438,15 +440,22 @@ var UserStats = React.createClass({
       id: 'PreWorkout',
       name: 'Test',
     });
-  }
+  },
+  _onPressButton: function(){
+    console.log("test");
+    this.props.navigator.pop()
+  },
 });
 var NavigationBarRouteMapper = {
-  LeftButton(route, navigator, index, navState) {
-       return (
-        <Image
-          source={{uri: 'http://facebook.github.io/react/img/logo_og.png'}}
-          style={styles.base}/>
-      );
+  LeftButton(route, navigator, index, navState) { 
+      //  return (
+      //   <TouchableOpacity onPress={() => navigator.pop} style={{flex: 1, justifyContent: 'center'}}> 
+      //   <Image
+      //     source={{uri: 'http://facebook.github.io/react/img/logo_og.png'}}
+      //     style={styles.base}/>
+      //   </TouchableOpacity>    
+      // );
+    return null;
   },
   RightButton(route, navigator, index, navState) {
     return null;

@@ -15,6 +15,9 @@ var {
   TextInput,
   ListView,
   View,
+  Navigator,
+  TouchableOpacity,
+  Image,
   Component,
   AsyncStorage,
   TouchableHighlight,
@@ -152,11 +155,30 @@ return(
 
 	render: function(){
     //console.log("Speed data -->",this.props.speed,"Time data -->",this.props.timeData);
-		var graphValue = this.state.graphValue;
+		if(Platform.OS == 'ios'){
+      return (
+       this.renderScene()
+      );
+    }else{
+      return(
+      <Navigator
+          ref = "NavBar"
+          renderScene={this.renderScene.bind(this)}
+          navigator={this.props.navigator}
+          navigationBar={
+            <Navigator.NavigationBar style={{backgroundColor: '#FCB130', alignItems: 'center'}}
+                routeMapper={NavigationBarRouteMapper} />
+          } />);
+    }
+    
+
+	},
+  renderScene: function(){
+    var graphValue = this.state.graphValue;
     var data = JSON.stringify(graphDataAndroid);
     if(graphValue==0)
     return(
-			<ScrollView
+      <ScrollView
         automaticallyAdjustContentInsets={false}
         onScroll={() => { console.log('onScroll!'); }}
         
@@ -191,7 +213,7 @@ return(
           </View>
         </View>
         </ScrollView>
-		);
+    );
     else if(graphValue == 1)
       return(
       <ScrollView
@@ -267,17 +289,42 @@ return(
         </View>
         </ScrollView>
     );
-    
 
-	},
+  },
 
 });
-
+var NavigationBarRouteMapper = {
+  LeftButton(route, navigator, index, navState) {
+     return (
+        <TouchableOpacity onPress={() => navigator.parentNavigator.pop()} style={{flex: 1, justifyContent: 'center'}}> 
+        <Image
+          source={{uri: 'http://facebook.github.io/react/img/logo_og.png'}}
+          style={styles.base}/>
+        </TouchableOpacity>    
+      );
+  },
+  RightButton(route, navigator, index, navState) {
+    return null;
+  },
+  Title(route, navigator, index, navState) {
+    return (
+      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
+        <Text style={{color: 'white', margin: 10, fontSize: 16}}>
+          Summary
+        </Text>
+      </TouchableOpacity>
+    );
+  }
+};
 var styles = StyleSheet.create({
   bigTitle:{
     fontWeight: '500',
     fontSize: 30,
   },
+  base: {
+        width: 35,
+        height: 35,
+      },
   title: {
     fontWeight: '500',
     fontSize : 18,

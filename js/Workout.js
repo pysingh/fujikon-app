@@ -20,6 +20,9 @@ var {
   AsyncStorage,
   Platform,
   AlertIOS,
+  TouchableOpacity,
+  Image,
+  Navigator,
   DeviceEventEmitter,
   NativeAppEventEmitter,
 } = React;
@@ -306,10 +309,26 @@ if(Platform.os == 'ios'){
 	render: function(){
 		//console.log("Reaching...");
 		//console.log("SpeedData->"+speedData+" TimeData"+timeData+" pointCounts"+pointCounts);
-    
-    
-		return(
-			<View style={styles.wholeScreen}>
+    if(Platform.OS == 'ios'){
+      return (
+       this.renderScene()
+      );
+    }else{
+      return(
+      <Navigator
+          ref = "NavBar"
+          renderScene={this.renderScene.bind(this)}
+          navigator={this.props.navigator}
+          navigationBar={
+            <Navigator.NavigationBar style={{backgroundColor: '#FCB130', alignItems: 'center'}}
+                routeMapper={NavigationBarRouteMapper} />
+          } />);
+    }
+
+	},
+  renderScene: function(){
+    return(
+      <View style={styles.wholeScreen}>
           <View style={styles.container}>
           <Text style={styles.timeFont}>TIME: {this.state.hourData}:{this.state.minData}:{this.state.secData}</Text>
           </View>
@@ -328,9 +347,8 @@ if(Platform.os == 'ios'){
           </TouchableHighlight>
           <Text style={styles.instructionFont}>The location data is being taken. {'\n'}Altitude Value :{this.state.altitudeValue}</Text>
         </View>
-		);
-
-	}
+    );
+  }
 
 
 });
@@ -354,12 +372,38 @@ function secondsToTime(secs)
   //console.log(obj.h + obj.m + obj.s);
   return obj;
 }
-
+var NavigationBarRouteMapper = {
+  LeftButton(route, navigator, index, navState) {
+     return (
+        <TouchableOpacity onPress={() => navigator.parentNavigator.pop()} style={{flex: 1, justifyContent: 'center'}}> 
+        <Image
+          source={{uri: 'http://facebook.github.io/react/img/logo_og.png'}}
+          style={styles.base}/>
+        </TouchableOpacity>    
+      );
+  },
+  RightButton(route, navigator, index, navState) {
+    return null;
+  },
+  Title(route, navigator, index, navState) {
+    return (
+      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
+        <Text style={{color: 'white', margin: 10, fontSize: 16}}>
+          Workout
+        </Text>
+      </TouchableOpacity>
+    );
+  }
+};
 var styles = StyleSheet.create({
   bigTitle:{
     fontWeight: '500',
     fontSize: 30,
   },
+  base: {
+        width: 35,
+        height: 35,
+      },
   title: {
     fontWeight: '500',
     fontSize : 18,

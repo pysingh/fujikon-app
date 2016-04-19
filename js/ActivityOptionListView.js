@@ -4,10 +4,14 @@ var React = require('react-native');
 var PreWorkout = require('./PreWorkout');
 var {
   ListView,
+  TouchableOpacity,
+  Image,
   TouchableHighlight,
   StyleSheet,
   Text,
   AsyncStorage,
+  Platform,
+  Navigator,
   View,
 } = React;
 
@@ -92,30 +96,71 @@ _onValueChange: function (selectedValue) {
     // }
   },
 
-
 render: function() {
     //console.log("Activity Running");
     if(activityCount!=0)
       activityCount=0;
-    return (
-        <ListView
+    if(Platform.OS == 'ios'){
+      return (
+       this.renderScene()
+      );
+    }else{
+      return(
+      <Navigator
+          ref = "NavBar"
+          renderScene={this.renderScene.bind(this)}
+          navigator={this.props.navigator}
+          navigationBar={
+            <Navigator.NavigationBar style={{backgroundColor: '#FCB130', alignItems: 'center'}}
+                routeMapper={NavigationBarRouteMapper} />
+          } />);
+    }
 
+},
+
+renderScene: function(){
+return (
+
+        <ListView
         dataSource={this.state.dataSource}
         renderRow={this.getOptions}//{(rowData) => <Text>{rowData}</Text>}
         style = {styles.listView}/>             
     );
-
-
 },
 });
-
+var NavigationBarRouteMapper = {
+  LeftButton(route, navigator, index, navState) {
+     return (
+        <TouchableOpacity onPress={() => navigator.parentNavigator.pop()} style={{flex: 1, justifyContent: 'center'}}> 
+        <Image
+          source={{uri: 'http://facebook.github.io/react/img/logo_og.png'}}
+          style={styles.base}/>
+        </TouchableOpacity>    
+      );
+  },
+  RightButton(route, navigator, index, navState) {
+    return null;
+  },
+  Title(route, navigator, index, navState) {
+    return (
+      <TouchableOpacity style={{flex: 1, justifyContent: 'center'}}>
+        <Text style={{color: 'white', margin: 10, fontSize: 16}}>
+          Choose Activity
+        </Text>
+      </TouchableOpacity>
+    );
+  }
+};
 var styles = StyleSheet.create({
   listView: {
         paddingTop: 30,
         //backgroundColor: '#F5FCFF',
         height:100,
     },
-    
+    base: {
+        width: 35,
+        height: 35,
+      },
     container: {
         flex: 1,
         flexDirection: 'row',

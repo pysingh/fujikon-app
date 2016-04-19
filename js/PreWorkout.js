@@ -127,6 +127,9 @@ componentWillMount:function(){
       workoutName=value;
       this.setState({"selectedWorkout": value});
     }).done();
+  AsyncStorage.getItem("deviceConnectionStatus").then((value) => {
+      this.setState({connectionState: value});
+    }).done();
   
   //activityName = this.state.selectedActivity;
   subscriptionBLE = NativeAppEventEmitter.addListener("connectionStatus", (data) => {
@@ -138,6 +141,7 @@ componentWillMount:function(){
 },
 onDeviceConnectionStatusChange:function(msg: Event) {
     this.setState({connectionState:msg});
+    AsyncStorage.setItem("deviceConnectionStatus", msg);
   },
 onConnectionStatusChange:function(e: Event) {
    // this.setState({connectionState:data.status});
@@ -317,7 +321,8 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
 
   closeModal5: function(id) {
     // this.setState({isOpen: false});
-    this.refs.modal3.close();
+    this.myTextInput.close();
+    // this.refs.modal3.close();
   },
 
   onDeviceTabPressed: function(rowID) {
@@ -352,7 +357,7 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
       return <ActivityIndicatorIOS style={styles.scrollSpinner} />;
     }
       else{
-    return ;
+    return <ProgressBar styleAttr="Inverse" />;
       }
   },
   render: function() {
@@ -369,6 +374,7 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
       <Navigator
           ref = "NavBar"
           renderScene={this.renderScene.bind(this)}
+          navigator={this.props.navigator}
           navigationBar={
             <Navigator.NavigationBar style={{backgroundColor: '#FCB130', alignItems: 'center'}}
                 routeMapper={NavigationBarRouteMapper} />
@@ -446,10 +452,12 @@ renderScene: function(route, navigator) {
 });
 var NavigationBarRouteMapper = {
   LeftButton(route, navigator, index, navState) {
-       return (
+     return (
+        <TouchableOpacity onPress={() => navigator.parentNavigator.pop()} style={{flex: 1, justifyContent: 'center'}}> 
         <Image
           source={{uri: 'http://facebook.github.io/react/img/logo_og.png'}}
           style={styles.base}/>
+        </TouchableOpacity>    
       );
   },
   RightButton(route, navigator, index, navState) {
@@ -473,8 +481,8 @@ var styles = StyleSheet.create({
         height:200,
       },
       base: {
-width: 35,
-height: 35,
+        width: 35,
+        height: 35,
       },
       screenContainer:{
         paddingTop:50,
@@ -508,6 +516,7 @@ height: 35,
         textAlign: 'center',
       },
       deviceTab:{
+        width: 400,
         textAlign:'center',
         fontSize:18,
       },

@@ -64,8 +64,8 @@ public class CustomView extends SimpleViewManager<LineChart> {
 
             // enable scaling and dragging
             mChart.setDragEnabled(true);
-            mChart.setScaleEnabled(true);
-            // mChart.setScaleXEnabled(true);
+            mChart.setScaleEnabled(false);
+             mChart.setScaleXEnabled(true);
             // mChart.setScaleYEnabled(true);
 
             // if disabled, scaling can be done on x- and y-axis separately
@@ -81,7 +81,7 @@ public class CustomView extends SimpleViewManager<LineChart> {
 
             // x-axis limit line
             LimitLine llXAxis = new LimitLine(10f, "Index 10");
-            llXAxis.setLineWidth(4f);
+            llXAxis.setLineWidth(10f);
             llXAxis.enableDashedLine(10f, 10f, 0f);
             llXAxis.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
             llXAxis.setTextSize(10f);
