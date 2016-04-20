@@ -69,7 +69,9 @@ onTabPressed: function(option){
    // console.log(this.props);
     this.props.obj(targetOptions[option]);
     // this.props.obj.refreshWorkoutData("test");
-    this.props.navigator.popToTop();
+    this.props.navigator.push({
+        id: 'PreWorkout'     
+        });
 
 },
 getOptions: function(){

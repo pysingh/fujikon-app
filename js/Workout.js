@@ -157,6 +157,7 @@ if(Platform.os == 'ios'){
                        this.onClockTick);
     	elevationData=[];
       timeData=[];
+      speedData =[];
       heartBeatData=[];
       timeData_heart=[];
       pointCounts=0;

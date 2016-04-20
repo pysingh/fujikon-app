@@ -33,6 +33,7 @@ import com.healthmonitor.Utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -46,6 +47,12 @@ public class BLEConnectionModule extends ReactContextBaseJavaModule {
     private Callback onScanError;*/
     private BluetoothAdapter mBluetoothAdapter;
     private int REQUEST_ENABLE_BT = 1;
+    public static final String HEART_RATE_SERVICE = "0000180d-0000-1000-8000-00805f9b34fb";
+    public final static String HEART_RATE_MEASUREMENT = "00002a37-0000-1000-8000-00805f9b34fb";
+    public final static UUID UUID_HEART_RATE_MEASUREMENT =
+            UUID.fromString(HEART_RATE_MEASUREMENT);
+    public final static UUID UUID_HEART_RATE_SERVICE =
+            UUID.fromString(HEART_RATE_SERVICE);
     private BLEReceiver bleReceiver;
     private boolean mScanning;
     private ArrayList<BluetoothDevice> bleArrayList;
@@ -70,14 +77,16 @@ public class BLEConnectionModule extends ReactContextBaseJavaModule {
         if (bluetoothDevice != null) {
             mBluetoothGatt = bluetoothDevice.connectGatt(mContext, false, bluetoothGattCallback);
         } else {
-            sendEvent(reactContext, "connection_status_change", null, "Error in connection");
+            sendEvent(reactContext, "device_connection_status_change", null, "Error in connection");
         }
     }
+
     @ReactMethod
     public void disConnect() {
         mBluetoothGatt.disconnect();
                 /*mBluetoothGatt = bluetoothDevice.connectGatt(mContext, false, bluetoothGattCallback);*/
     }
+
     private BluetoothDevice getDeviceFromAddress(String name) {
         for (int count = 0; count < bleArrayList.size(); count++) {
             if (name.equalsIgnoreCase(bleArrayList.get(count).getName())) {
@@ -96,6 +105,7 @@ public class BLEConnectionModule extends ReactContextBaseJavaModule {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             ((MainActivity) mContext).startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
+//        mBluetoothAdapter.enable();
     }
 
     BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
@@ -179,12 +189,12 @@ public class BLEConnectionModule extends ReactContextBaseJavaModule {
                         @Override
                         public void run() {
                             CommonUtilities.showToast("Device disconnected ", mContext);
-                            sendEvent(reactContext, "device_connection_status_change", null, "Device Disconnected");
+                            //sendEvent(reactContext, "device_connection_status_change", null, "Device Disconnected");
                         }
                     });
                 }
                 isConnected = false;
-                sendEvent(reactContext, "connection_status_change", null, "Not Connected");
+                sendEvent(reactContext, "device_connection_status_change", null, "Not Connected");
                 /*onDeviceConnectionError.invoke("Not Connected");*/
 
             }
@@ -214,9 +224,37 @@ public class BLEConnectionModule extends ReactContextBaseJavaModule {
     private void displayGattServices(List<BluetoothGattService> gattServices) {
         if (gattServices == null)
             return;
-        if (gattServices.size() > 0) {
+//        if (gattServices.size() > 0) {
+//            BluetoothGattCharacteristic bluetoothGattCharacteristic = null;
+//            bluetoothGattCharacteristic = gattServices.get(3).getCharacteristics().get(0);
+//            if (bluetoothGattCharacteristic != null) {
+//                mBluetoothGatt.setCharacteristicNotification(bluetoothGattCharacteristic, true);
+//                BluetoothGattDescriptor bluetoothGattDescriptor = bluetoothGattCharacteristic.getDescriptors().get(0);
+//                bluetoothGattDescriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+//                mBluetoothGatt.writeDescriptor(bluetoothGattDescriptor);
+//            }
+//        }
             BluetoothGattCharacteristic bluetoothGattCharacteristic = null;
-            bluetoothGattCharacteristic = gattServices.get(3).getCharacteristics().get(0);
+        if (gattServices.size() > 0) {
+            for (int count = 0; count < gattServices.size(); count++) {
+                BluetoothGattService bluetoothGattService = gattServices.get(count);
+                if(bluetoothGattService.getUuid().equals(UUID_HEART_RATE_SERVICE)){
+                    bluetoothGattCharacteristic = bluetoothGattService.getCharacteristic(UUID_HEART_RATE_MEASUREMENT);
+
+                }
+            }
+//            BluetoothGattService bluetoothGattService = gattServices.get(0);
+//            BluetoothGattCharacteristic bluetoothGattCharacteristic = null;
+//            List<BluetoothGattCharacteristic> bluetoothGattCharacteristics = bluetoothGattService.getCharacteristics();
+//            if (bluetoothGattCharacteristics != null && bluetoothGattCharacteristics.size() > 0) {
+//                for (int count = 0; count < bluetoothGattCharacteristics.size(); count++) {
+//                    BluetoothGattCharacteristic bluetoothGattCharacteristic1 = bluetoothGattCharacteristics.get(count);
+//                    if (bluetoothGattCharacteristic1.getUuid().equals(UUID_HEART_RATE_MEASUREMENT)) {
+//                        bluetoothGattCharacteristic = bluetoothGattCharacteristic1;
+//                    }
+//                }
+//            }
+//            bluetoothGattCharacteristic = gattServices.get(3).getCharacteristics().get(0);
             if (bluetoothGattCharacteristic != null) {
                 mBluetoothGatt.setCharacteristicNotification(bluetoothGattCharacteristic, true);
                 BluetoothGattDescriptor bluetoothGattDescriptor = bluetoothGattCharacteristic.getDescriptors().get(0);
@@ -254,7 +292,7 @@ public class BLEConnectionModule extends ReactContextBaseJavaModule {
     }
 
     private void scanDevice(final boolean enable) {
-        if (enable) {
+        if (BluetoothAdapter.getDefaultAdapter()!= null && BluetoothAdapter.getDefaultAdapter().isEnabled()) {
             // Stops scanning after a pre-defined scan period.
             /*Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -276,6 +314,15 @@ public class BLEConnectionModule extends ReactContextBaseJavaModule {
             mScanning = true;
             mBluetoothAdapter.startLeScan(leScanCallback);
         } else {
+            if (((MainActivity) mContext) != null) {
+                ((MainActivity) mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CommonUtilities.showToast("Bluetooth is not enable", mContext);
+                        sendEvent(reactContext, "connection_status_change", null, "Bluetooth is not enable");
+                    }
+                });
+            }
             mScanning = false;
             mBluetoothAdapter.stopLeScan(leScanCallback);
         }
@@ -306,7 +353,7 @@ public class BLEConnectionModule extends ReactContextBaseJavaModule {
                 public void run() {
                     int initialsize = bleArrayList.size();
                     addDevice(device);
-                    if (bleArrayList.size()>initialsize) {
+                    if (bleArrayList.size() > initialsize) {
                         Gson gson = new Gson();
                         final String jsonString = gson.toJson(getDeviceModel(device));
                         sendEvent(reactContext, "device_params", null, jsonString);

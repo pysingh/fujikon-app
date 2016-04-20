@@ -62,8 +62,9 @@ public class AndroidGeolocationModule extends ReactContextBaseJavaModule
         if (mLastLocation != null) {
 //            int altitude = (int) mLastLocation.getAltitude();
 //            int speed = (int) mLastLocation.getSpeed();
+            Log.e("speed, altitude", mLastLocation.getSpeed() + ":"+mLastLocation.getAltitude() );
             locationSpeedModel.setAltitude((int) mLastLocation.getAltitude());
-            locationSpeedModel.setAltitude((int) mLastLocation.getSpeed());
+            locationSpeedModel.setSpeed((int) mLastLocation.getSpeed());
             /*Log.e("altitude", "" + mLastLocation.getAltitude());*/
             //success.invoke(altitude, speed);
         }
