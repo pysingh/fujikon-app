@@ -4,13 +4,14 @@ var React = require('react-native');
 var { SMBLEManager } = require('NativeModules');
 var BLEConnectionModule = require('react-native').NativeModules.BLEConnectionModule;
 var Modal   = require('react-native-modalbox');
+var { Platform } = React;
 
 var ActivityOptions = require('./ActivityOptionListView');
 var WorkoutOptions = require('./WorkoutOptionsListView');
 
 var Workout = require('./Workout');
 
-var count = 0;
+var count = 0;  
 var listOptions = ['Activity','Workout'];
 var activityName = "Running";
 var workoutName = "Just Track Me";
@@ -40,8 +41,6 @@ var {
   ActivityIndicatorIOS,
 } = React;
   
-
-var platform = Platform.os;
 var subscriptionBLE;
 var androidDeviceList = new Set();
 var ListViewSimpleExample = React.createClass({
@@ -176,16 +175,16 @@ getOptions: function(){
   },
 
   onStartPressed: function(){
-    // var Workout = require('./Workout');
-    // SMBLEManager.initParameters("180D","2A37");
     
-if(platform == 'ios'){
-    this.props.navigator.replace({
-      component: Workout,
-      //passProps:{connectionStatus : this.state.connectionState},
-      componentConfig : {
-        title : "My New Title"
-      },
+    if(Platform.OS === 'ios'){
+      var Workout = require('./Workout');
+      SMBLEManager.initParameters("180D","2A37");
+      this.props.navigator.replace({
+        component: Workout,
+        //passProps:{connectionStatus : this.state.connectionState},
+        componentConfig : {
+          title : "My New Title"
+        },
     });  
   }else{
 /*BLEConnectionModule.discoverServices((status) => {
@@ -208,7 +207,8 @@ if(platform == 'ios'){
 
   onConnectPressed: function(){
     var Workout = require('./Workout');
-    if(platform === 'ios'){
+    if(Platform.OS === 'ios'){
+      console.log("Enter iOS");
       if(started != 1)
         {
           SMBLEManager.initParameters("180D","2A37");  
@@ -227,6 +227,7 @@ if(platform == 'ios'){
          
       }); 
     }else{
+      console.log("Enter android");
           deviceList = [];
           var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}); 
           this.setState({dataSource: ds.cloneWithRows(this.genRows())});
@@ -246,7 +247,7 @@ if(platform == 'ios'){
 
   onTabPressed: function(rowID){
     /*console.log("Tab pressed...."+rowID);*/
-    if(platform == 'ios'){
+    if(Platform.OS === 'ios'){
       if(rowID==0)
       {
         this.props.navigator.push({
@@ -314,7 +315,7 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
 
   onDeviceTabPressed: function(rowID) {
     console.log("Row Pressed" , rowID)
-    if(platform == 'ios'){
+    if(Platform.OS === 'ios'){
       SMBLEManager.connectDevice(deviceList[rowID],rowID);
     }
     else{
@@ -340,7 +341,7 @@ renderSeparator: function(sectionID, rowID, adjacentRowHighlighted) {
   },
 
   renderFooter: function() {
-    if(Platform.os == 'ios'){
+    if(Platform.OS === 'ios'){
       return <ActivityIndicatorIOS style={styles.scrollSpinner} />;
     }
       else{

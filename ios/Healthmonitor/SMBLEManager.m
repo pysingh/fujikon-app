@@ -48,6 +48,11 @@ RCT_EXPORT_METHOD(initParameters:(NSString *)service :(NSString *)characteristic
   _data = [[NSMutableData alloc] init];
   _servicesArray = [[NSArray alloc] initWithObjects:[CBUUID UUIDWithString:serviceUUID], nil];
   _characteristicArray = [[NSArray alloc] initWithObjects:[CBUUID UUIDWithString:characteristicUUID], nil];
+  NSArray *peripherals = [self.centralManager retrieveConnectedPeripheralsWithServices:@[[CBUUID UUIDWithString:@"180D"]]];
+  for(CBPeripheral *peripheral in peripherals)
+  {
+      NSLog(@"Already connected --> %@",peripheral.name);
+  }
   
 }
 RCT_EXPORT_METHOD(stopScannig)

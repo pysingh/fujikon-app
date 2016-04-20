@@ -56,7 +56,7 @@ var Workout = React.createClass({
   	},
 
 	componentDidMount: function() {
-if(Platform.os == 'ios'){
+if(Platform.OS === 'ios'){
         subscriptionBLE = NativeAppEventEmitter.addListener("receivedBLEData", (data) => { 
         
         navigator.geolocation.getCurrentPosition(
@@ -129,7 +129,7 @@ if(Platform.os == 'ios'){
       	target = value;
       	this.setState({"pointCounts": value});
     	}).done();
-if(Platform.os == 'ios'){
+if(Platform.OS == 'ios'){
     	navigator.geolocation.getCurrentPosition(
       	(initialPosition) => this.setState({initialPosition}),
       	(error) => { 
@@ -153,7 +153,7 @@ if(Platform.os == 'ios'){
       timeData_heart=[];
       pointCounts=0;
       heartBeatDatacount=0;
-      if(Platform.os == 'ios'){
+      if(Platform.OS == 'ios'){
       Timermanager.resetTimer();}
       navigator.geolocation.clearWatch(this.watchID);
 

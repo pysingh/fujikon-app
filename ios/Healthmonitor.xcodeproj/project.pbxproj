@@ -679,7 +679,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Healthmonitor;
-				PROVISIONING_PROFILE = "ded1798a-a217-4800-bc58-2b84a136f707";
+				PROVISIONING_PROFILE = "a1a48112-541a-4a9e-81cd-8800d690ab3d";
 			};
 			name = Debug;
 		};
@@ -698,7 +698,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Healthmonitor;
-				PROVISIONING_PROFILE = "ded1798a-a217-4800-bc58-2b84a136f707";
+				PROVISIONING_PROFILE = "a1a48112-541a-4a9e-81cd-8800d690ab3d";
 			};
 			name = Release;
 		};
@@ -745,7 +745,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "ded1798a-a217-4800-bc58-2b84a136f707";
+				PROVISIONING_PROFILE = "a1a48112-541a-4a9e-81cd-8800d690ab3d";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -786,7 +786,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "ded1798a-a217-4800-bc58-2b84a136f707";
+				PROVISIONING_PROFILE = "a1a48112-541a-4a9e-81cd-8800d690ab3d";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
